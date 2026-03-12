@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NCERT Tracker</title>
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="NCERT Tracker">
+<meta name="theme-color" content="#0f0f13">
+<link rel="manifest" href="manifest.json">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Sora:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0f0f13;
+  --surface: #1a1a22;
+  --surface2: #22222e;
+  --border: #2e2e3e;
+  --accent: #6ee7b7;
+  --accent2: #f59e0b;
+  --accent3: #f87171;
+  --text: #e8e8f0;
+  --text2: #8888aa;
+  --used: #6ee7b7;
+  --unused: #2e2e3e;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Sora', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  padding: 0;
+}
+
+/* Header */
+.header {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.logo {
+  font-family: 'Space Mono', monospace;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: 0.05em;
+}
+
+.logo span { color: var(--text2); font-weight: 400; }
+
+.header-actions { display: flex; gap: 8px; align-items: center; }
+
+/* Buttons */
+.btn {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.7rem;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  border: none;
+  letter-spacing: 0.05em;
+  transition: all 0.15s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn-primary { background: var(--accent); color: #0f0f13; font-weight: 700; }
+.btn-primary:hover { background: #4dd4a0; }
+.btn-secondary { background: var(--surface2); color: var(--text); border: 1px solid var(--border); }
+.btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
+.btn-danger { background: transparent; color: var(--accent3); border: 1px solid var(--accent3); }
+.btn-danger:hover { background: var(--accent3); color: white; }
+.btn-warning { background: var(--accent2); color: #0f0f13; font-weight: 700; }
+.btn-warning:hover { background: #d97706; }
+
+/* Layout */
+.container { display: grid; grid-template-columns: 260px 1fr; height: calc(100vh - 57px); }
+
+/* Sidebar */
+.sidebar {
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  overflow-y: auto;
+  padding: 16px 0;
+}
+
+.sidebar-title {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.65rem;
+  color: var(--text2);
+  letter-spacing: 0.1em;
+  padding: 0 16px 12px;
+  text-transform: uppercase;
+}
+
+.class-section { margin-bottom: 8px; }
+
+.class-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px;
+  cursor: pointer;
+  transition: background 0.15s;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.class-header:hover { background: var(--surface2); }
+.class-header.active { color: var(--accent); }
+
+.class-header .arrow {
+  font-size: 0.6rem;
+  color: var(--text2);
+  transition: transform 0.2s;
+}
+.class-header.open .arrow { transform: rotate(90deg); }
+
+.chapter-list { display: none; }
+.chapter-list.open { display: block; }
+
+.chapter-item {
+  padding: 8px 16px 8px 28px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  color: var(--text2);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: all 0.15s;
+  border-left: 2px solid transparent;
+}
+.chapter-item:hover { color: var(--text); background: var(--surface2); }
+.chapter-item.active { color: var(--accent); border-left-color: var(--accent); background: rgba(110,231,183,0.05); }
+
+.chapter-badge {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.6rem;
+  padding: 2px 6px;
+  border-radius: 10px;
+  background: var(--surface2);
+}
+.chapter-badge.has-used { background: rgba(110,231,183,0.15); color: var(--accent); }
+
+.add-chapter-btn {
+  width: 100%;
+  padding: 8px 16px 8px 28px;
+  background: none;
+  border: none;
+  color: var(--text2);
+  font-family: 'Sora', sans-serif;
+  font-size: 0.75rem;
+  cursor: pointer;
+  text-align: left;
+  transition: color 0.15s;
+}
+.add-chapter-btn:hover { color: var(--accent); }
+
+/* Main */
+.main { overflow-y: auto; padding: 24px; }
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: var(--text2);
+  text-align: center;
+  gap: 12px;
+}
+.empty-state .icon { font-size: 3rem; opacity: 0.3; }
+.empty-state p { font-size: 0.9rem; max-width: 280px; line-height: 1.6; }
+
+/* Chapter View */
+.chapter-view { max-width: 800px; }
+
+.chapter-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  gap: 16px;
+}
+
+.chapter-title {
+  font-size: 1.4rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.chapter-title span {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--text2);
+  font-weight: 400;
+  font-family: 'Space Mono', monospace;
+  margin-bottom: 4px;
+}
+
+.stats-row {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.stat-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 20px;
+  flex: 1;
+}
+
+.stat-label {
+  font-size: 0.65rem;
+  color: var(--text2);
+  font-family: 'Space Mono', monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 6px;
+}
+
+.stat-value {
+  font-size: 1.6rem;
+  font-weight: 700;
+  font-family: 'Space Mono', monospace;
+}
+.stat-value.green { color: var(--accent); }
+.stat-value.amber { color: var(--accent2); }
+.stat-value.red { color: var(--accent3); }
+
+/* Progress bar */
+.progress-bar {
+  background: var(--surface2);
+  border-radius: 4px;
+  height: 6px;
+  margin-bottom: 24px;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 4px;
+  transition: width 0.4s ease;
+}
+
+/* Question Grid */
+.section-title {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.65rem;
+  color: var(--text2);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.q-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 28px;
+}
+
+.q-chip {
+  width: 44px;
+  height: 44px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.75rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text2);
+  user-select: none;
+}
+
+.q-chip:hover { border-color: var(--accent); color: var(--accent); transform: scale(1.05); }
+.q-chip.used { background: rgba(110,231,183,0.15); border-color: var(--accent); color: var(--accent); }
+.q-chip.used:hover { background: rgba(248,113,113,0.15); border-color: var(--accent3); color: var(--accent3); }
+
+/* Paste Panel */
+.paste-panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 24px;
+}
+
+.paste-title {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.7rem;
+  color: var(--accent2);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.paste-area {
+  width: 100%;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px;
+  color: var(--text);
+  font-family: 'Space Mono', monospace;
+  font-size: 0.8rem;
+  resize: vertical;
+  min-height: 80px;
+  margin-bottom: 10px;
+  outline: none;
+  transition: border-color 0.15s;
+}
+.paste-area:focus { border-color: var(--accent); }
+.paste-area::placeholder { color: var(--text2); }
+
+/* GitHub Panel */
+.github-panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 24px;
+}
+
+.panel-title {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.7rem;
+  color: var(--text2);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+
+.input-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+  align-items: center;
+}
+
+.input-label {
+  font-size: 0.75rem;
+  color: var(--text2);
+  width: 60px;
+  flex-shrink: 0;
+}
+
+.input-field {
+  flex: 1;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 8px 12px;
+  color: var(--text);
+  font-family: 'Space Mono', monospace;
+  font-size: 0.75rem;
+  outline: none;
+  transition: border-color 0.15s;
+}
+.input-field:focus { border-color: var(--accent); }
+
+.status-msg {
+  font-size: 0.75rem;
+  padding: 8px 12px;
+  border-radius: 6px;
+  margin-top: 10px;
+  display: none;
+  font-family: 'Space Mono', monospace;
+}
+.status-msg.success { background: rgba(110,231,183,0.1); color: var(--accent); display: block; }
+.status-msg.error { background: rgba(248,113,113,0.1); color: var(--accent3); display: block; }
+.status-msg.loading { background: rgba(245,158,11,0.1); color: var(--accent2); display: block; }
+
+/* Modal */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  display: none;
+}
+.modal-overlay.open { display: flex; }
+
+.modal {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 24px;
+  width: 400px;
+  max-width: 90vw;
+}
+
+.modal-title {
+  font-weight: 700;
+  font-size: 1rem;
+  margin-bottom: 16px;
+}
+
+.modal-input {
+  width: 100%;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 14px;
+  color: var(--text);
+  font-family: 'Sora', sans-serif;
+  font-size: 0.9rem;
+  outline: none;
+  margin-bottom: 8px;
+  transition: border-color 0.15s;
+}
+.modal-input:focus { border-color: var(--accent); }
+
+.modal-hint { font-size: 0.75rem; color: var(--text2); margin-bottom: 16px; line-height: 1.5; }
+
+.modal-actions { display: flex; gap: 8px; justify-content: flex-end; }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="logo">NCERT<span>/tracker</span></div>
+  <div class="header-actions">
+    <button class="btn btn-secondary" onclick="showGithubPanel()">⚙ GitHub</button>
+    <button class="btn btn-warning" onclick="exportJSON()">↓ Export JSON</button>
+    <button class="btn btn-primary" onclick="saveToGithub()">↑ Save to GitHub</button>
+  </div>
+</div>
+
+<div class="container">
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <div class="sidebar-title">Classes & Chapters</div>
+    <div id="classTree"></div>
+    <div style="padding: 12px 16px; margin-top: 8px;">
+      <button class="btn btn-secondary" style="width:100%; justify-content:center;" onclick="addClass()">+ Add Class</button>
+    </div>
+  </div>
+
+  <!-- Main -->
+  <div class="main" id="mainArea">
+    <div class="empty-state">
+      <div class="icon">📚</div>
+      <p>Select a chapter from the sidebar to view and track questions</p>
+    </div>
+  </div>
+</div>
+
+<!-- GitHub Settings Panel (hidden by default) -->
+<div id="githubPanel" style="display:none; position:fixed; bottom:0; left:0; right:0; background:var(--surface); border-top:1px solid var(--border); padding:20px 24px; z-index:200;">
+  <div class="panel-title">GitHub Settings — rohanapatel121212/ncert-tracker</div>
+  <div style="display:flex; gap:16px; flex-wrap:wrap; align-items:flex-end;">
+    <div style="flex:1; min-width:200px;">
+      <div class="input-label" style="margin-bottom:6px;">Token</div>
+      <input class="input-field" id="ghToken" type="password" placeholder="GitHub Personal Access Token" style="width:100%;">
+    </div>
+    <div style="display:flex; gap:8px;">
+      <button class="btn btn-primary" onclick="saveGhSettings()">Save</button>
+      <button class="btn btn-secondary" onclick="hideGithubPanel()">Close</button>
+    </div>
+  </div>
+  <div id="ghStatus" class="status-msg"></div>
+</div>
+
+<!-- Modal -->
+<div class="modal-overlay" id="modal">
+  <div class="modal">
+    <div class="modal-title" id="modalTitle">Add Chapter</div>
+    <input class="modal-input" id="modalInput" placeholder="e.g. Algebraic Expressions">
+    <div class="modal-hint" id="modalHint"></div>
+    <div id="modalQCount" style="display:none; margin-bottom:12px;">
+      <div class="input-label" style="width:auto; margin-bottom:6px; font-size:0.75rem; color:var(--text2);">Total Questions in Chapter:</div>
+      <input class="modal-input" id="modalQInput" type="number" placeholder="e.g. 30" min="1" max="200">
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-primary" id="modalConfirm" onclick="confirmModal()">Add</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ─── State ───────────────────────────────────────────────
+let data = {
+  classes: {}
+};
+
+const REPO_OWNER = 'rohanapatel121212';
+const REPO_NAME = 'ncert-tracker';
+const DATA_FILE = 'ncert_tracker.json';
+let ghToken = localStorage.getItem('gh_token') || '';
+
+let activeClass = null;
+let activeChapter = null;
+let modalMode = null;
+let modalTarget = null;
+
+// ─── Init ─────────────────────────────────────────────────
+window.onload = () => {
+  // Start with Class 8
+  if (!data.classes['Class 8']) {
+    data.classes['Class 8'] = { chapters: {} };
+  }
+  if (ghToken) document.getElementById('ghToken').value = ghToken;
+  renderSidebar();
+  loadFromGithub();
+};
+
+// ─── Sidebar ──────────────────────────────────────────────
+function renderSidebar() {
+  const tree = document.getElementById('classTree');
+  tree.innerHTML = '';
+
+  Object.keys(data.classes).forEach(cls => {
+    const chapters = data.classes[cls].chapters;
+    const isOpen = activeClass === cls;
+
+    const section = document.createElement('div');
+    section.className = 'class-section';
+
+    const header = document.createElement('div');
+    header.className = `class-header ${isOpen ? 'open active' : ''}`;
+    header.innerHTML = `<span>${cls}</span><span class="arrow">▶</span>`;
+    header.onclick = () => { activeClass = activeClass === cls ? null : cls; renderSidebar(); };
+
+    const list = document.createElement('div');
+    list.className = `chapter-list ${isOpen ? 'open' : ''}`;
+
+    Object.keys(chapters).forEach(ch => {
+      const chData = chapters[ch];
+      const usedCount = chData.used ? chData.used.length : 0;
+      const total = chData.total || 0;
+
+      const item = document.createElement('div');
+      item.className = `chapter-item ${activeChapter === ch && activeClass === cls ? 'active' : ''}`;
+      item.innerHTML = `
+        <span>${ch}</span>
+        <span class="chapter-badge ${usedCount > 0 ? 'has-used' : ''}">${usedCount}/${total}</span>
+      `;
+      item.onclick = () => { activeClass = cls; activeChapter = ch; renderSidebar(); renderMain(); };
+      list.appendChild(item);
+    });
+
+    // Add chapter button
+    const addBtn = document.createElement('button');
+    addBtn.className = 'add-chapter-btn';
+    addBtn.textContent = '+ Add Chapter';
+    addBtn.onclick = (e) => { e.stopPropagation(); openAddChapter(cls); };
+    list.appendChild(addBtn);
+
+    section.appendChild(header);
+    section.appendChild(list);
+    tree.appendChild(section);
+  });
+}
+
+// ─── Main Area ────────────────────────────────────────────
+function renderMain() {
+  const main = document.getElementById('mainArea');
+  if (!activeClass || !activeChapter) {
+    main.innerHTML = `<div class="empty-state"><div class="icon">📚</div><p>Select a chapter from the sidebar</p></div>`;
+    return;
+  }
+
+  const chData = data.classes[activeClass].chapters[activeChapter];
+  const total = chData.total || 0;
+  const used = chData.used || [];
+  const remaining = total - used.length;
+  const pct = total > 0 ? Math.round((used.length / total) * 100) : 0;
+
+  let html = `<div class="chapter-view">`;
+
+  // Top
+  html += `<div class="chapter-top">
+    <div class="chapter-title">
+      <span>${activeClass}</span>
+      ${activeChapter}
+    </div>
+    <div style="display:flex; gap:8px;">
+      <button class="btn btn-secondary" onclick="editChapterTotal()">✏ Edit Total</button>
+      <button class="btn btn-danger" onclick="resetChapter()">↺ Reset</button>
+    </div>
+  </div>`;
+
+  // Stats
+  html += `<div class="stats-row">
+    <div class="stat-card"><div class="stat-label">Total Qs</div><div class="stat-value">${total}</div></div>
+    <div class="stat-card"><div class="stat-label">Used</div><div class="stat-value green">${used.length}</div></div>
+    <div class="stat-card"><div class="stat-label">Remaining</div><div class="stat-value amber">${remaining}</div></div>
+    <div class="stat-card"><div class="stat-label">Progress</div><div class="stat-value" style="font-size:1.2rem;">${pct}%</div></div>
+  </div>`;
+
+  // Progress
+  html += `<div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div>`;
+
+  // Paste Panel
+  html += `<div class="paste-panel">
+    <div class="paste-title">📋 Claude se list paste karo</div>
+    <textarea class="paste-area" id="pasteArea" placeholder="e.g. Ch3_Q1, Ch3_Q2, Ch3_Q5 (Claude jo list dega woh yahan paste karo)"></textarea>
+    <div style="display:flex; gap:8px;">
+      <button class="btn btn-primary" onclick="markFromPaste()">✓ Mark as Used</button>
+      <button class="btn btn-secondary" onclick="document.getElementById('pasteArea').value=''">Clear</button>
+    </div>
+    <div id="pasteStatus" class="status-msg"></div>
+  </div>`;
+
+  // Question Grid
+  if (total > 0) {
+    html += `<div class="section-title">Question Map — click to toggle</div>`;
+    html += `<div class="q-grid">`;
+    for (let i = 1; i <= total; i++) {
+      const qId = `Ch_Q${i}`;
+      const isUsed = used.includes(i) || used.includes(qId) || used.includes(`Q${i}`);
+      html += `<div class="q-chip ${isUsed ? 'used' : ''}" onclick="toggleQ(${i})" title="Q${i} — ${isUsed ? 'Used (click to unmark)' : 'Available'}">Q${i}</div>`;
+    }
+    html += `</div>`;
+  } else {
+    html += `<div style="color:var(--text2); font-size:0.85rem; padding:20px 0;">Total questions set nahi hai. "Edit Total" se set karo.</div>`;
+  }
+
+  html += `</div>`;
+  main.innerHTML = html;
+}
+
+// ─── Toggle Question ──────────────────────────────────────
+function toggleQ(num) {
+  const chData = data.classes[activeClass].chapters[activeChapter];
+  if (!chData.used) chData.used = [];
+  const idx = chData.used.indexOf(num);
+  if (idx === -1) chData.used.push(num);
+  else chData.used.splice(idx, 1);
+  renderMain();
+  renderSidebar();
+}
+
+// ─── Mark from Paste ──────────────────────────────────────
+function markFromPaste() {
+  const text = document.getElementById('pasteArea').value.trim();
+  if (!text) return;
+
+  // Parse numbers from text like "Ch3_Q1, Ch3_Q2" or "Q1 Q2 Q5" or "1,2,5"
+  const nums = [];
+  const matches = text.match(/Q?(\d+)/g) || [];
+  matches.forEach(m => {
+    const n = parseInt(m.replace('Q',''));
+    if (!isNaN(n) && n > 0) nums.push(n);
+  });
+
+  if (nums.length === 0) {
+    showStatus('pasteStatus', 'Koi question number nahi mila. Format: Ch3_Q1, Ch3_Q2 ya Q1 Q2 Q5', 'error');
+    return;
+  }
+
+  const chData = data.classes[activeClass].chapters[activeChapter];
+  if (!chData.used) chData.used = [];
+  let added = 0;
+  nums.forEach(n => {
+    if (!chData.used.includes(n)) { chData.used.push(n); added++; }
+  });
+
+  showStatus('pasteStatus', `✓ ${added} questions marked as used (${nums.length - added} already marked)`, 'success');
+  document.getElementById('pasteArea').value = '';
+  renderMain();
+  renderSidebar();
+}
+
+// ─── Reset Chapter ────────────────────────────────────────
+function resetChapter() {
+  if (!confirm(`"${activeChapter}" ke saare used questions reset karo?`)) return;
+  data.classes[activeClass].chapters[activeChapter].used = [];
+  renderMain();
+  renderSidebar();
+}
+
+// ─── Export JSON ──────────────────────────────────────────
+function exportJSON() {
+  if (!activeClass || !activeChapter) {
+    alert('Pehle ek chapter select karo');
+    return;
+  }
+  const chData = data.classes[activeClass].chapters[activeChapter];
+  const used = chData.used || [];
+  const total = chData.total || 0;
+  const unused = [];
+  for (let i = 1; i <= total; i++) {
+    if (!used.includes(i)) unused.push(i);
+  }
+
+  const exportData = {
+    class: activeClass,
+    chapter: activeChapter,
+    used_questions: used.map(n => `${activeChapter.replace(/\s+/g,'')}_Q${n}`),
+    available_questions: unused.map(n => `${activeChapter.replace(/\s+/g,'')}_Q${n}`),
+    summary: `${used.length} used, ${unused.length} available`
+  };
+
+  const blob = new Blob([JSON.stringify(exportData, null, 2)], {type:'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `used_questions_${activeChapter.replace(/\s+/g,'_')}.json`;
+  a.click();
+}
+
+// ─── GitHub ───────────────────────────────────────────────
+function showGithubPanel() { document.getElementById('githubPanel').style.display = 'block'; }
+function hideGithubPanel() { document.getElementById('githubPanel').style.display = 'none'; }
+
+function saveGhSettings() {
+  ghToken = document.getElementById('ghToken').value.trim();
+  localStorage.setItem('gh_token', ghToken);
+  showStatus('ghStatus', '✓ Token saved', 'success');
+}
+
+async function saveToGithub() {
+  if (!ghToken) { showGithubPanel(); alert('Pehle GitHub token save karo'); return; }
+
+  const content = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
+  let sha = '';
+
+  try {
+    showHeaderStatus('Saving...', 'loading');
+    // Get current SHA
+    const res = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${DATA_FILE}`, {
+      headers: { 'Authorization': `token ${ghToken}`, 'Accept': 'application/vnd.github.v3+json' }
+    });
+    if (res.ok) { const d = await res.json(); sha = d.sha; }
+
+    // Save
+    const saveRes = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${DATA_FILE}`, {
+      method: 'PUT',
+      headers: { 'Authorization': `token ${ghToken}`, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message: 'Update NCERT tracker', content, sha })
+    });
+
+    if (saveRes.ok) showHeaderStatus('✓ Saved to GitHub!', 'success');
+    else { const e = await saveRes.json(); showHeaderStatus('Save failed: ' + (e.message || 'error'), 'error'); }
+  } catch(e) {
+    showHeaderStatus('Network error: ' + e.message, 'error');
+  }
+}
+
+async function loadFromGithub() {
+  if (!ghToken) return;
+  try {
+    const res = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${DATA_FILE}`, {
+      headers: { 'Authorization': `token ${ghToken}`, 'Accept': 'application/vnd.github.v3+json' }
+    });
+    if (res.ok) {
+      const d = await res.json();
+      const loaded = JSON.parse(decodeURIComponent(escape(atob(d.content))));
+      // Merge — keep Class 8 if loaded doesn't have it
+      if (!loaded.classes['Class 8']) loaded.classes['Class 8'] = { chapters: {} };
+      data = loaded;
+      renderSidebar();
+      showHeaderStatus('✓ Loaded from GitHub', 'success');
+    }
+  } catch(e) { /* silent */ }
+}
+
+// ─── Modal ────────────────────────────────────────────────
+function addClass() {
+  modalMode = 'addClass';
+  document.getElementById('modalTitle').textContent = 'Add Class';
+  document.getElementById('modalInput').placeholder = 'e.g. Class 9';
+  document.getElementById('modalHint').textContent = 'Class ka naam likho';
+  document.getElementById('modalQCount').style.display = 'none';
+  document.getElementById('modal').classList.add('open');
+  document.getElementById('modalInput').value = '';
+  document.getElementById('modalInput').focus();
+}
+
+function openAddChapter(cls) {
+  modalMode = 'addChapter';
+  modalTarget = cls;
+  document.getElementById('modalTitle').textContent = `Add Chapter — ${cls}`;
+  document.getElementById('modalInput').placeholder = 'e.g. Algebraic Expressions';
+  document.getElementById('modalHint').textContent = 'Chapter ka naam aur total questions likho';
+  document.getElementById('modalQCount').style.display = 'block';
+  document.getElementById('modalQInput').value = '';
+  document.getElementById('modal').classList.add('open');
+  document.getElementById('modalInput').value = '';
+  document.getElementById('modalInput').focus();
+}
+
+function editChapterTotal() {
+  modalMode = 'editTotal';
+  document.getElementById('modalTitle').textContent = 'Edit Total Questions';
+  document.getElementById('modalInput').style.display = 'none';
+  document.getElementById('modalHint').textContent = `"${activeChapter}" mein total kitne questions hain?`;
+  document.getElementById('modalQCount').style.display = 'block';
+  const curr = data.classes[activeClass].chapters[activeChapter].total || '';
+  document.getElementById('modalQInput').value = curr;
+  document.getElementById('modal').classList.add('open');
+  document.getElementById('modalQInput').focus();
+}
+
+function closeModal() {
+  document.getElementById('modal').classList.remove('open');
+  document.getElementById('modalInput').style.display = 'block';
+}
+
+function confirmModal() {
+  const val = document.getElementById('modalInput').value.trim();
+  const qCount = parseInt(document.getElementById('modalQInput').value) || 0;
+
+  if (modalMode === 'addClass') {
+    if (!val) return;
+    if (!data.classes[val]) data.classes[val] = { chapters: {} };
+    activeClass = val;
+    renderSidebar();
+  } else if (modalMode === 'addChapter') {
+    if (!val) return;
+    if (!data.classes[modalTarget].chapters[val]) {
+      data.classes[modalTarget].chapters[val] = { total: qCount, used: [] };
+    }
+    activeClass = modalTarget;
+    activeChapter = val;
+    renderSidebar();
+    renderMain();
+  } else if (modalMode === 'editTotal') {
+    data.classes[activeClass].chapters[activeChapter].total = qCount;
+    renderMain();
+    renderSidebar();
+  }
+
+  closeModal();
+}
+
+// Enter key in modal
+document.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && document.getElementById('modal').classList.contains('open')) confirmModal();
+  if (e.key === 'Escape' && document.getElementById('modal').classList.contains('open')) closeModal();
+});
+
+// ─── Helpers ──────────────────────────────────────────────
+function showStatus(id, msg, type) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.textContent = msg;
+  el.className = `status-msg ${type}`;
+  setTimeout(() => { el.className = 'status-msg'; }, 3000);
+}
+
+let headerTimer;
+function showHeaderStatus(msg, type) {
+  clearTimeout(headerTimer);
+  const actions = document.querySelector('.header-actions');
+  let status = document.getElementById('headerStatus');
+  if (!status) {
+    status = document.createElement('span');
+    status.id = 'headerStatus';
+    status.style.cssText = 'font-family:Space Mono,monospace;font-size:0.7rem;padding:6px 12px;border-radius:6px;';
+    actions.prepend(status);
+  }
+  status.textContent = msg;
+  if (type === 'success') status.style.cssText += 'color:#6ee7b7;background:rgba(110,231,183,0.1);';
+  else if (type === 'error') status.style.cssText += 'color:#f87171;background:rgba(248,113,113,0.1);';
+  else status.style.cssText += 'color:#f59e0b;background:rgba(245,158,11,0.1);';
+  headerTimer = setTimeout(() => { if(status) status.remove(); }, 4000);
+}
+
+// ─── PWA Install ─────────────────────────────────────────
+let deferredPrompt;
+window.addEventListener('beforeinstallprompt', e => {
+  e.preventDefault();
+  deferredPrompt = e;
+  const actions = document.querySelector('.header-actions');
+  if (document.getElementById('installBtn')) return;
+  const btn = document.createElement('button');
+  btn.className = 'btn btn-primary';
+  btn.innerHTML = '📲 Install';
+  btn.id = 'installBtn';
+  btn.onclick = async () => {
+    if (!deferredPrompt) return;
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+    if (outcome === 'accepted') btn.remove();
+    deferredPrompt = null;
+  };
+  actions.prepend(btn);
+});
+
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js').catch(e => console.log('SW:', e));
+  });
+}
+</script>
+</body>
+</html>
