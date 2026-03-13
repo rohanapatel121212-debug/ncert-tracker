@@ -159,7 +159,9 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);max-width:48
 .btn-ghost{background:var(--s3);color:var(--t2);border:1px solid var(--border)}
 .btn-a{background:var(--adim);color:var(--amber);border:1px solid rgba(245,158,11,.2)}
 
-/* HISTORY */
+.chips-scroll{overflow-y:auto;-webkit-overflow-scrolling:touch;max-height:38vh}
+.tray-label{font-size:.58rem;font-weight:700;text-transform:uppercase;letter-spacing:.09em;color:var(--blue);padding:6px 12px 2px;border-top:1px solid var(--border)}
+.tray-label-ex{color:var(--amber)}
 .hist-card{background:var(--s1);border:1px solid var(--border);border-radius:11px;margin-bottom:7px;padding:11px 13px}
 .hist-date{font-size:.65rem;font-family:var(--mono);color:var(--amber);margin-bottom:4px;font-weight:600}
 .hist-chapter{font-size:.82rem;font-weight:700;margin-bottom:3px}
@@ -250,14 +252,24 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);max-width:48
     <div class="q-panel">
       <div class="q-panel-bar">
         <div class="q-panel-info" id="qPanelInfo">—</div>
-        <button class="icon-btn" onclick="openModal('setTotal')" style="height:28px;font-size:.65rem;">✏ Set Total</button>
+        <button class="icon-btn" onclick="openModal('setTotal')" style="height:28px;font-size:.65rem;">✏ Set</button>
       </div>
       <div id="newQSetup" style="display:none;" class="new-q-setup">
-        <div class="new-q-text">Pehli baar — is page pe kitne questions?</div>
-        <input class="inp-xs" type="number" id="totalInp" placeholder="8" min="1">
+        <div class="new-q-text">Pehli baar — questions aur examples kitne?</div>
+        <input class="inp-xs" type="number" id="totalQInp" placeholder="Q:8" min="0" style="width:58px;">
+        <input class="inp-xs" type="number" id="totalExInp" placeholder="Ex:3" min="0" style="width:58px;">
         <button class="icon-btn" style="background:var(--adim);border-color:rgba(245,158,11,.3);color:var(--amber);height:32px;" onclick="confirmTotal()">Set</button>
       </div>
-      <div class="q-grid" id="qGrid"></div>
+      <div class="chips-scroll">
+        <div id="qTrayWrap">
+          <div class="tray-label">Questions</div>
+          <div class="q-grid" id="qGrid"></div>
+        </div>
+        <div id="exTrayWrap" style="display:none;">
+          <div class="tray-label tray-label-ex">Examples</div>
+          <div class="q-grid" id="exGrid"></div>
+        </div>
+      </div>
       <div class="q-action">
         <div class="sel-summary" id="selSummary">Koi question select nahi</div>
         <div class="btn-row">
@@ -536,33 +548,58 @@ function loadImage(n){
 function renderQPanel(n){
   const chData=data.classes[AC].chapters[ACH];
   const pg=chData.pages[n-1]||{};
-  const total=pg.total||0;
+  const totalQ=pg.totalQ||0;
+  const totalEx=pg.totalEx||0;
 
-  if(!total){
+  if(!totalQ && !totalEx){
     document.getElementById('newQSetup').style.display='flex';
-    document.getElementById('qPanelInfo').textContent=`P${n} — Total set karo`;
+    document.getElementById('qPanelInfo').textContent=`P${n} — Set karo`;
     document.getElementById('qGrid').innerHTML='';
+    document.getElementById('exGrid').innerHTML='';
+    document.getElementById('exTrayWrap').style.display='none';
     return;
   }
 
   document.getElementById('newQSetup').style.display='none';
-  const usedArr=Object.entries(pg.questions||{}).filter(([,v])=>v.used>0);
-  const fresh=total-usedArr.length;
-  document.getElementById('qPanelInfo').innerHTML=`<b>P${n}</b> · ${usedArr.length} used · ${fresh} fresh`;
 
-  let html='';
-  for(let q=1;q<=total;q++){
+  // Stats
+  const usedQ=Object.values(pg.questions||{}).filter(v=>v.used>0).length;
+  const usedEx=Object.values(pg.examples||{}).filter(v=>v.used>0).length;
+  document.getElementById('qPanelInfo').innerHTML=
+    `<b>P${n}</b> · Q:${usedQ}/${totalQ} used · Ex:${usedEx}/${totalEx} used`;
+
+  // Questions grid
+  let qHtml='';
+  for(let q=1;q<=totalQ;q++){
     const qd=(pg.questions||{})[q];
     const isUsed=qd&&qd.used>0;
-    const isSel=(selQ[n]||[]).includes(q);
+    const isSel=(selQ[n]||[]).includes('q'+q);
     const dateStr=qd&&qd.lastDate?fmtD(qd.lastDate):'';
     const cls=isSel?'selected':(isUsed?'used':'fresh');
-    html+=`<div class="q-chip ${cls}" onclick="toggleQ(${n},${q})">
-      <span class="qnum">${q}</span>
+    qHtml+=`<div class="q-chip ${cls}" onclick="toggleItem(${n},'q',${q})">
+      <span class="qnum">Q${q}</span>
       ${dateStr?`<span class="qdate">${dateStr}</span>`:''}
     </div>`;
   }
-  document.getElementById('qGrid').innerHTML=html;
+  document.getElementById('qGrid').innerHTML=qHtml;
+  document.getElementById('qTrayWrap').style.display=totalQ>0?'block':'none';
+
+  // Examples grid
+  let exHtml='';
+  for(let e=1;e<=totalEx;e++){
+    const ed=(pg.examples||{})[e];
+    const isUsed=ed&&ed.used>0;
+    const isSel=(selQ[n]||[]).includes('ex'+e);
+    const dateStr=ed&&ed.lastDate?fmtD(ed.lastDate):'';
+    const cls=isSel?'selected':(isUsed?'used':'fresh');
+    exHtml+=`<div class="q-chip ${cls}" onclick="toggleItem(${n},'ex',${e})">
+      <span class="qnum">E${e}</span>
+      ${dateStr?`<span class="qdate">${dateStr}</span>`:''}
+    </div>`;
+  }
+  document.getElementById('exGrid').innerHTML=exHtml;
+  document.getElementById('exTrayWrap').style.display=totalEx>0?'block':'none';
+
   updateSummary();
 }
 
@@ -572,11 +609,12 @@ function fmtD(d){
   return `${dt.getDate()}/${dt.getMonth()+1}`;
 }
 
-function toggleQ(n,q){
+function toggleItem(n, type, num){
   if(!selQ[n]) selQ[n]=[];
+  const key=type+num;
   const arr=selQ[n];
-  const i=arr.indexOf(q);
-  if(i===-1) arr.push(q); else arr.splice(i,1);
+  const i=arr.indexOf(key);
+  if(i===-1) arr.push(key); else arr.splice(i,1);
   if(!arr.length) delete selQ[n];
   renderQPanel(n);
 }
@@ -585,7 +623,14 @@ function updateSummary(){
   const keys=Object.keys(selQ).filter(k=>selQ[k].length>0);
   const el=document.getElementById('selSummary');
   if(!keys.length){el.innerHTML='Koi question select nahi';return;}
-  el.innerHTML=keys.map(k=>`P${k}: <b>Q${selQ[k].sort((a,b)=>a-b).join(', Q')}</b>`).join(' · ');
+  el.innerHTML=keys.map(k=>{
+    const qNums=selQ[k].filter(x=>x.startsWith('q')).map(x=>'Q'+x.slice(1)).join(', ');
+    const exNums=selQ[k].filter(x=>x.startsWith('ex')).map(x=>'Ex'+x.slice(2)).join(', ');
+    let parts=[];
+    if(qNums) parts.push(`<b>${qNums}</b>`);
+    if(exNums) parts.push(`<b style="color:var(--amber)">${exNums}</b>`);
+    return `P${k}: ${parts.join(' · ')}`;
+  }).join(' | ');
 }
 
 function clearSel(){
@@ -594,15 +639,17 @@ function clearSel(){
 }
 
 function confirmTotal(){
-  const val=parseInt(document.getElementById('totalInp').value);
-  if(!val||val<1){showToast('Number bharo','e');return;}
+  const q=parseInt(document.getElementById('totalQInp').value)||0;
+  const ex=parseInt(document.getElementById('totalExInp').value)||0;
+  if(!q && !ex){showToast('Kuch toh bharo','e');return;}
   const chData=data.classes[AC].chapters[ACH];
-  if(!chData.pages[APN-1]) chData.pages[APN-1]={total:0,questions:{},githubPath:''};
-  chData.pages[APN-1].total=val;
+  if(!chData.pages[APN-1]) chData.pages[APN-1]={totalQ:0,totalEx:0,questions:{},examples:{}};
+  chData.pages[APN-1].totalQ=q;
+  chData.pages[APN-1].totalEx=ex;
   document.getElementById('newQSetup').style.display='none';
   renderQPanel(APN);
   renderPageTabs();
-  showToast(`P${APN}: ${val} questions!`,'s');
+  showToast(`P${APN}: Q:${q} Ex:${ex} set!`,'s');
 }
 
 // ─── DOWNLOAD + MARK ──────────────────────────────────────
@@ -619,9 +666,17 @@ async function downloadAndMark(){
 
   for(const k of keys){
     const pn=parseInt(k);
-    const qs=selQ[k].sort((a,b)=>a-b);
-    const fname=`${chShort}_p${pn}_q${qs.join('_q')}.png`;
-    hist.pages.push({pageNum:pn,qs,fname});
+    const items=selQ[k];
+    const qNums=items.filter(x=>x.startsWith('q')).map(x=>parseInt(x.slice(1))).sort((a,b)=>a-b);
+    const exNums=items.filter(x=>x.startsWith('ex')).map(x=>parseInt(x.slice(2))).sort((a,b)=>a-b);
+
+    // Build filename: mensuration_p2_q3_q5_ex1_ex2.png
+    let nameParts=[`${chShort}_p${pn}`];
+    if(qNums.length) nameParts.push(qNums.map(q=>`q${q}`).join('_'));
+    if(exNums.length) nameParts.push(exNums.map(e=>`ex${e}`).join('_'));
+    const fname=nameParts.join('_')+'.png';
+
+    hist.pages.push({pageNum:pn,qNums,exNums,fname});
 
     const url=getImgUrl(pn);
     if(url){
@@ -643,11 +698,18 @@ async function downloadAndMark(){
 
     // Mark used
     const chData=data.classes[AC].chapters[ACH];
-    if(!chData.pages[pn-1].questions) chData.pages[pn-1].questions={};
-    qs.forEach(q=>{
-      if(!chData.pages[pn-1].questions[q]) chData.pages[pn-1].questions[q]={used:0,lastDate:null};
-      chData.pages[pn-1].questions[q].used++;
-      chData.pages[pn-1].questions[q].lastDate=today;
+    const pg=chData.pages[pn-1];
+    if(!pg.questions) pg.questions={};
+    if(!pg.examples) pg.examples={};
+    qNums.forEach(q=>{
+      if(!pg.questions[q]) pg.questions[q]={used:0,lastDate:null};
+      pg.questions[q].used++;
+      pg.questions[q].lastDate=today;
+    });
+    exNums.forEach(e=>{
+      if(!pg.examples[e]) pg.examples[e]={used:0,lastDate:null};
+      pg.examples[e].used++;
+      pg.examples[e].lastDate=today;
     });
   }
 
@@ -670,7 +732,12 @@ function renderHistory(){
     <div class="hist-card">
       <div class="hist-date">${h.datetime||h.date}</div>
       <div class="hist-chapter">${h.chapter} — ${h.className}</div>
-      <div class="hist-pages">${(h.pages||[]).map(p=>`P${p.pageNum} → Q${p.qs.join(', Q')} · <span class="hist-file">${p.fname}</span>`).join('<br>')}</div>
+      <div class="hist-pages">${(h.pages||[]).map(p=>{
+        const qs=p.qNums?.length?`Q${p.qNums.join(', Q')}`:'';
+        const exs=p.exNums?.length?`Ex${p.exNums.join(', Ex')}`:'';
+        const sel=[qs,exs].filter(Boolean).join(' · ');
+        return `P${p.pageNum} → ${sel} · <span class="hist-file">${p.fname}</span>`;
+      }).join('<br>')}</div>
     </div>`).join('');
 }
 
@@ -756,10 +823,13 @@ function openModal(mode,target){
     document.getElementById('mHint').textContent=`Ek ya multiple pages add karo. Agar chapter mein already ${(data.classes[AC]?.chapters[ACH]?.pages||[]).length} pages hain toh aage se add honge.`;
     body.innerHTML=`<input class="modal-inp" id="mi1" type="number" placeholder="Kitne pages add karne hain? (e.g. 5)" min="1">`;
   } else if(mode==='setTotal'){
-    document.getElementById('mTitle').textContent=`P${APN} — Total Set Karo`;
-    document.getElementById('mHint').textContent='Is page pe kitne questions hain?';
-    const cur=(data.classes[AC]?.chapters[ACH]?.pages[APN-1]?.total)||0;
-    body.innerHTML=`<input class="modal-inp" id="mi1" type="number" placeholder="Total questions" value="${cur||''}" min="1">`;
+    document.getElementById('mTitle').textContent=`P${APN} — Set Karo`;
+    document.getElementById('mHint').textContent='Questions aur Examples alag alag set karo';
+    const pg=data.classes[AC]?.chapters[ACH]?.pages[APN-1]||{};
+    body.innerHTML=`<div class="modal-row">
+      <input class="modal-inp" id="mi1" type="number" placeholder="Total Questions" value="${pg.totalQ||''}" min="0" style="flex:1;">
+      <input class="modal-inp" id="mi2" type="number" placeholder="Total Examples" value="${pg.totalEx||''}" min="0" style="flex:1;">
+    </div>`;
   }
 
   document.getElementById('modal').classList.add('open');
@@ -783,7 +853,7 @@ function confirmModal(){
     // Auto-create pages
     if(pages>0){
       const chData=data.classes[cls].chapters[ch];
-      while(chData.pages.length<pages) chData.pages.push({total:0,questions:{}});
+      while(chData.pages.length<pages) chData.pages.push({totalQ:0,totalEx:0,questions:{},examples:{}});
     }
     renderHome();
 
@@ -795,7 +865,7 @@ function confirmModal(){
     }
     if(pages>0){
       const chData=data.classes[MT].chapters[ch];
-      while(chData.pages.length<pages) chData.pages.push({total:0,questions:{}});
+      while(chData.pages.length<pages) chData.pages.push({totalQ:0,totalEx:0,questions:{},examples:{}});
     }
     renderHome();
 
@@ -803,19 +873,20 @@ function confirmModal(){
     const n=gn('mi1');
     if(!n||n<1){showToast('Number bharo','e');return;}
     const chData=data.classes[AC].chapters[ACH];
-    for(let i=0;i<n;i++) chData.pages.push({total:0,questions:{}});
+    for(let i=0;i<n;i++) chData.pages.push({totalQ:0,totalEx:0,questions:{},examples:{}});
     renderPageTabs();
     showToast(`${n} pages add ho gaye!`,'s');
 
   } else if(MM==='setTotal'){
-    const val=gn('mi1');
-    if(!val||val<1){showToast('Number bharo','e');return;}
+    const q=gn('mi1'), ex=gn('mi2');
+    if(!q && !ex){showToast('Kuch toh bharo','e');return;}
     const chData=data.classes[AC].chapters[ACH];
-    if(!chData.pages[APN-1]) chData.pages[APN-1]={total:0,questions:{}};
-    chData.pages[APN-1].total=val;
+    if(!chData.pages[APN-1]) chData.pages[APN-1]={totalQ:0,totalEx:0,questions:{},examples:{}};
+    chData.pages[APN-1].totalQ=q;
+    chData.pages[APN-1].totalEx=ex;
     renderQPanel(APN);
     renderPageTabs();
-    showToast(`P${APN}: ${val} questions set!`,'s');
+    showToast(`P${APN}: Q:${q} Ex:${ex} set!`,'s');
   }
 
   closeModal();
