@@ -338,7 +338,17 @@ let MM = null; // modal mode
 let MT = null; // modal target
 
 // ─── INIT ────────────────────────────────────────────────
-window.onload = () => { loadSettingsUI(); renderHome(); loadFromGithub(); };
+window.onload = () => {
+  loadSettingsUI();
+  renderHome();
+  const s = getS();
+  if (s.token) {
+    loadFromGithub();
+  } else {
+    // First time — show token setup screen
+    showFirstTimeSetup();
+  }
+};
 
 // ─── SETTINGS ────────────────────────────────────────────
 function getS(){ try{return JSON.parse(localStorage.getItem('ncert_s4')||'{}');}catch{return{};} }
@@ -355,6 +365,36 @@ function saveSettings(){
     repo:document.getElementById('ghRepo').value.trim()
   }));
   showToast('Saved!','s');
+  loadFromGithub();
+}
+
+function showFirstTimeSetup(){
+  // Show a prominent token input overlay on home page
+  const tree=document.getElementById('classTree');
+  tree.innerHTML=`
+    <div style="background:var(--adim);border:1px solid rgba(245,158,11,.25);border-radius:14px;padding:16px;margin-top:4px;">
+      <div style="font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--amber);margin-bottom:6px;">⚙ Pehli Baar Setup</div>
+      <div style="font-size:.8rem;font-weight:600;margin-bottom:4px;">GitHub Token daalo</div>
+      <div style="font-size:.72rem;color:var(--t2);margin-bottom:12px;line-height:1.6;">Token save hoga aur data automatically load hoga</div>
+      <input id="quickToken" type="password" placeholder="ghp_xxxxxxxxxxxx" style="width:100%;background:var(--bg);border:1px solid rgba(245,158,11,.3);border-radius:9px;padding:10px 12px;color:var(--text);font-size:.9rem;outline:none;margin-bottom:8px;font-family:var(--sans);">
+      <div style="font-size:.65rem;color:var(--t2);margin-bottom:10px;">Owner: <b style="color:var(--text);">rohanapatel121212-debug</b> · Repo: <b style="color:var(--text);">ncert-tracker</b></div>
+      <button onclick="quickSetup()" style="width:100%;padding:11px;border-radius:10px;border:none;background:var(--amber);color:#000;font-size:.85rem;font-weight:800;cursor:pointer;font-family:var(--sans);">Load Data →</button>
+      <div style="margin-top:8px;font-size:.65rem;color:var(--t3);text-align:center;">Ya Settings mein jao aur wahan set karo</div>
+    </div>`;
+  setTimeout(()=>document.getElementById('quickToken')?.focus(),100);
+}
+
+function quickSetup(){
+  const token=document.getElementById('quickToken')?.value?.trim();
+  if(!token){showToast('Token daalo','e');return;}
+  const s=getS();
+  localStorage.setItem('ncert_s4',JSON.stringify({
+    token,
+    owner:s.owner||'rohanapatel121212-debug',
+    repo:s.repo||'ncert-tracker'
+  }));
+  loadSettingsUI();
+  loadFromGithub();
 }
 
 // ─── NAV ─────────────────────────────────────────────────
@@ -652,16 +692,39 @@ async function saveToGithub(){
 async function loadFromGithub(){
   const s=getS();
   if(!s.token) return;
+
+  // Show loading state on home
+  const tree=document.getElementById('classTree');
+  tree.innerHTML=`<div style="text-align:center;padding:24px;color:var(--t2);font-size:.78rem;">⏳ Loading data from GitHub...</div>`;
+
   try{
-    const r=await fetch(`https://api.github.com/repos/${s.owner}/${s.repo}/contents/ncert_tracker.json`,{headers:{Authorization:`token ${s.token}`,Accept:'application/vnd.github.v3+json'}});
+    const r=await fetch(`https://api.github.com/repos/${s.owner}/${s.repo}/contents/ncert_tracker.json`,{
+      headers:{Authorization:`token ${s.token}`,Accept:'application/vnd.github.v3+json'},
+      cache:'no-cache'
+    });
     if(r.ok){
       const d=await r.json();
-      data=JSON.parse(decodeURIComponent(escape(atob(d.content))));
+      const parsed=JSON.parse(decodeURIComponent(escape(atob(d.content))));
+      data=parsed;
       if(!data.history) data.history=[];
       renderHome();
-      showToast('✓ Loaded!','s');
+      showToast('✓ Data loaded!','s');
+    } else if(r.status===401){
+      showToast('Token galat hai','e');
+      showFirstTimeSetup();
+    } else if(r.status===404){
+      // File doesn't exist yet — fresh start
+      data={classes:{},history:[]};
+      renderHome();
+      showToast('Fresh start! Data save hoga baad mein','a');
+    } else {
+      tree.innerHTML=`<div style="text-align:center;padding:24px;color:var(--red);font-size:.78rem;">Load failed (${r.status}). Retry karo.</div>`;
+      showToast('Load failed','e');
     }
-  }catch{}
+  }catch{
+    tree.innerHTML=`<div style="text-align:center;padding:24px;color:var(--t2);font-size:.78rem;">Network error. Check connection.</div>`;
+    showToast('Network error','e');
+  }
 }
 
 // ─── MODAL ────────────────────────────────────────────────
