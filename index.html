@@ -301,7 +301,7 @@ window.onload = () => {
 function loadSettings() {
   const s = getSavedSettings();
   document.getElementById('ghToken').value = s.token || '';
-  document.getElementById('ghOwner').value = s.owner || 'rohanapatel121212';
+  document.getElementById('ghOwner').value = s.owner || 'rohanapatel121212-debug';
   document.getElementById('ghRepo').value = s.repo || 'ncert-tracker';
 }
 
@@ -517,8 +517,9 @@ async function downloadSelected() {
     const pg = chData.pages[pageIdx];
     const qs = selectedQs[k].sort((a,b)=>a-b);
 
-    // Build filename: p{n}_q{x}_q{y}.png
-    const fname = `p${pageIdx+1}_q${qs.join('_q')}.png`;
+    // Build filename: chaptershort_p{n}_q{x}_q{y}.png
+    const chShort = activeChapter.replace(/\s+/g,'_').replace(/[^a-zA-Z0-9_]/g,'').toLowerCase().slice(0,12);
+    const fname = `${chShort}_p${pageIdx+1}_q${qs.join('_q')}.png`;
 
     try {
       // Fetch image from GitHub raw
