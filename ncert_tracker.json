@@ -20,18 +20,25 @@
               "total": 3,
               "questions": {
                 "1": {
-                  "used": 1,
+                  "used": 2,
                   "lastDate": "2026-03-13"
                 }
               },
               "totalQ": 0,
               "totalEx": 2,
               "examples": {
-                "1": {
+                "2": {
                   "used": 1,
                   "lastDate": "2026-03-13"
                 }
-              }
+              },
+              "qNums": [
+                1
+              ],
+              "exNums": [
+                2,
+                3
+              ]
             },
             {
               "total": 0,
@@ -79,6 +86,24 @@
     }
   },
   "history": [
+    {
+      "date": "2026-03-13",
+      "datetime": "13/3/2026, 3:37:49 pm",
+      "className": "Class 8",
+      "chapter": "Mensuration",
+      "pages": [
+        {
+          "pageNum": 3,
+          "qNums": [
+            1
+          ],
+          "exNums": [
+            2
+          ],
+          "fname": "mensuration_p3_q1_ex2.png"
+        }
+      ]
+    },
     {
       "date": "2026-03-13",
       "datetime": "13/3/2026, 12:49:37 pm",
