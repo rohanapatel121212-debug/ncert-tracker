@@ -8,265 +8,328 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="NCERT Tracker">
-<meta name="theme-color" content="#0d0f14">
+<meta name="theme-color" content="#0a0c10">
 <link rel="manifest" href="manifest.json">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 :root{
-  --bg:#0d0f14;--card:#161920;--card2:#1e222d;--border:#252836;
-  --green:#4ade80;--gdim:rgba(74,222,128,0.1);
-  --amber:#fbbf24;--adim:rgba(251,191,36,0.1);
-  --red:#f87171;--rdim:rgba(248,113,113,0.1);
-  --blue:#60a5fa;--bdim:rgba(96,165,250,0.1);
-  --purple:#a78bfa;--pdim:rgba(167,139,250,0.1);
-  --text:#eeeef8;--t2:#6668a0;--t3:#32334a;
+  --bg:#0a0c10;--s1:#111318;--s2:#181b23;--s3:#1e222c;
+  --border:#252a36;--border2:#2e3444;
+  --green:#22c55e;--gdim:rgba(34,197,94,0.09);
+  --amber:#f59e0b;--adim:rgba(245,158,11,0.09);
+  --red:#ef4444;--rdim:rgba(239,68,68,0.09);
+  --blue:#3b82f6;--bdim:rgba(59,130,246,0.09);
+  --text:#e8eaf0;--t2:#5a6070;--t3:#2e3340;
+  --mono:'JetBrains Mono',monospace;
+  --sans:'Plus Jakarta Sans',sans-serif;
 }
-body{font-family:-apple-system,'SF Pro Display','Segoe UI',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;max-width:480px;margin:0 auto;padding-bottom:88px}
+html,body{height:100%;overflow:hidden}
+body{font-family:var(--sans);background:var(--bg);color:var(--text);max-width:480px;margin:0 auto;display:flex;flex-direction:column}
 
-/* TOPBAR */
-.topbar{position:sticky;top:0;z-index:100;background:rgba(13,15,20,0.96);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:12px 16px;display:flex;align-items:center;justify-content:space-between}
-.logo{font-size:1rem;font-weight:800;letter-spacing:-0.03em}
-.logo span{color:var(--green)}
-.topbar-right{display:flex;gap:6px}
-.icon-btn{width:34px;height:34px;border-radius:9px;border:1px solid var(--border);background:var(--card);color:var(--t2);font-size:0.9rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s}
-.icon-btn:active{transform:scale(0.92)}
-.icon-btn.g{background:var(--gdim);border-color:var(--green);color:var(--green)}
+/* ── TOPBAR ── */
+.topbar{flex-shrink:0;background:rgba(10,12,16,0.98);border-bottom:1px solid var(--border);padding:10px 14px;display:flex;align-items:center;justify-content:space-between;gap:8px;z-index:50}
+.logo{font-family:var(--mono);font-size:.85rem;font-weight:700;letter-spacing:.04em}
+.logo em{color:var(--green);font-style:normal}
+.topbar-btns{display:flex;gap:5px;flex-shrink:0}
+.icon-btn{height:32px;border-radius:8px;border:1px solid var(--border);background:var(--s2);color:var(--t2);font-size:.7rem;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:4px;padding:0 10px;font-family:var(--sans);transition:all .15s;white-space:nowrap}
+.icon-btn:active{transform:scale(.93)}
+.icon-btn.g{background:var(--gdim);border-color:rgba(34,197,94,.2);color:var(--green)}
+.icon-btn.b{background:var(--bdim);border-color:rgba(59,130,246,.2);color:var(--blue)}
+.icon-btn.a{background:var(--adim);border-color:rgba(245,158,11,.2);color:var(--amber)}
 
-/* PAGES */
-.page{display:none;padding:14px 14px 0}
+/* ── BOTTOM NAV ── */
+.bnav{flex-shrink:0;background:rgba(10,12,16,0.98);border-top:1px solid var(--border);display:flex;padding:6px 0 16px;z-index:50}
+.nitem{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;padding:4px 0;color:var(--t3);transition:all .15s}
+.nitem.active{color:var(--green)}
+.nitem:active{transform:scale(.88)}
+.nicon{font-size:1.1rem;line-height:1}
+.nlbl{font-size:.52rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em}
+
+/* ── MAIN CONTENT ── */
+.main{flex:1;overflow:hidden;position:relative}
+.page{display:none;height:100%;overflow-y:auto;padding:12px}
 .page.active{display:block}
 
-/* SECTION LABEL */
-.slabel{font-size:0.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--t2);margin:18px 0 8px}
-.slabel:first-child{margin-top:4px}
+/* ── SPLIT VIEW (New Test) ── */
+#page-newtest{padding:0;display:none;flex-direction:column}
+#page-newtest.active{display:flex}
 
-/* CLASS CARD */
-.cls-card{background:var(--card);border:1px solid var(--border);border-radius:14px;margin-bottom:8px;overflow:hidden}
-.cls-hdr{padding:13px 14px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;user-select:none}
-.cls-name{font-size:.95rem;font-weight:700}
-.cls-right{display:flex;align-items:center;gap:8px}
-.pill{font-size:.65rem;font-weight:600;padding:3px 8px;border-radius:20px;background:var(--card2);color:var(--t2)}
-.pill.g{background:var(--gdim);color:var(--green)}
+/* Top half — image */
+.split-top{flex:1;min-height:0;position:relative;background:var(--s1);border-bottom:2px solid var(--border2);overflow:hidden;display:flex;flex-direction:column}
+.split-top-bar{flex-shrink:0;padding:8px 12px;display:flex;align-items:center;justify-content:space-between;gap:8px;background:rgba(17,19,24,0.95);border-bottom:1px solid var(--border)}
+.split-page-tabs{display:flex;gap:5px;overflow-x:auto;flex:1;scrollbar-width:none}
+.split-page-tabs::-webkit-scrollbar{display:none}
+.ptab{padding:5px 10px;border-radius:7px;border:1px solid var(--border);background:var(--s3);font-family:var(--mono);font-size:.72rem;font-weight:700;cursor:pointer;color:var(--t2);transition:all .15s;white-space:nowrap;flex-shrink:0}
+.ptab.active{background:var(--bdim);border-color:rgba(59,130,246,.3);color:var(--blue)}
+.ptab:active{transform:scale(.92)}
+.add-page-btn{flex-shrink:0;padding:5px 10px;border-radius:7px;border:1px dashed var(--border2);background:transparent;font-size:.72rem;font-weight:700;cursor:pointer;color:var(--t2);font-family:var(--sans);transition:all .15s}
+.add-page-btn:active{color:var(--green);border-color:var(--green)}
+
+.img-area{flex:1;min-height:0;overflow:auto;display:flex;align-items:center;justify-content:center;padding:8px;-webkit-overflow-scrolling:touch}
+.img-area img{max-width:100%;object-fit:contain;border-radius:6px;user-select:none}
+.img-placeholder{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;color:var(--t2);height:100%;text-align:center;padding:20px}
+.img-placeholder-icon{font-size:2rem;opacity:.3}
+.img-placeholder-text{font-size:.78rem;line-height:1.6}
+
+/* Bottom half — chips + controls */
+.split-bottom{flex-shrink:0;background:var(--bg);display:flex;flex-direction:column;max-height:55vh}
+.split-bottom-bar{flex-shrink:0;padding:8px 12px;display:flex;align-items:center;justify-content:space-between;gap:8px;border-bottom:1px solid var(--border);background:var(--s1)}
+.page-info{display:flex;align-items:center;gap:8px;flex:1;min-width:0}
+.page-label{font-family:var(--mono);font-size:.78rem;font-weight:700;color:var(--blue);white-space:nowrap}
+.page-stats{font-size:.68rem;color:var(--t2);font-family:var(--mono);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.new-page-setup{flex-shrink:0;padding:10px 12px;display:flex;align-items:center;gap:8px;background:var(--adim);border-bottom:1px solid rgba(245,158,11,.15)}
+.new-page-text{font-size:.72rem;color:var(--amber);flex:1;line-height:1.4}
+.inp-xs{background:var(--bg);border:1px solid var(--border);border-radius:7px;padding:7px 8px;color:var(--text);font-size:.82rem;outline:none;font-family:var(--mono);width:70px;transition:border-color .15s}
+.inp-xs:focus{border-color:var(--amber)}
+.chips-scroll{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch}
+.q-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;padding:10px 12px}
+.q-chip{aspect-ratio:1;border-radius:7px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;transition:all .1s;background:var(--s3);border:1px solid var(--border);user-select:none;gap:1px}
+.q-chip:active{transform:scale(.84)}
+.qnum{font-size:.65rem;font-weight:700;font-family:var(--mono)}
+.qdate{font-size:.4rem;font-weight:400;line-height:1;text-align:center;font-family:var(--mono)}
+.q-chip.fresh .qnum{color:var(--text)}
+.q-chip.fresh .qdate{color:var(--green)}
+.q-chip.used{background:var(--rdim);border-color:rgba(239,68,68,.2)}
+.q-chip.used .qnum{color:var(--red)}
+.q-chip.used .qdate{color:rgba(239,68,68,.5)}
+.q-chip.selected{background:var(--gdim);border-color:rgba(34,197,94,.3)}
+.q-chip.selected .qnum{color:var(--green)}
+.split-action{flex-shrink:0;padding:8px 12px 12px;background:var(--s1);border-top:1px solid var(--border)}
+.sel-summary{font-size:.68rem;color:var(--t2);font-family:var(--mono);margin-bottom:7px;min-height:14px;line-height:1.4}
+.sel-summary b{color:var(--green)}
+.btn-row{display:flex;gap:6px}
+.btn{padding:10px 12px;border-radius:10px;border:none;font-size:.78rem;font-weight:700;cursor:pointer;font-family:var(--sans);transition:all .15s;flex:1}
+.btn:active{transform:scale(.96)}
+.btn-g{background:var(--green);color:#000}
+.btn-ghost{background:var(--s3);color:var(--t2);border:1px solid var(--border)}
+.btn-r{background:var(--rdim);color:var(--red);border:1px solid rgba(239,68,68,.2)}
+
+/* Chapter selector overlay */
+.ch-select{position:absolute;inset:0;background:var(--bg);z-index:10;overflow-y:auto;padding:14px}
+.ch-select-title{font-size:1rem;font-weight:800;margin-bottom:14px}
+.ch-row{padding:11px 13px;display:flex;align-items:center;gap:10px;cursor:pointer;border:1px solid var(--border);border-radius:12px;margin-bottom:7px;background:var(--s1);transition:background .1s}
+.ch-row:active{background:var(--s2)}
+.ch-dot{width:7px;height:7px;border-radius:50%;background:var(--border2);flex-shrink:0}
+.ch-dot.a{background:var(--green)}
+.ch-info{flex:1}
+.ch-name{font-size:.85rem;font-weight:600}
+.ch-meta{font-size:.65rem;color:var(--t2);font-family:var(--mono);margin-top:1px}
+
+/* ── HOME PAGE ── */
+.home-hero{background:linear-gradient(135deg,var(--s2),var(--s3));border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:12px;position:relative;overflow:hidden}
+.home-hero::after{content:'';position:absolute;top:-20px;right:-20px;width:80px;height:80px;background:radial-gradient(circle,rgba(34,197,94,.1),transparent 70%)}
+.hero-tag{font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--green);margin-bottom:5px}
+.hero-title{font-size:1rem;font-weight:800;margin-bottom:3px}
+.hero-sub{font-size:.72rem;color:var(--t2);line-height:1.5}
+.slabel{font-size:.6rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--t2);margin:14px 0 7px;display:flex;align-items:center;gap:6px}
+.slabel::after{content:'';flex:1;height:1px;background:var(--border)}
+.cls-card{background:var(--s1);border:1px solid var(--border);border-radius:13px;margin-bottom:8px;overflow:hidden}
+.cls-card.open{border-color:var(--border2)}
+.cls-hdr{padding:12px 13px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;user-select:none;gap:8px}
+.cls-name{font-size:.9rem;font-weight:700;flex:1}
+.badge{font-family:var(--mono);font-size:.62rem;padding:2px 7px;border-radius:5px;background:var(--s3);color:var(--t2);border:1px solid var(--border)}
+.badge.g{background:var(--gdim);color:var(--green);border-color:rgba(34,197,94,.2)}
 .chev{color:var(--t3);font-size:.65rem;transition:transform .2s}
 .cls-card.open .chev{transform:rotate(90deg)}
 .ch-list{display:none;border-top:1px solid var(--border)}
 .cls-card.open .ch-list{display:block}
-
-/* CHAPTER ROW */
-.ch-row{padding:11px 14px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;border-bottom:1px solid var(--border);transition:background .1s}
-.ch-row:last-child{border-bottom:none}
-.ch-row:active{background:var(--card2)}
-.ch-info{flex:1;padding-right:10px}
-.ch-name{font-size:.85rem;font-weight:600;margin-bottom:2px}
-.ch-sub{font-size:.7rem;color:var(--t2)}
-.ch-right{display:flex;align-items:center;gap:6px}
-.mini-bar{width:36px;height:3px;background:var(--border);border-radius:2px;overflow:hidden}
+.home-ch-row{padding:10px 13px;display:flex;align-items:center;gap:9px;cursor:pointer;border-bottom:1px solid var(--border);transition:background .1s}
+.home-ch-row:last-of-type{border-bottom:none}
+.home-ch-row:active{background:var(--s2)}
+.home-ch-info{flex:1}
+.home-ch-name{font-size:.82rem;font-weight:600}
+.home-ch-meta{font-size:.63rem;color:var(--t2);font-family:var(--mono);margin-top:1px}
+.mini-bar{width:44px}
+.mini-track{height:3px;background:var(--border);border-radius:2px;overflow:hidden}
 .mini-fill{height:100%;background:var(--green);border-radius:2px;transition:width .3s}
-.add-row{padding:11px 14px;color:var(--t2);font-size:.8rem;cursor:pointer;display:flex;align-items:center;gap:6px;border-top:1px dashed var(--border)}
-.add-row:active{color:var(--green)}
+.mini-pct{font-size:.55rem;color:var(--t2);font-family:var(--mono);text-align:right;margin-top:2px}
+.add-ch{padding:9px 13px;color:var(--t2);font-size:.75rem;cursor:pointer;display:flex;align-items:center;gap:5px;border-top:1px dashed var(--border);transition:color .15s}
+.add-ch:active{color:var(--green)}
+.big-btn{width:100%;padding:13px;border-radius:13px;border:none;font-size:.85rem;font-weight:800;cursor:pointer;font-family:var(--sans);transition:all .15s;margin-bottom:7px}
+.big-btn:active{transform:scale(.97)}
+.big-btn-g{background:var(--green);color:#000}
+.big-btn-o{background:transparent;color:var(--text);border:1px solid var(--border2)}
+.big-btn-o:active{background:var(--s2)}
 
-/* CHAPTER DETAIL */
-.back-btn{display:flex;align-items:center;gap:6px;color:var(--t2);font-size:.8rem;cursor:pointer;padding:2px 0 14px}
-.back-btn:active{color:var(--text)}
-.ch-title-big{font-size:1.2rem;font-weight:800;letter-spacing:-.02em;margin-bottom:2px;line-height:1.3}
-.ch-class-lbl{font-size:.75rem;color:var(--t2);margin-bottom:16px}
+/* ── HISTORY ── */
+.hist-card{background:var(--s1);border:1px solid var(--border);border-radius:11px;margin-bottom:7px;padding:11px 13px}
+.hist-date{font-size:.65rem;font-family:var(--mono);color:var(--amber);margin-bottom:4px;font-weight:600}
+.hist-chapter{font-size:.82rem;font-weight:700;margin-bottom:3px}
+.hist-pages{font-size:.68rem;color:var(--t2);font-family:var(--mono);line-height:1.7}
 
-/* STATS */
-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:12px}
-.sbox{background:var(--card);border:1px solid var(--border);border-radius:11px;padding:11px 8px;text-align:center}
-.snum{font-size:1.4rem;font-weight:800;line-height:1;margin-bottom:3px}
-.snum.g{color:var(--green)}.snum.a{color:var(--amber)}.snum.b{color:var(--blue)}
-.slbl2{font-size:.6rem;color:var(--t2);text-transform:uppercase;letter-spacing:.05em}
-
-/* PROGRESS */
-.prog-track{background:var(--border);border-radius:6px;height:6px;margin-bottom:16px;overflow:hidden}
-.prog-fill{height:100%;background:linear-gradient(90deg,var(--green),#22d3ee);border-radius:6px;transition:width .4s}
-
-/* PAGES LIST */
-.pages-list{margin-bottom:12px}
-.page-card{background:var(--card);border:1px solid var(--border);border-radius:12px;margin-bottom:8px;overflow:hidden}
-.page-hdr{padding:12px 14px;display:flex;align-items:center;justify-content:space-between;cursor:pointer}
-.page-hdr:active{background:var(--card2)}
-.page-num{font-size:.8rem;font-weight:700;color:var(--blue)}
-.page-name{font-size:.85rem;flex:1;padding:0 10px}
-.page-qcount{font-size:.7rem;color:var(--t2)}
-.page-actions{display:flex;gap:6px;padding:0 14px 12px}
-
-/* Q CHIPS */
-.q-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:5px;padding:0 14px 14px}
-.q-chip{aspect-ratio:1;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700;cursor:pointer;transition:all .12s;background:var(--card2);border:1px solid var(--border);color:var(--t2);user-select:none;position:relative}
-.q-chip:active{transform:scale(.88)}
-.q-chip.used{background:var(--gdim);border-color:var(--green);color:var(--green)}
-.q-chip.selected{background:var(--adim);border-color:var(--amber);color:var(--amber)}
-.q-chip.used.selected{background:var(--rdim);border-color:var(--red);color:var(--red)}
-
-/* PANEL */
-.panel{background:var(--card);border:1px solid var(--border);border-radius:13px;padding:13px;margin-bottom:12px}
-.ptitle{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;margin-bottom:9px}
-.ptitle.a{color:var(--amber)}.ptitle.b{color:var(--blue)}.ptitle.g{color:var(--green)}.ptitle.r{color:var(--red)}
-
-/* BUTTONS */
-.btn-row{display:flex;gap:6px}
-.btn{padding:10px 14px;border-radius:10px;border:none;font-size:.78rem;font-weight:700;cursor:pointer;transition:all .15s;flex:1;text-align:center}
-.btn:active{transform:scale(.96)}
-.btn-g{background:var(--green);color:#000}
-.btn-ghost{background:var(--card2);color:var(--t2);border:1px solid var(--border)}
-.btn-r{background:var(--rdim);color:var(--red);border:1px solid rgba(248,113,113,.2)}
-.btn-b{background:var(--bdim);color:var(--blue);border:1px solid rgba(96,165,250,.2)}
-.btn-a{background:var(--adim);color:var(--amber);border:1px solid rgba(251,191,36,.2)}
-.btn-p{background:var(--pdim);color:var(--purple);border:1px solid rgba(167,139,250,.2)}
-
-/* INPUT */
-.inp{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:10px 12px;color:var(--text);font-size:.9rem;outline:none;transition:border-color .15s;margin-bottom:8px}
+/* ── SETTINGS ── */
+.set-card{background:var(--s1);border:1px solid var(--border);border-radius:12px;padding:12px;margin-bottom:7px}
+.set-label{font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--t2);margin-bottom:6px}
+.inp{background:var(--bg);border:1px solid var(--border);border-radius:9px;padding:10px 12px;color:var(--text);font-size:.88rem;outline:none;transition:border-color .15s;font-family:var(--sans);width:100%}
 .inp:focus{border-color:var(--green)}
-.inp-label{font-size:.68rem;color:var(--t2);text-transform:uppercase;letter-spacing:.06em;margin-bottom:5px}
+.inp::placeholder{color:var(--t3)}
 
-/* SETTINGS */
-.srow{background:var(--card);border:1px solid var(--border);border-radius:13px;padding:13px;margin-bottom:8px}
-
-/* IMAGE VIEWER */
-.img-viewer{display:none;position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:300;flex-direction:column}
-.img-viewer.open{display:flex}
-.img-viewer-top{padding:12px 16px;display:flex;align-items:center;justify-content:space-between;background:rgba(13,15,20,.9)}
-.img-viewer-title{font-size:.9rem;font-weight:700}
-.img-viewer-body{flex:1;overflow:hidden;display:flex;align-items:center;justify-content:center;padding:8px}
-.img-viewer-body img{max-width:100%;max-height:100%;object-fit:contain;border-radius:8px}
-.img-viewer-bottom{padding:12px 16px;background:rgba(13,15,20,.9)}
-
-/* BOTTOM NAV */
-.bnav{position:fixed;bottom:0;left:0;right:0;max-width:480px;margin:0 auto;background:rgba(13,15,20,.97);backdrop-filter:blur(16px);border-top:1px solid var(--border);display:flex;padding:8px 0 18px;z-index:100}
-.nitem{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;padding:4px 0;transition:all .15s;color:var(--t3)}
-.nitem.active{color:var(--green)}
-.nitem:active{transform:scale(.9)}
-.nicon{font-size:1.2rem}
-.nlbl{font-size:.55rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em}
-
-/* MODAL */
-.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:200;align-items:flex-end;justify-content:center}
+/* ── MODAL ── */
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:200;align-items:flex-end;justify-content:center}
 .modal-bg.open{display:flex}
-.modal-sheet{width:100%;max-width:480px;background:var(--card);border-radius:20px 20px 0 0;padding:16px 18px 36px}
-.modal-handle{width:36px;height:3px;background:var(--border);border-radius:2px;margin:0 auto 16px}
-.modal-title{font-size:1rem;font-weight:800;margin-bottom:14px}
-.modal-hint{font-size:.78rem;color:var(--t2);margin-bottom:12px;line-height:1.6}
+.modal-sheet{width:100%;max-width:480px;background:var(--s1);border-radius:18px 18px 0 0;padding:14px 16px 32px;border-top:1px solid var(--border2)}
+.modal-handle{width:30px;height:3px;background:var(--border2);border-radius:2px;margin:0 auto 14px}
+.modal-title{font-size:.95rem;font-weight:800;margin-bottom:5px}
+.modal-hint{font-size:.75rem;color:var(--t2);margin-bottom:12px;line-height:1.5}
+.modal-inp{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:11px 13px;color:var(--text);font-size:.95rem;outline:none;margin-bottom:9px;transition:border-color .15s;font-family:var(--sans)}
+.modal-inp:focus{border-color:var(--green)}
+.modal-inp::placeholder{color:var(--t3)}
 
-/* TOAST */
-.toast{position:fixed;bottom:96px;left:50%;transform:translateX(-50%) translateY(16px);background:var(--card);border:1px solid var(--border);border-radius:12px;padding:9px 18px;font-size:.78rem;font-weight:600;opacity:0;transition:all .22s;pointer-events:none;white-space:nowrap;z-index:500;box-shadow:0 8px 32px rgba(0,0,0,.5)}
+/* ── TOAST ── */
+.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(14px);background:var(--s2);border:1px solid var(--border2);border-radius:10px;padding:8px 16px;font-size:.75rem;font-weight:600;opacity:0;transition:all .2s;pointer-events:none;white-space:nowrap;z-index:500;box-shadow:0 8px 24px rgba(0,0,0,.5)}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-.toast.s{border-color:var(--green);color:var(--green)}
-.toast.e{border-color:var(--red);color:var(--red)}
-.toast.a{border-color:var(--amber);color:var(--amber)}
+.toast.s{border-color:rgba(34,197,94,.35);color:var(--green)}
+.toast.e{border-color:rgba(239,68,68,.35);color:var(--red)}
+.toast.a{border-color:rgba(245,158,11,.35);color:var(--amber)}
 
-/* EMPTY */
-.empty{text-align:center;padding:40px 20px;color:var(--t2)}
-.empty-icon{font-size:2.2rem;margin-bottom:10px;opacity:.35}
-.empty-text{font-size:.85rem;line-height:1.7}
+.empty{text-align:center;padding:32px 16px;color:var(--t2)}
+.empty-icon{font-size:1.8rem;margin-bottom:8px;opacity:.3}
+.empty-text{font-size:.78rem;line-height:1.7}
 </style>
 </head>
 <body>
 
 <!-- TOPBAR -->
 <div class="topbar">
-  <div class="logo">NCERT<span>.</span>tracker</div>
-  <div class="topbar-right">
-    <button class="icon-btn g" onclick="saveToGithub()" title="Save">↑</button>
-    <button class="icon-btn" onclick="loadFromGithub()" title="Load">↓</button>
+  <div class="logo">NCERT<em>.</em>tracker</div>
+  <div class="topbar-btns">
+    <button class="icon-btn g" onclick="saveToGithub()">↑ Save</button>
+    <button class="icon-btn b" onclick="loadFromGithub()">↓ Load</button>
   </div>
 </div>
 
-<!-- PAGE: HOME -->
-<div class="page active" id="page-home">
-  <div id="classTree"></div>
-  <button class="btn btn-ghost" style="width:100%;margin-top:4px;" onclick="openModal('addClass')">+ Add New Class</button>
-</div>
+<!-- MAIN -->
+<div class="main">
 
-<!-- PAGE: CHAPTER DETAIL -->
-<div class="page" id="page-chapter">
-  <div class="back-btn" onclick="showPage('home')">← Back</div>
-  <div class="ch-title-big" id="ch-title"></div>
-  <div class="ch-class-lbl" id="ch-subtitle"></div>
-
-  <div class="stats">
-    <div class="sbox"><div class="snum b" id="st-pages">0</div><div class="slbl2">Pages</div></div>
-    <div class="sbox"><div class="snum g" id="st-used">0</div><div class="slbl2">Used</div></div>
-    <div class="sbox"><div class="snum a" id="st-left">0</div><div class="slbl2">Left</div></div>
-  </div>
-  <div class="prog-track"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
-
-  <div class="slabel">Pages</div>
-  <div class="pages-list" id="pagesList"></div>
-
-  <div class="btn-row" style="margin-bottom:16px;">
-    <button class="btn btn-b" onclick="openModal('addPage')">+ Add Page</button>
-    <button class="btn btn-a" onclick="downloadSelected()">↓ Download Selected</button>
+  <!-- HOME -->
+  <div class="page active" id="page-home">
+    <div class="home-hero">
+      <div class="hero-tag">Question Tracker</div>
+      <div class="hero-title">Har test mein fresh questions 📚</div>
+      <div class="hero-sub">Kab kaunsa question use hua — sab track hota hai</div>
+    </div>
+    <button class="big-btn big-btn-g" onclick="goNewTest()">＋ New Test</button>
+    <button class="big-btn big-btn-o" onclick="openModal('addClass')">＋ Add Class / Chapter</button>
+    <div class="slabel">Chapters</div>
+    <div id="classTree"></div>
   </div>
 
-  <div id="selectedInfo" style="display:none;" class="panel">
-    <div class="ptitle a">Selected Questions</div>
-    <div id="selectedList" style="font-size:.8rem;color:var(--t2);line-height:1.8;"></div>
-    <div class="btn-row" style="margin-top:10px;">
-      <button class="btn btn-g" onclick="markSelectedUsed()">✓ Mark All Used</button>
-      <button class="btn btn-ghost" onclick="clearSelected()">Clear</button>
+  <!-- NEW TEST (split screen) -->
+  <div class="page" id="page-newtest">
+
+    <!-- Chapter selector overlay -->
+    <div class="ch-select" id="chSelect">
+      <div class="ch-select-title">Chapter select karo</div>
+      <div id="chSelectList"></div>
+    </div>
+
+    <!-- Top: Image -->
+    <div class="split-top">
+      <div class="split-top-bar">
+        <div class="split-page-tabs" id="pageTabs"></div>
+        <button class="add-page-btn" onclick="showAddPage()">+ Page</button>
+      </div>
+      <div class="img-area" id="imgArea">
+        <div class="img-placeholder">
+          <div class="img-placeholder-icon">🖼</div>
+          <div class="img-placeholder-text">Page tab select karo<br>image yahan dikhegi</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom: Chips -->
+    <div class="split-bottom">
+      <div class="split-bottom-bar">
+        <div class="page-info">
+          <span class="page-label" id="activePageLabel">—</span>
+          <span class="page-stats" id="activePageStats"></span>
+        </div>
+        <button class="icon-btn a" onclick="showSetTotal()" id="setTotalBtn" style="display:none;">Set Total</button>
+      </div>
+      <div id="newPageSetup" style="display:none;" class="new-page-setup">
+        <div class="new-page-text">Pehli baar — is page pe kitne questions hain?</div>
+        <input class="inp-xs" type="number" id="totalInput" placeholder="e.g. 8" min="1">
+        <button class="icon-btn a" onclick="confirmSetTotal()">Set</button>
+      </div>
+      <div class="chips-scroll">
+        <div class="q-grid" id="qGrid"></div>
+      </div>
+      <div class="split-action">
+        <div class="sel-summary" id="selSummary">Koi question select nahi</div>
+        <div class="btn-row">
+          <button class="btn btn-ghost" onclick="clearSelected()">Clear</button>
+          <button class="btn btn-r" onclick="goNewTest()" style="flex:0;padding:10px 14px;">↩ Chapter</button>
+          <button class="btn btn-g" onclick="downloadAndMark()">↓ Download + Mark</button>
+        </div>
+      </div>
     </div>
   </div>
-</div>
 
-<!-- PAGE: SETTINGS -->
-<div class="page" id="page-settings">
-  <div class="slabel">GitHub Settings</div>
-  <div class="srow">
-    <div class="inp-label">GitHub Token</div>
-    <input class="inp" id="ghToken" type="password" placeholder="ghp_xxxxxxxxxxxx">
-  </div>
-  <div class="srow">
-    <div class="inp-label">Repo Owner</div>
-    <input class="inp" id="ghOwner" value="rohanapatel121212">
-  </div>
-  <div class="srow">
-    <div class="inp-label">Repo Name</div>
-    <input class="inp" id="ghRepo" value="ncert-tracker">
-  </div>
-  <div class="btn-row" style="margin-top:12px;">
-    <button class="btn btn-g" onclick="saveSettings()">Save Settings</button>
+  <!-- HISTORY -->
+  <div class="page" id="page-history">
+    <div class="slabel" style="margin-top:4px;">Test History</div>
+    <div id="historyList"></div>
   </div>
 
-  <div class="slabel" style="margin-top:20px;">Sync</div>
-  <div class="btn-row">
-    <button class="btn btn-b" onclick="loadFromGithub()">↓ Load from GitHub</button>
-    <button class="btn btn-a" onclick="saveToGithub()">↑ Save to GitHub</button>
+  <!-- SETTINGS -->
+  <div class="page" id="page-settings">
+    <div class="slabel" style="margin-top:4px;">GitHub</div>
+    <div class="set-card">
+      <div class="set-label">Token</div>
+      <input class="inp" id="ghToken" type="password" placeholder="ghp_xxxxxxxxxxxx">
+    </div>
+    <div class="set-card">
+      <div class="set-label">Repo Owner</div>
+      <input class="inp" id="ghOwner" value="rohanapatel121212-debug">
+    </div>
+    <div class="set-card">
+      <div class="set-label">Repo Name</div>
+      <input class="inp" id="ghRepo" value="ncert-tracker">
+    </div>
+    <div class="btn-row" style="margin-top:10px;">
+      <button class="btn btn-g" onclick="saveSettings()">Save Settings</button>
+    </div>
+    <div style="margin-top:12px;font-size:.7rem;color:var(--t2);line-height:1.7;">
+      Token: GitHub → Settings → Developer settings → Personal access tokens → public_repo
+    </div>
   </div>
 
-  <div style="margin-top:14px;font-size:.72rem;color:var(--t2);line-height:1.7;">
-    Token: GitHub → Settings → Developer settings → Personal access tokens → public_repo scope
-  </div>
-</div>
+</div><!-- /main -->
 
 <!-- BOTTOM NAV -->
-<div class="bnav">
+<div class="bnav" id="bnav">
   <div class="nitem active" id="nav-home" onclick="showPage('home')">
-    <div class="nicon">📚</div><div class="nlbl">Classes</div>
+    <div class="nicon">📚</div><div class="nlbl">Home</div>
+  </div>
+  <div class="nitem" id="nav-newtest" onclick="goNewTest()">
+    <div class="nicon">✚</div><div class="nlbl">New Test</div>
+  </div>
+  <div class="nitem" id="nav-history" onclick="showPage('history');renderHistory()">
+    <div class="nicon">🕐</div><div class="nlbl">History</div>
   </div>
   <div class="nitem" id="nav-settings" onclick="showPage('settings')">
     <div class="nicon">⚙️</div><div class="nlbl">Settings</div>
   </div>
 </div>
 
-<!-- IMAGE VIEWER -->
-<div class="img-viewer" id="imgViewer">
-  <div class="img-viewer-top">
-    <div class="img-viewer-title" id="viewerTitle">Page 1</div>
-    <button class="icon-btn" onclick="closeViewer()" style="color:var(--text);">✕</button>
-  </div>
-  <div class="img-viewer-body">
-    <img id="viewerImg" src="" alt="">
-  </div>
-  <div class="img-viewer-bottom">
-    <div style="font-size:.72rem;color:var(--t2);text-align:center;">Image dekhne ke baad close karo</div>
+<!-- ADD PAGE MODAL (simple bottom sheet) -->
+<div class="modal-bg" id="addPageModal" onclick="closeAddPage(event)">
+  <div class="modal-sheet" onclick="event.stopPropagation()">
+    <div class="modal-handle"></div>
+    <div class="modal-title">Page Add Karo</div>
+    <div class="modal-hint">Page number daalo — image GitHub se load hogi</div>
+    <input class="modal-inp" id="addPageInput" type="number" placeholder="Page number (e.g. 3)" min="1">
+    <div class="btn-row">
+      <button class="btn btn-ghost" onclick="closeAddPage()">Cancel</button>
+      <button class="btn btn-g" onclick="confirmAddPage()">Add Page</button>
+    </div>
   </div>
 </div>
 
-<!-- MODAL -->
+<!-- GENERIC MODAL -->
 <div class="modal-bg" id="modal" onclick="modalBgClick(event)">
-  <div class="modal-sheet">
+  <div class="modal-sheet" onclick="event.stopPropagation()">
     <div class="modal-handle"></div>
     <div class="modal-title" id="modalTitle"></div>
     <div class="modal-hint" id="modalHint"></div>
@@ -282,465 +345,459 @@ body{font-family:-apple-system,'SF Pro Display','Segoe UI',sans-serif;background
 <div class="toast" id="toast"></div>
 
 <script>
-// ── State ─────────────────────────────────────────────────
-let data = { classes: {} };
+// ── STATE ─────────────────────────────────────────────────
+let data = { classes: {}, history: [] };
 let activeClass = null;
 let activeChapter = null;
+let testPageNums = []; // [1,3,5,...]
+let activePageNum = null; // currently viewing
+let selectedQs = {}; // {pageNum: [qnums]}
 let modalMode = null;
 let modalTarget = null;
-let selectedQs = {}; // {pageIdx: [q nums]}
 
-// ── Init ──────────────────────────────────────────────────
+// ── INIT ─────────────────────────────────────────────────
 window.onload = () => {
-  loadSettings();
+  loadSettingsUI();
   renderHome();
   loadFromGithub();
 };
 
-// ── Settings ──────────────────────────────────────────────
-function loadSettings() {
-  const s = getSavedSettings();
-  document.getElementById('ghToken').value = s.token || '';
-  document.getElementById('ghOwner').value = s.owner || 'rohanapatel121212-debug';
-  document.getElementById('ghRepo').value = s.repo || 'ncert-tracker';
+// ── SETTINGS ─────────────────────────────────────────────
+function getS() { try { return JSON.parse(localStorage.getItem('ncert_s3')||'{}'); } catch { return {}; } }
+function loadSettingsUI() {
+  const s = getS();
+  document.getElementById('ghToken').value = s.token||'';
+  document.getElementById('ghOwner').value = s.owner||'rohanapatel121212-debug';
+  document.getElementById('ghRepo').value = s.repo||'ncert-tracker';
 }
-
-function getSavedSettings() {
-  try { return JSON.parse(localStorage.getItem('ncert_s') || '{}'); } catch { return {}; }
-}
-
 function saveSettings() {
-  const s = {
+  localStorage.setItem('ncert_s3', JSON.stringify({
     token: document.getElementById('ghToken').value.trim(),
     owner: document.getElementById('ghOwner').value.trim(),
     repo: document.getElementById('ghRepo').value.trim()
-  };
-  localStorage.setItem('ncert_s', JSON.stringify(s));
+  }));
   showToast('Saved!', 's');
 }
 
-// ── Pages ─────────────────────────────────────────────────
+// ── PAGE NAV ─────────────────────────────────────────────
 function showPage(name) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.nitem').forEach(n => n.classList.remove('active'));
-  document.getElementById('page-' + name).classList.add('active');
-  const nav = document.getElementById('nav-' + name);
+  document.getElementById('page-'+name).classList.add('active');
+  const nav = document.getElementById('nav-'+name);
   if (nav) nav.classList.add('active');
-  window.scrollTo(0, 0);
 }
 
-// ── Home ──────────────────────────────────────────────────
+// ── HOME ─────────────────────────────────────────────────
 function renderHome() {
   const tree = document.getElementById('classTree');
   tree.innerHTML = '';
-
   if (!Object.keys(data.classes).length) {
-    tree.innerHTML = `<div class="empty"><div class="empty-icon">📚</div><div class="empty-text">Koi class nahi hai.<br>"Add New Class" dabao.</div></div>`;
+    tree.innerHTML = `<div class="empty"><div class="empty-icon">📚</div><div class="empty-text">Koi class nahi.<br>"Add Class / Chapter" dabao.</div></div>`;
     return;
   }
-
   Object.keys(data.classes).forEach(cls => {
-    const chapters = data.classes[cls].chapters || {};
+    const chapters = data.classes[cls].chapters||{};
+    let tu=0,tq=0;
+    Object.values(chapters).forEach(ch=>{(ch.pages||[]).forEach(pg=>{tq+=pg.total||0;Object.values(pg.questions||{}).forEach(q=>{if(q.used>0)tu++;});});});
     const card = document.createElement('div');
     card.className = 'cls-card';
-
-    // Count totals
-    let totalUsed = 0, totalQ = 0;
-    Object.values(chapters).forEach(ch => {
-      (ch.pages||[]).forEach(pg => {
-        totalQ += (pg.total||0);
-        totalUsed += (pg.used||[]).length;
-      });
-    });
-
-    const pct = totalQ > 0 ? Math.round(totalUsed/totalQ*100) : 0;
-
     card.innerHTML = `
       <div class="cls-hdr" onclick="this.parentElement.classList.toggle('open')">
         <div class="cls-name">${cls}</div>
-        <div class="cls-right">
-          <span class="pill ${totalUsed>0?'g':''}">${totalUsed}/${totalQ}</span>
+        <div style="display:flex;align-items:center;gap:6px;">
+          <span class="badge ${tu>0?'g':''}">${tu}/${tq}</span>
           <span class="chev">▶</span>
         </div>
       </div>
       <div class="ch-list">
-        ${Object.keys(chapters).map(ch => {
-          const c = chapters[ch];
-          let u=0, t=0;
-          (c.pages||[]).forEach(pg => { t+=pg.total||0; u+=(pg.used||[]).length; });
-          const p = t>0?Math.round(u/t*100):0;
-          return `<div class="ch-row" onclick="openChapter('${cls}','${ch}')">
-            <div class="ch-info">
-              <div class="ch-name">${ch}</div>
-              <div class="ch-sub">${(c.pages||[]).length} pages · ${u}/${t} used</div>
+        ${Object.keys(chapters).map(ch=>{
+          const c=chapters[ch];let u=0,t=0;
+          (c.pages||[]).forEach(pg=>{t+=pg.total||0;Object.values(pg.questions||{}).forEach(q=>{if(q.used>0)u++;});});
+          const pct=t>0?Math.round(u/t*100):0;
+          return `<div class="home-ch-row" onclick="startTest('${cls}','${ch}')">
+            <div class="ch-dot ${u>0?'a':''}"></div>
+            <div class="home-ch-info">
+              <div class="home-ch-name">${ch}</div>
+              <div class="home-ch-meta">${(c.pages||[]).length} pages · ${u}/${t} used</div>
             </div>
-            <div class="ch-right">
-              <span class="pill ${u>0?'g':''}">${p}%</span>
-              <div class="mini-bar"><div class="mini-fill" style="width:${p}%"></div></div>
+            <div class="mini-bar">
+              <div class="mini-track"><div class="mini-fill" style="width:${pct}%"></div></div>
+              <div class="mini-pct">${pct}%</div>
             </div>
           </div>`;
         }).join('')}
-        <div class="add-row" onclick="event.stopPropagation();openModal('addChapter','${cls}')">+ Add Chapter</div>
+        <div class="add-ch" onclick="event.stopPropagation();openModal('addChapter','${cls}')">+ Add Chapter</div>
       </div>`;
     tree.appendChild(card);
   });
 }
 
-// ── Chapter Detail ────────────────────────────────────────
-function openChapter(cls, ch) {
-  activeClass = cls; activeChapter = ch;
-  selectedQs = {};
-  renderChapterPage();
-  showPage('chapter');
+// ── NEW TEST ──────────────────────────────────────────────
+function goNewTest() {
+  activeClass=null; activeChapter=null; testPageNums=[]; activePageNum=null; selectedQs={};
+  document.getElementById('pageTabs').innerHTML='';
+  document.getElementById('qGrid').innerHTML='';
+  document.getElementById('imgArea').innerHTML=`<div class="img-placeholder"><div class="img-placeholder-icon">🖼</div><div class="img-placeholder-text">Page tab select karo<br>image yahan dikhegi</div></div>`;
+  document.getElementById('activePageLabel').textContent='—';
+  document.getElementById('activePageStats').textContent='';
+  document.getElementById('chSelect').style.display='block';
+  document.getElementById('newPageSetup').style.display='none';
+  document.getElementById('setTotalBtn').style.display='none';
+  renderChSelectList();
+  showPage('newtest');
+  updateSelSummary();
 }
 
-function renderChapterPage() {
-  const chData = data.classes[activeClass].chapters[activeChapter];
-  const pages = chData.pages || [];
-
-  document.getElementById('ch-title').textContent = activeChapter;
-  document.getElementById('ch-subtitle').textContent = activeClass;
-
-  let totalUsed = 0, totalQ = 0;
-  pages.forEach(pg => { totalQ += pg.total||0; totalUsed += (pg.used||[]).length; });
-  const pct = totalQ > 0 ? Math.round(totalUsed/totalQ*100) : 0;
-
-  document.getElementById('st-pages').textContent = pages.length;
-  document.getElementById('st-used').textContent = totalUsed;
-  document.getElementById('st-left').textContent = totalQ - totalUsed;
-  document.getElementById('prog-fill').style.width = pct + '%';
-
-  // Pages list
-  const list = document.getElementById('pagesList');
-  list.innerHTML = '';
-
-  if (!pages.length) {
-    list.innerHTML = `<div class="empty"><div class="empty-icon">📄</div><div class="empty-text">"Add Page" dabao aur GitHub image URL bharo</div></div>`;
+function renderChSelectList() {
+  const list = document.getElementById('chSelectList');
+  list.innerHTML='';
+  if (!Object.keys(data.classes).length) {
+    list.innerHTML=`<div class="empty"><div class="empty-icon">📚</div><div class="empty-text">Pehle class aur chapter add karo (Home pe)</div></div>`;
     return;
   }
-
-  pages.forEach((pg, idx) => {
-    const used = pg.used || [];
-    const total = pg.total || 0;
-    const pPct = total > 0 ? Math.round(used.length/total*100) : 0;
-    const selCount = (selectedQs[idx]||[]).length;
-
-    const card = document.createElement('div');
-    card.className = 'page-card';
-    card.id = `pagecard-${idx}`;
-
-    // Q chips — startQ se endQ tak
-    let chips = '';
-    const startQ = pg.startQ || 1;
-    const endQ = pg.endQ || (startQ + (pg.total||1) - 1);
-    for (let q = startQ; q <= endQ; q++) {
-      const isUsed = used.includes(q);
-      const isSel = (selectedQs[idx]||[]).includes(q);
-      chips += `<div class="q-chip ${isUsed?'used':''} ${isSel?'selected':''}" onclick="toggleSelect(${idx},${q})">${q}</div>`;
-    }
-
-    card.innerHTML = `
-      <div class="page-hdr">
-        <span class="page-num">P${idx+1}</span>
-        <span class="page-name">${pg.label||'Page '+(idx+1)}</span>
-        <span class="page-qcount">${used.length}/${total} · ${selCount>0?'<span style="color:var(--amber)">'+selCount+' sel</span>':'0 sel'}</span>
-      </div>
-      <div class="page-actions">
-        <button class="btn btn-b" style="flex:0;padding:7px 12px;font-size:.7rem;" onclick="viewImage(${idx})">🖼 View</button>
-        <button class="btn btn-ghost" style="flex:0;padding:7px 12px;font-size:.7rem;" onclick="openModal('editPage',${idx})">✏</button>
-        <button class="btn btn-r" style="flex:0;padding:7px 12px;font-size:.7rem;" onclick="deletePage(${idx})">🗑</button>
-      </div>
-      <div class="q-grid">${chips}</div>`;
-    list.appendChild(card);
+  Object.keys(data.classes).forEach(cls=>{
+    Object.keys(data.classes[cls].chapters||{}).forEach(ch=>{
+      const c=data.classes[cls].chapters[ch];
+      let u=0,t=0;
+      (c.pages||[]).forEach(pg=>{t+=pg.total||0;Object.values(pg.questions||{}).forEach(q=>{if(q.used>0)u++;});});
+      const row=document.createElement('div');
+      row.className='ch-row';
+      row.innerHTML=`<div class="ch-dot ${u>0?'a':''}"></div><div class="ch-info"><div class="ch-name">${ch}</div><div class="ch-meta">${cls} · ${u}/${t} used</div></div><span style="color:var(--t2);font-size:.8rem;">→</span>`;
+      row.onclick=()=>startTest(cls,ch);
+      list.appendChild(row);
+    });
   });
-
-  updateSelectedInfo();
 }
 
-// ── Select Questions ──────────────────────────────────────
-function toggleSelect(pageIdx, qNum) {
-  if (!selectedQs[pageIdx]) selectedQs[pageIdx] = [];
-  const arr = selectedQs[pageIdx];
-  const i = arr.indexOf(qNum);
-  if (i === -1) arr.push(qNum);
-  else arr.splice(i, 1);
-  if (!arr.length) delete selectedQs[pageIdx];
-  renderChapterPage();
+function startTest(cls, ch) {
+  activeClass=cls; activeChapter=ch;
+  testPageNums=[]; selectedQs={};
+  document.getElementById('chSelect').style.display='none';
+  document.getElementById('pageTabs').innerHTML='<span style="font-size:.68rem;color:var(--t2);padding:5px 4px;">+ Page add karo →</span>';
+  document.getElementById('qGrid').innerHTML='';
+  document.getElementById('activePageLabel').textContent=ch;
+  document.getElementById('activePageStats').textContent=cls;
 }
 
-function updateSelectedInfo() {
-  const infoEl = document.getElementById('selectedInfo');
-  const listEl = document.getElementById('selectedList');
-  const keys = Object.keys(selectedQs).filter(k => selectedQs[k].length > 0);
+// ── ADD PAGE ─────────────────────────────────────────────
+function showAddPage() {
+  if (!activeChapter) { showToast('Pehle chapter select karo', 'e'); return; }
+  document.getElementById('addPageInput').value='';
+  document.getElementById('addPageModal').classList.add('open');
+  setTimeout(()=>document.getElementById('addPageInput').focus(),100);
+}
+function closeAddPage(e) {
+  if (!e || e.target===document.getElementById('addPageModal'))
+    document.getElementById('addPageModal').classList.remove('open');
+}
+function confirmAddPage() {
+  const val = parseInt(document.getElementById('addPageInput').value);
+  if (!val||val<1) { showToast('Page number daalo', 'e'); return; }
+  if (testPageNums.includes(val)) { showToast('Ye page already add hai', 'e'); return; }
+  testPageNums.push(val);
+  testPageNums.sort((a,b)=>a-b);
+  closeAddPage();
+  renderPageTabs();
+  switchToPage(val);
+}
 
-  if (!keys.length) { infoEl.style.display = 'none'; return; }
-  infoEl.style.display = 'block';
+function renderPageTabs() {
+  const tabs = document.getElementById('pageTabs');
+  tabs.innerHTML = testPageNums.map(n=>
+    `<div class="ptab ${n===activePageNum?'active':''}" onclick="switchToPage(${n})">P${n}</div>`
+  ).join('');
+}
 
-  let html = '';
-  keys.forEach(k => {
-    const qs = selectedQs[k].sort((a,b)=>a-b);
-    html += `<div>P${parseInt(k)+1} → Q${qs.join(', Q')}</div>`;
-  });
-  listEl.innerHTML = html;
+function switchToPage(pageNum) {
+  activePageNum = pageNum;
+  renderPageTabs();
+
+  // Ensure page exists in data
+  const chData = data.classes[activeClass].chapters[activeChapter];
+  if (!chData.pages) chData.pages=[];
+  const idx = pageNum-1;
+  while (chData.pages.length<=idx) chData.pages.push({total:0,questions:{},githubPath:''});
+
+  const pg = chData.pages[idx];
+
+  // Load image
+  loadPageImage(pageNum, idx);
+
+  // Show chips or setup
+  if (!pg.total) {
+    document.getElementById('newPageSetup').style.display='flex';
+    document.getElementById('setTotalBtn').style.display='none';
+    document.getElementById('qGrid').innerHTML='';
+    document.getElementById('activePageLabel').textContent=`P${pageNum}`;
+    document.getElementById('activePageStats').textContent='New page';
+  } else {
+    document.getElementById('newPageSetup').style.display='none';
+    document.getElementById('setTotalBtn').style.display='flex';
+    renderChips(pageNum, idx);
+  }
+}
+
+function loadPageImage(pageNum, idx) {
+  const s=getS();
+  const chData=data.classes[activeClass].chapters[activeChapter];
+  const pg=chData.pages[idx];
+  const chShort=activeChapter.replace(/\s+/g,'_').toLowerCase().replace(/[^a-z0-9_]/g,'').slice(0,14);
+  const imgPath=pg.githubPath||`books/class${activeClass.replace(/\D/g,'')}/ch-${chShort}/${chShort}_p${pageNum}.png`;
+  const imgUrl=`https://raw.githubusercontent.com/${s.owner}/${s.repo}/main/${imgPath}`;
+
+  const area=document.getElementById('imgArea');
+  area.innerHTML=`<div class="img-placeholder"><div class="img-placeholder-icon">⏳</div><div class="img-placeholder-text">Loading P${pageNum}...</div></div>`;
+
+  const img=new Image();
+  img.onload=()=>{ area.innerHTML=''; area.appendChild(img); img.style.cssText='max-width:100%;object-fit:contain;border-radius:6px;'; };
+  img.onerror=()=>{ area.innerHTML=`<div class="img-placeholder"><div class="img-placeholder-icon">📄</div><div class="img-placeholder-text">Image load nahi hua<br><span style="font-size:.65rem;color:var(--t3);">${imgPath}</span></div></div>`; };
+  img.src=imgUrl;
+}
+
+// Set total
+function showSetTotal() {
+  document.getElementById('newPageSetup').style.display='flex';
+  document.getElementById('totalInput').value='';
+  setTimeout(()=>document.getElementById('totalInput').focus(),100);
+}
+function confirmSetTotal() {
+  const val=parseInt(document.getElementById('totalInput').value);
+  if (!val||val<1) { showToast('Number bharo', 'e'); return; }
+  const chData=data.classes[activeClass].chapters[activeChapter];
+  const idx=activePageNum-1;
+  chData.pages[idx].total=val;
+  if (!chData.pages[idx].questions) chData.pages[idx].questions={};
+  document.getElementById('newPageSetup').style.display='none';
+  document.getElementById('setTotalBtn').style.display='flex';
+  renderChips(activePageNum, idx);
+  showToast(`P${activePageNum}: ${val} questions set!`, 's');
+}
+
+// ── CHIPS ─────────────────────────────────────────────────
+function renderChips(pageNum, idx) {
+  const chData=data.classes[activeClass].chapters[activeChapter];
+  const pg=chData.pages[idx];
+  const usedCount=Object.values(pg.questions||{}).filter(q=>q.used>0).length;
+  const fresh=pg.total-usedCount;
+  document.getElementById('activePageLabel').textContent=`P${pageNum}`;
+  document.getElementById('activePageStats').textContent=`${usedCount} used · ${fresh} fresh`;
+
+  let html='';
+  for (let q=1;q<=pg.total;q++) {
+    const qd=(pg.questions||{})[q];
+    const isUsed=qd&&qd.used>0;
+    const isSel=(selectedQs[pageNum]||[]).includes(q);
+    const dateStr=qd&&qd.lastDate?fmtDate(qd.lastDate):'';
+    const cls=isSel?'selected':(isUsed?'used':'fresh');
+    html+=`<div class="q-chip ${cls}" onclick="toggleQ(${pageNum},${idx},${q})">
+      <span class="qnum">${q}</span>
+      ${dateStr?`<span class="qdate">${dateStr}</span>`:''}
+    </div>`;
+  }
+  document.getElementById('qGrid').innerHTML=html;
+}
+
+function fmtDate(d) {
+  if (!d) return '';
+  const dt=new Date(d);
+  return `${dt.getDate()}/${dt.getMonth()+1}`;
+}
+
+function toggleQ(pageNum, idx, q) {
+  if (!selectedQs[pageNum]) selectedQs[pageNum]=[];
+  const arr=selectedQs[pageNum];
+  const i=arr.indexOf(q);
+  if (i===-1) arr.push(q); else arr.splice(i,1);
+  if (!arr.length) delete selectedQs[pageNum];
+  renderChips(pageNum, idx);
+  updateSelSummary();
+}
+
+function updateSelSummary() {
+  const keys=Object.keys(selectedQs).filter(k=>selectedQs[k].length>0);
+  const el=document.getElementById('selSummary');
+  if (!keys.length) { el.innerHTML='Koi question select nahi'; return; }
+  el.innerHTML=keys.map(k=>`P${k}: <b>Q${selectedQs[k].sort((a,b)=>a-b).join(', Q')}</b>`).join(' · ');
 }
 
 function clearSelected() {
-  selectedQs = {};
-  renderChapterPage();
+  selectedQs={};
+  if (activePageNum!==null) {
+    const idx=activePageNum-1;
+    renderChips(activePageNum, idx);
+  }
+  updateSelSummary();
 }
 
-function markSelectedUsed() {
-  const chData = data.classes[activeClass].chapters[activeChapter];
-  Object.keys(selectedQs).forEach(pageIdx => {
-    const pg = chData.pages[parseInt(pageIdx)];
-    if (!pg.used) pg.used = [];
-    selectedQs[pageIdx].forEach(q => { if (!pg.used.includes(q)) pg.used.push(q); });
-  });
-  selectedQs = {};
-  renderChapterPage();
-  renderHome();
-  showToast('✓ Marked used!', 's');
-}
-
-// ── Download Selected ─────────────────────────────────────
-async function downloadSelected() {
-  const keys = Object.keys(selectedQs).filter(k => selectedQs[k].length > 0);
+// ── DOWNLOAD + MARK ───────────────────────────────────────
+async function downloadAndMark() {
+  const keys=Object.keys(selectedQs).filter(k=>selectedQs[k].length>0);
   if (!keys.length) { showToast('Pehle questions select karo', 'e'); return; }
 
-  const chData = data.classes[activeClass].chapters[activeChapter];
-  const s = getSavedSettings();
+  const s=getS();
+  const chShort=activeChapter.replace(/\s+/g,'_').replace(/[^a-zA-Z0-9_]/g,'').toLowerCase().slice(0,12);
+  const today=new Date().toISOString().split('T')[0];
 
   showToast('Downloading...', 'a');
 
-  for (const k of keys) {
-    const pageIdx = parseInt(k);
-    const pg = chData.pages[pageIdx];
-    const qs = selectedQs[k].sort((a,b)=>a-b);
+  const histEntry={date:today,datetime:new Date().toLocaleString('en-IN'),className:activeClass,chapter:activeChapter,pages:[]};
 
-    // Build filename: chaptershort_p{n}_q{x}_q{y}.png
-    const chShort = activeChapter.replace(/\s+/g,'_').replace(/[^a-zA-Z0-9_]/g,'').toLowerCase().slice(0,12);
-    const fname = `${chShort}_p${pageIdx+1}_q${qs.join('_q')}.png`;
+  for (const k of keys) {
+    const pn=parseInt(k);
+    const idx=pn-1;
+    const qs=selectedQs[k].sort((a,b)=>a-b);
+    const fname=`${chShort}_p${pn}_q${qs.join('_q')}.png`;
+    histEntry.pages.push({pageNum:pn,qs,fname});
+
+    const chData=data.classes[activeClass].chapters[activeChapter];
+    const pg=chData.pages[idx];
+    const imgPath=pg.githubPath||`books/class${activeClass.replace(/\D/g,'')}/ch-${chShort}/${chShort}_p${pn}.png`;
 
     try {
-      // Fetch image from GitHub raw
-      const imgUrl = `https://raw.githubusercontent.com/${s.owner}/${s.repo}/main/${pg.githubPath}`;
-      const res = await fetch(imgUrl);
-      if (!res.ok) { showToast(`P${pageIdx+1} load nahi hua`, 'e'); continue; }
+      const imgUrl=`https://raw.githubusercontent.com/${s.owner}/${s.repo}/main/${imgPath}`;
+      const res=await fetch(imgUrl);
+      if (res.ok) {
+        const blob=await res.blob();
+        const img=new Image();
+        const bUrl=URL.createObjectURL(blob);
+        await new Promise(r=>{img.onload=r;img.src=bUrl;});
+        const canvas=document.createElement('canvas');
+        canvas.width=img.width;canvas.height=img.height;
+        canvas.getContext('2d').drawImage(img,0,0);
+        canvas.toBlob(ob=>{
+          const a=document.createElement('a');
+          a.href=URL.createObjectURL(ob);
+          a.download=fname;a.click();
+        },'image/png');
+        await new Promise(r=>setTimeout(r,500));
+      }
+    } catch {}
 
-      const blob = await res.blob();
-
-      // Draw on canvas and download as PNG
-      const img = new Image();
-      const blobUrl = URL.createObjectURL(blob);
-      await new Promise(resolve => { img.onload = resolve; img.src = blobUrl; });
-
-      const canvas = document.createElement('canvas');
-      canvas.width = img.width; canvas.height = img.height;
-      canvas.getContext('2d').drawImage(img, 0, 0);
-
-      canvas.toBlob(outBlob => {
-        const a = document.createElement('a');
-        a.href = URL.createObjectURL(outBlob);
-        a.download = fname;
-        a.click();
-        URL.revokeObjectURL(blobUrl);
-      }, 'image/png');
-
-      // Small delay between downloads
-      await new Promise(r => setTimeout(r, 600));
-    } catch(e) {
-      showToast(`Error: ${e.message}`, 'e');
-    }
+    // Mark used
+    if (!chData.pages[idx].questions) chData.pages[idx].questions={};
+    qs.forEach(q=>{
+      if (!chData.pages[idx].questions[q]) chData.pages[idx].questions[q]={used:0,lastDate:null};
+      chData.pages[idx].questions[q].used++;
+      chData.pages[idx].questions[q].lastDate=today;
+    });
   }
 
-  showToast('✓ Downloaded!', 's');
-}
+  if (!data.history) data.history=[];
+  data.history.unshift(histEntry);
 
-// ── View Image ────────────────────────────────────────────
-function viewImage(pageIdx) {
-  const chData = data.classes[activeClass].chapters[activeChapter];
-  const pg = chData.pages[pageIdx];
-  const s = getSavedSettings();
-
-  const imgUrl = `https://raw.githubusercontent.com/${s.owner}/${s.repo}/main/${pg.githubPath}`;
-  document.getElementById('viewerImg').src = imgUrl;
-  document.getElementById('viewerTitle').textContent = `P${pageIdx+1} — ${pg.label||'Page '+(pageIdx+1)}`;
-  document.getElementById('imgViewer').classList.add('open');
-}
-
-function closeViewer() {
-  document.getElementById('imgViewer').classList.remove('open');
-  document.getElementById('viewerImg').src = '';
-}
-
-// ── Delete Page ───────────────────────────────────────────
-function deletePage(idx) {
-  if (!confirm('Is page ko delete karo?')) return;
-  data.classes[activeClass].chapters[activeChapter].pages.splice(idx, 1);
-  renderChapterPage();
+  selectedQs={};
+  if (activePageNum!==null) renderChips(activePageNum, activePageNum-1);
+  updateSelSummary();
   renderHome();
-  showToast('Page deleted', 's');
+  showToast('✓ Done! Marked used', 's');
+  saveToGithub();
 }
 
-// ── GitHub ────────────────────────────────────────────────
+// ── HISTORY ──────────────────────────────────────────────
+function renderHistory() {
+  const list=document.getElementById('historyList');
+  const hist=data.history||[];
+  if (!hist.length) { list.innerHTML=`<div class="empty"><div class="empty-icon">🕐</div><div class="empty-text">Koi history nahi abhi</div></div>`; return; }
+  list.innerHTML=hist.slice(0,60).map(h=>`
+    <div class="hist-card">
+      <div class="hist-date">${h.datetime||h.date}</div>
+      <div class="hist-chapter">${h.chapter} — ${h.className}</div>
+      <div class="hist-pages">${(h.pages||[]).map(p=>`P${p.pageNum} → Q${p.qs.join(', Q')} · <span style="color:var(--green)">${p.fname}</span>`).join('<br>')}</div>
+    </div>`).join('');
+}
+
+// ── GITHUB ────────────────────────────────────────────────
 async function saveToGithub() {
-  const s = getSavedSettings();
-  if (!s.token) { showPage('settings'); showToast('Pehle token save karo', 'e'); return; }
-
-  showToast('Saving...', 'a');
-  const content = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
-  let sha = '';
-
+  const s=getS();
+  if (!s.token) { showPage('settings'); showToast('Pehle token save karo','e'); return; }
+  showToast('Saving...','a');
+  const content=btoa(unescape(encodeURIComponent(JSON.stringify(data,null,2))));
+  let sha='';
   try {
-    const res = await fetch(`https://api.github.com/repos/${s.owner}/${s.repo}/contents/ncert_tracker.json`, {
-      headers: { Authorization: `token ${s.token}`, Accept: 'application/vnd.github.v3+json' }
-    });
-    if (res.ok) sha = (await res.json()).sha;
-
-    const save = await fetch(`https://api.github.com/repos/${s.owner}/${s.repo}/contents/ncert_tracker.json`, {
-      method: 'PUT',
-      headers: { Authorization: `token ${s.token}`, Accept: 'application/vnd.github.v3+json', 'Content-Type': 'application/json' },
-      body: JSON.stringify({ message: 'Update tracker', content, sha })
-    });
-
-    showToast(save.ok ? '✓ Saved!' : 'Save failed', save.ok ? 's' : 'e');
-  } catch { showToast('Network error', 'e'); }
+    const r=await fetch(`https://api.github.com/repos/${s.owner}/${s.repo}/contents/ncert_tracker.json`,{headers:{Authorization:`token ${s.token}`,Accept:'application/vnd.github.v3+json'}});
+    if (r.ok) sha=(await r.json()).sha;
+    const sv=await fetch(`https://api.github.com/repos/${s.owner}/${s.repo}/contents/ncert_tracker.json`,{method:'PUT',headers:{Authorization:`token ${s.token}`,Accept:'application/vnd.github.v3+json','Content-Type':'application/json'},body:JSON.stringify({message:'Update tracker',content,sha})});
+    showToast(sv.ok?'✓ Saved!':'Save failed',sv.ok?'s':'e');
+  } catch { showToast('Network error','e'); }
 }
 
 async function loadFromGithub() {
-  const s = getSavedSettings();
+  const s=getS();
   if (!s.token) return;
   try {
-    const res = await fetch(`https://api.github.com/repos/${s.owner}/${s.repo}/contents/ncert_tracker.json`, {
-      headers: { Authorization: `token ${s.token}`, Accept: 'application/vnd.github.v3+json' }
-    });
-    if (res.ok) {
-      const d = await res.json();
-      data = JSON.parse(decodeURIComponent(escape(atob(d.content))));
+    const r=await fetch(`https://api.github.com/repos/${s.owner}/${s.repo}/contents/ncert_tracker.json`,{headers:{Authorization:`token ${s.token}`,Accept:'application/vnd.github.v3+json'}});
+    if (r.ok) {
+      const d=await r.json();
+      data=JSON.parse(decodeURIComponent(escape(atob(d.content))));
+      if (!data.history) data.history=[];
       renderHome();
-      showToast('✓ Loaded!', 's');
+      showToast('✓ Loaded!','s');
     }
   } catch {}
 }
 
-// ── Modal ─────────────────────────────────────────────────
+// ── MODAL ─────────────────────────────────────────────────
 function openModal(mode, target) {
-  modalMode = mode; modalTarget = target;
-  const body = document.getElementById('modalBody');
-  body.innerHTML = '';
-
-  if (mode === 'addClass') {
-    document.getElementById('modalTitle').textContent = 'Add Class';
-    document.getElementById('modalHint').textContent = 'e.g. Class 8, Class 9';
-    body.innerHTML = `<input class="inp" id="mi1" placeholder="Class name">`;
-  } else if (mode === 'addChapter') {
-    document.getElementById('modalTitle').textContent = `Add Chapter — ${target}`;
-    document.getElementById('modalHint').textContent = 'Chapter ka naam';
-    body.innerHTML = `<input class="inp" id="mi1" placeholder="e.g. Algebraic Expressions">`;
-  } else if (mode === 'addPage') {
-    document.getElementById('modalTitle').textContent = 'Add Page';
-    document.getElementById('modalHint').textContent = 'GitHub path, label aur question range bharo';
-    body.innerHTML = `
-      <input class="inp" id="mi1" placeholder="Label (e.g. Exercise 9.1)">
-      <input class="inp" id="mi2" placeholder="GitHub path (e.g. books/class8/ch9/p1.jpg)">
-      <div style="display:flex;gap:8px;">
-        <input class="inp" id="mi3" type="number" placeholder="Start Q (e.g. 1)" min="1" style="flex:1;margin-bottom:8px;">
-        <input class="inp" id="mi4" type="number" placeholder="End Q (e.g. 26)" min="1" style="flex:1;margin-bottom:8px;">
-      </div>`;
-  } else if (mode === 'editPage') {
-    const pg = data.classes[activeClass].chapters[activeChapter].pages[target];
-    document.getElementById('modalTitle').textContent = `Edit P${target+1}`;
-    document.getElementById('modalHint').textContent = 'Page ki details edit karo';
-    body.innerHTML = `
-      <input class="inp" id="mi1" placeholder="Label" value="${pg.label||''}">
-      <input class="inp" id="mi2" placeholder="GitHub path" value="${pg.githubPath||''}">
-      <div style="display:flex;gap:8px;">
-        <input class="inp" id="mi3" type="number" placeholder="Start Q" value="${pg.startQ||1}" min="1" style="flex:1;margin-bottom:8px;">
-        <input class="inp" id="mi4" type="number" placeholder="End Q" value="${pg.endQ||pg.total||0}" min="1" style="flex:1;margin-bottom:8px;">
-      </div>`;
+  modalMode=mode; modalTarget=target;
+  const body=document.getElementById('modalBody'); body.innerHTML='';
+  if (mode==='addClass') {
+    document.getElementById('modalTitle').textContent='Add Class & Chapter';
+    document.getElementById('modalHint').textContent='Dono bharo';
+    body.innerHTML=`<input class="modal-inp" id="mi1" placeholder="Class (e.g. Class 8)"><input class="modal-inp" id="mi2" placeholder="Chapter (e.g. Mensuration)">`;
+  } else if (mode==='addChapter') {
+    document.getElementById('modalTitle').textContent=`Add Chapter — ${target}`;
+    document.getElementById('modalHint').textContent='';
+    body.innerHTML=`<input class="modal-inp" id="mi1" placeholder="Chapter name">`;
   }
-
   document.getElementById('modal').classList.add('open');
-  setTimeout(() => { const f = document.getElementById('mi1'); if(f) f.focus(); }, 100);
+  setTimeout(()=>{const f=document.getElementById('mi1');if(f)f.focus();},100);
 }
-
-function modalBgClick(e) {
-  if (e.target === document.getElementById('modal')) closeModal();
-}
-
-function closeModal() {
-  document.getElementById('modal').classList.remove('open');
-}
-
+function modalBgClick(e){if(e.target===document.getElementById('modal'))closeModal();}
+function closeModal(){document.getElementById('modal').classList.remove('open');}
 function confirmModal() {
-  const v1 = (document.getElementById('mi1')||{}).value?.trim();
-  const v2 = (document.getElementById('mi2')||{}).value?.trim();
-  const v3 = parseInt((document.getElementById('mi3')||{}).value) || 0;
-  const v4 = parseInt((document.getElementById('mi4')||{}).value) || 0;
-
-  if (modalMode === 'addClass') {
+  const v1=(document.getElementById('mi1')||{}).value?.trim();
+  const v2=(document.getElementById('mi2')||{}).value?.trim();
+  if (modalMode==='addClass') {
     if (!v1) return;
-    if (!data.classes[v1]) data.classes[v1] = { chapters: {} };
-    renderHome();
-  } else if (modalMode === 'addChapter') {
+    if (!data.classes[v1]) data.classes[v1]={chapters:{}};
+    if (v2 && !data.classes[v1].chapters[v2]) data.classes[v1].chapters[v2]={pages:[]};
+  } else if (modalMode==='addChapter') {
     if (!v1) return;
-    if (!data.classes[modalTarget].chapters[v1])
-      data.classes[modalTarget].chapters[v1] = { pages: [] };
-    renderHome();
-  } else if (modalMode === 'addPage') {
-    if (!v2 || !v3 || !v4) { showToast('Path aur Q range bharo', 'e'); return; }
-    if (v4 < v3) { showToast('End Q, Start Q se bada hona chahiye', 'e'); return; }
-    const pages = data.classes[activeClass].chapters[activeChapter].pages;
-    pages.push({ label: v1||`Page ${pages.length+1}`, githubPath: v2, startQ: v3, endQ: v4, total: v4-v3+1, used: [] });
-    renderChapterPage();
-    renderHome();
-  } else if (modalMode === 'editPage') {
-    if (!v2 || !v3 || !v4) { showToast('Path aur Q range bharo', 'e'); return; }
-    if (v4 < v3) { showToast('End Q, Start Q se bada hona chahiye', 'e'); return; }
-    const pg = data.classes[activeClass].chapters[activeChapter].pages[modalTarget];
-    pg.label = v1; pg.githubPath = v2; pg.startQ = v3; pg.endQ = v4; pg.total = v4-v3+1;
-    renderChapterPage();
+    if (!data.classes[modalTarget].chapters[v1]) data.classes[modalTarget].chapters[v1]={pages:[]};
   }
-
+  renderHome();
   closeModal();
-  showToast('Done!', 's');
+  showToast('Done!','s');
 }
 
-document.addEventListener('keydown', e => {
-  if (e.key === 'Enter' && document.getElementById('modal').classList.contains('open')) confirmModal();
-  if (e.key === 'Escape') { closeModal(); closeViewer(); }
+document.addEventListener('keydown',e=>{
+  if (e.key==='Enter'){
+    if (document.getElementById('modal').classList.contains('open')) confirmModal();
+    if (document.getElementById('addPageModal').classList.contains('open')) confirmAddPage();
+    if (document.activeElement?.id==='totalInput') confirmSetTotal();
+  }
+  if (e.key==='Escape'){closeModal();closeAddPage();}
 });
 
-// ── Toast ─────────────────────────────────────────────────
-let toastTimer;
-function showToast(msg, type) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.className = `toast ${type} show`;
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => t.classList.remove('show'), 2500);
+// ── TOAST ─────────────────────────────────────────────────
+let tt;
+function showToast(msg,type){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.className=`toast ${type} show`;
+  clearTimeout(tt);tt=setTimeout(()=>t.classList.remove('show'),2500);
 }
 
 // ── PWA ───────────────────────────────────────────────────
-let deferredPrompt;
-window.addEventListener('beforeinstallprompt', e => {
-  e.preventDefault(); deferredPrompt = e;
-  const btn = document.createElement('div');
-  btn.className = 'nitem';
-  btn.innerHTML = '<div class="nicon">📲</div><div class="nlbl">Install</div>';
-  btn.onclick = async () => {
-    if (!deferredPrompt) return;
-    deferredPrompt.prompt();
-    const { outcome } = await deferredPrompt.userChoice;
-    if (outcome === 'accepted') btn.remove();
-    deferredPrompt = null;
-  };
-  document.querySelector('.bnav').appendChild(btn);
+let dp;
+window.addEventListener('beforeinstallprompt',e=>{
+  e.preventDefault();dp=e;
+  const btn=document.createElement('div');btn.className='nitem';
+  btn.innerHTML='<div class="nicon">📲</div><div class="nlbl">Install</div>';
+  btn.onclick=async()=>{if(!dp)return;dp.prompt();const{outcome}=await dp.userChoice;if(outcome==='accepted')btn.remove();dp=null;};
+  document.getElementById('bnav').appendChild(btn);
 });
-
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(()=>{}));
-}
+if('serviceWorker'in navigator) window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
 </script>
 </body>
 </html>
