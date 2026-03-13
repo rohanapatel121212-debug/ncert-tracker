@@ -1,7 +1,28 @@
 {
   "classes": {
     "Class 8": {
-      "chapters": {}
+      "chapters": {
+        "Mensuration": {
+          "folder": "books/class8/ch9-Mensuration",
+          "prefix": "mensuration",
+          "pages": [
+            {"total":0,"questions":{}},
+            {"total":0,"questions":{}},
+            {"total":0,"questions":{}},
+            {"total":0,"questions":{}},
+            {"total":0,"questions":{}},
+            {"total":0,"questions":{}},
+            {"total":0,"questions":{}},
+            {"total":0,"questions":{}},
+            {"total":0,"questions":{}},
+            {"total":0,"questions":{}},
+            {"total":0,"questions":{}},
+            {"total":0,"questions":{}},
+            {"total":0,"questions":{}}
+          ]
+        }
+      }
     }
-  }
+  },
+  "history": []
 }
