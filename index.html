@@ -252,6 +252,339 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);max-width:48
     <div class="q-panel">
       <div class="q-panel-bar">
         <div class="q-panel-info" id="qPanelInfo">—</div>
+        <button class="icon-btn" onclick="toggleSetup()" style="height:28px;font-size:.65rem;">✏ Edit</button>
+      </div>
+      <!-- Setup: free text input -->
+      <div id="newQSetup" style="display:none;" class="new-q-setup">
+        <div style="flex:1;">
+          <div class="new-q-text" style="margin-bottom:5px;">Q numbers aur Ex numbers likho:</div>
+          <div style="display:flex;gap:6px;align-items:center;">
+            <span style="font-size:.68rem;color:var(--blue);font-weight:700;font-family:var(--mono);width:20px;">Q:</span>
+            <input class="inp-xs" id="qNumInp" placeholder="1, 5, 8" style="flex:1;width:auto;">
+          </div>
+          <div style="display:flex;gap:6px;align-items:center;margin-top:5px;">
+            <span style="font-size:.68rem;color:var(--amber);font-weight:700;font-family:var(--mono);width:20px;">Ex:</span>
+            <input class="inp-xs" id="exNumInp" placeholder="2, 3" style="flex:1;width:auto;border-color:rgba(245,158,11,.3);">
+          </div>
+        </div>
+        <button class="icon-btn" style="background:var(--gdim);border-color:rgba(34,197,94,.3);color:var(--green);height:32px;align-self:flex-end;" onclick="confirmSetup()">✓</button>
+      </div>
+      <div class="chips-scroll">
+        <div id="qTrayWrap" style="display:none;">
+          <div class="tray-label">Questions</div>
+          <div class="q-grid" id="qGrid"></div>
+        </div>
+        <div id="exTrayWrap" style="display:none;">
+          <div class="tray-label tray-label-ex">Examples</div>
+          <div class="q-grid" id="exGrid"></div>
+        </div>
+        <div id="emptyTray" style="text-align:center;padding:16px;color:var(--t3);font-size:.72rem;">✏ Edit dabao aur numbers likho</div>
+      </div>
+      <div class="q-action">
+        <div class="sel-summary" id="selSummary">Koi question select nahi</div>
+        <div class="btn-row">
+          <button class="btn btn-ghost" onclick="clearSel()">Clear</button>
+          <button class="btn btn-g" onclick="downloadAndMark()">↓ Download + Mark</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HISTORY -->
+  <div class="page" id="page-history">
+    <div class="page-inner">
+      <div class="slabel" style="margin-top:4px;">Test History</div>
+      <div id="histList"></div>
+    </div>
+  </div>
+
+  <!-- SETTINGS -->
+  <div class="page" id="page-settings">
+    <div class="page-inner">
+      <div class="slabel" style="margin-top:4px;">GitHub</div>
+      <div class="set-card">
+        <div class="set-label">Token</div>
+        <input class="inp" id="ghToken" type="password" placeholder="ghp_xxxxxxxxxxxx">
+      </div>
+      <div class="set-card">
+        <div class="set-label">Repo Owner</div>
+        <input class="inp" id="ghOwner" value="rohanapatel121212-debug">
+      </div>
+      <div class="set-card">
+        <div class="set-label">Repo Name</div>
+        <input class="inp" id="ghRepo" value="ncert-tracker">
+      </div>
+      <div class="btn-row-sm">
+        <button class="btn btn-g" onclick="saveSettings()">Save Settings</button>
+      </div>
+      <div style="margin-top:12px;font-size:.7rem;color:var(--t2);line-height:1.7;">
+        Token: GitHub → Settings → Developer settings → Personal access tokens → public_repo
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- BOTTOM NAV -->
+<div class="bnav" id="bnav">
+  <div class="nitem active" id="nav-home" onclick="showPage('home')"><div class="nicon">📚</div><div class="nlbl">Home</div></div>
+  <div class="nitem" id="nav-history" onclick="showPage('history');renderHistory()"><div class="nicon">🕐</div><div class="nlbl">History</div></div>
+  <div class="nitem" id="nav-settings" onclick="showPage('settings')"><div class="nicon">⚙️</div><div class="nlbl">Settings</div></div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-bg" id="modal" onclick="mbClick(event)">
+  <div class="modal-sheet" onclick="event.stopPropagation()">
+    <div class="modal-handle"></div>
+    <div class="modal-title" id="mTitle"></div>
+    <div class="modal-hint" id="mHint"></div>
+    <div id="mBody"></div>
+    <div class="btn-row">
+      <button class="btn btn-ghost" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-g" onclick="confirmModal()">Confirm</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ─── STATE ───────────────────────────────────────────────
+let data = { classes:{}, history:[] };
+let AC = null; // active class
+let ACH = null; // active chapter
+let APN = null; // active page number (1-based)
+let selQ = {}; // {pageNum: [qnums]}
+let MM = null; // modal mode
+let MT = null; // modal target
+
+// ─── INIT ────────────────────────────────────────────────
+window.onload = () => {
+  loadSettingsUI();
+  renderHome();
+  const s = getS();
+  if (s.token) {
+    loadFromGithub();
+  } else {
+    // F.icon-btn.g{background:var(--gdim);border-color:rgba(34,197,94,.2);color:var(--green)}
+.icon-btn.b{background:var(--bdim);border-color:rgba(59,130,246,.2);color:var(--blue)}
+
+/* MAIN */
+.main{flex:1;overflow:hidden;position:relative}
+.page{display:none;height:100%;overflow-y:auto;-webkit-overflow-scrolling:touch}
+.page.active{display:block}
+.page-inner{padding:12px}
+
+/* BOTTOM NAV */
+.bnav{flex-shrink:0;background:rgba(10,12,16,0.98);border-top:1px solid var(--border);display:flex;padding:6px 0 16px;z-index:50}
+.nitem{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;padding:4px 0;color:var(--t3);transition:all .15s}
+.nitem.active{color:var(--green)}
+.nitem:active{transform:scale(.88)}
+.nicon{font-size:1.1rem;line-height:1}
+.nlbl{font-size:.52rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em}
+
+/* HOME */
+.hero{background:linear-gradient(135deg,var(--s2),var(--s3));border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:12px;position:relative;overflow:hidden}
+.hero::after{content:'';position:absolute;top:-20px;right:-20px;width:80px;height:80px;background:radial-gradient(circle,rgba(34,197,94,.1),transparent 70%)}
+.hero-tag{font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--green);margin-bottom:5px}
+.hero-title{font-size:1rem;font-weight:800;margin-bottom:3px}
+.hero-sub{font-size:.72rem;color:var(--t2);line-height:1.5}
+
+.slabel{font-size:.6rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--t2);margin:14px 0 8px;display:flex;align-items:center;gap:6px}
+.slabel::after{content:'';flex:1;height:1px;background:var(--border)}
+
+.cls-card{background:var(--s1);border:1px solid var(--border);border-radius:13px;margin-bottom:8px;overflow:hidden}
+.cls-card.open{border-color:var(--border2)}
+.cls-hdr{padding:12px 13px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;user-select:none;gap:8px}
+.cls-name{font-size:.9rem;font-weight:700;flex:1}
+.badge{font-family:var(--mono);font-size:.62rem;padding:2px 7px;border-radius:5px;background:var(--s3);color:var(--t2);border:1px solid var(--border)}
+.badge.g{background:var(--gdim);color:var(--green);border-color:rgba(34,197,94,.2)}
+.chev{color:var(--t3);font-size:.65rem;transition:transform .2s}
+.cls-card.open .chev{transform:rotate(90deg)}
+.ch-list{display:none;border-top:1px solid var(--border)}
+.cls-card.open .ch-list{display:block}
+
+.ch-row{padding:11px 13px;display:flex;align-items:center;gap:10px;cursor:pointer;border-bottom:1px solid var(--border);transition:background .1s}
+.ch-row:last-of-type{border-bottom:none}
+.ch-row:active{background:var(--s2)}
+.ch-dot{width:7px;height:7px;border-radius:50%;background:var(--border2);flex-shrink:0}
+.ch-dot.a{background:var(--green)}
+.ch-info{flex:1}
+.ch-name{font-size:.83rem;font-weight:600}
+.ch-meta{font-size:.63rem;color:var(--t2);font-family:var(--mono);margin-top:1px}
+.ch-bar{width:44px}
+.mini-track{height:3px;background:var(--border);border-radius:2px;overflow:hidden}
+.mini-fill{height:100%;background:var(--green);border-radius:2px}
+.mini-pct{font-size:.55rem;color:var(--t2);font-family:var(--mono);text-align:right;margin-top:2px}
+
+.add-ch{padding:9px 13px;color:var(--t2);font-size:.75rem;cursor:pointer;display:flex;align-items:center;gap:5px;border-top:1px dashed var(--border);transition:color .15s}
+.add-ch:active{color:var(--green)}
+
+.big-btn{width:100%;padding:13px;border-radius:13px;border:none;font-size:.85rem;font-weight:800;cursor:pointer;font-family:var(--sans);transition:all .15s;margin-bottom:7px}
+.big-btn:active{transform:scale(.97)}
+.big-btn-g{background:var(--green);color:#000}
+.big-btn-o{background:transparent;color:var(--text);border:1px solid var(--border2)}
+.big-btn-o:active{background:var(--s2)}
+
+/* ── CHAPTER VIEW (TestFlow style) ── */
+#page-chapter{padding:0;display:none;flex-direction:column}
+#page-chapter.active{display:flex}
+
+/* Chapter topbar */
+.ch-topbar{flex-shrink:0;padding:10px 14px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border);background:var(--s1)}
+.ch-back{color:var(--t2);font-size:.8rem;cursor:pointer;padding:4px 0;transition:color .15s;flex-shrink:0}
+.ch-back:active{color:var(--text)}
+.ch-topbar-title{flex:1;min-width:0}
+.ch-topbar-name{font-size:.9rem;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ch-topbar-cls{font-size:.65rem;color:var(--t2);font-family:var(--mono)}
+
+/* Page tabs */
+.page-tabs-wrap{flex-shrink:0;padding:8px 12px;border-bottom:1px solid var(--border);background:var(--bg);overflow-x:auto;display:flex;gap:5px;scrollbar-width:none}
+.page-tabs-wrap::-webkit-scrollbar{display:none}
+.ptab{padding:5px 11px;border-radius:7px;border:1px solid var(--border);background:var(--s3);font-family:var(--mono);font-size:.72rem;font-weight:700;cursor:pointer;color:var(--t2);transition:all .15s;white-space:nowrap;flex-shrink:0}
+.ptab.active{background:var(--bdim);border-color:rgba(59,130,246,.3);color:var(--blue)}
+.ptab.has-used{border-color:rgba(239,68,68,.2);color:var(--red)}
+.ptab.active.has-used{background:var(--bdim);border-color:rgba(59,130,246,.3);color:var(--blue)}
+.ptab:active{transform:scale(.9)}
+
+/* Image area */
+.ch-img-area{flex:1;min-height:0;overflow:auto;-webkit-overflow-scrolling:touch;background:var(--bg);display:flex;align-items:flex-start;justify-content:center;padding:10px}
+.ch-img-area img{width:100%;border-radius:8px;display:block}
+.img-loading{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;width:100%;height:100%;color:var(--t2)}
+.img-loading-icon{font-size:1.8rem;opacity:.3;animation:pulse 1.5s infinite}
+@keyframes pulse{0%,100%{opacity:.3}50%{opacity:.7}}
+.img-error{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;width:100%;padding:30px;text-align:center;color:var(--t2)}
+.img-error-icon{font-size:1.8rem;opacity:.3}
+.img-error-path{font-size:.62rem;font-family:var(--mono);color:var(--t3);margin-top:4px;word-break:break-all}
+
+/* Q panel */
+.q-panel{flex-shrink:0;background:var(--s1);border-top:2px solid var(--border2)}
+.q-panel-bar{padding:8px 12px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border)}
+.q-panel-info{font-size:.7rem;color:var(--t2);font-family:var(--mono)}
+.q-panel-info b{color:var(--text)}
+.new-q-setup{padding:10px 12px;display:flex;align-items:center;gap:8px;background:var(--adim);border-bottom:1px solid rgba(245,158,11,.15)}
+.new-q-text{font-size:.72rem;color:var(--amber);flex:1;line-height:1.4}
+.inp-xs{background:var(--bg);border:1px solid rgba(245,158,11,.3);border-radius:7px;padding:7px 9px;color:var(--text);font-size:.85rem;outline:none;font-family:var(--mono);width:65px}
+.inp-xs:focus{border-color:var(--amber)}
+
+.q-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;padding:10px 12px}
+.q-chip{aspect-ratio:1;border-radius:7px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;transition:all .1s;background:var(--s3);border:1px solid var(--border);user-select:none;gap:1px}
+.q-chip:active{transform:scale(.82)}
+.qnum{font-size:.65rem;font-weight:700;font-family:var(--mono)}
+.qdate{font-size:.38rem;line-height:1;text-align:center;font-family:var(--mono)}
+.q-chip.fresh .qnum{color:var(--text)}
+.q-chip.fresh .qdate{color:var(--green)}
+.q-chip.used{background:var(--rdim);border-color:rgba(239,68,68,.2)}
+.q-chip.used .qnum{color:var(--red)}
+.q-chip.used .qdate{color:rgba(239,68,68,.5)}
+.q-chip.selected{background:var(--gdim);border-color:rgba(34,197,94,.3)}
+.q-chip.selected .qnum{color:var(--green)}
+.q-chip.selected .qdate{color:var(--green)}
+
+.q-action{padding:8px 12px 12px;border-top:1px solid var(--border)}
+.sel-summary{font-size:.66rem;color:var(--t2);font-family:var(--mono);margin-bottom:7px;min-height:14px;line-height:1.5}
+.sel-summary b{color:var(--green)}
+.btn-row{display:flex;gap:6px}
+.btn{padding:10px 12px;border-radius:10px;border:none;font-size:.78rem;font-weight:700;cursor:pointer;font-family:var(--sans);transition:all .15s;flex:1}
+.btn:active{transform:scale(.95)}
+.btn-g{background:var(--green);color:#000}
+.btn-ghost{background:var(--s3);color:var(--t2);border:1px solid var(--border)}
+.btn-a{background:var(--adim);color:var(--amber);border:1px solid rgba(245,158,11,.2)}
+
+.chips-scroll{overflow-y:auto;-webkit-overflow-scrolling:touch;max-height:38vh}
+.tray-label{font-size:.58rem;font-weight:700;text-transform:uppercase;letter-spacing:.09em;color:var(--blue);padding:6px 12px 2px;border-top:1px solid var(--border)}
+.tray-label-ex{color:var(--amber)}
+.hist-card{background:var(--s1);border:1px solid var(--border);border-radius:11px;margin-bottom:7px;padding:11px 13px}
+.hist-date{font-size:.65rem;font-family:var(--mono);color:var(--amber);margin-bottom:4px;font-weight:600}
+.hist-chapter{font-size:.82rem;font-weight:700;margin-bottom:3px}
+.hist-pages{font-size:.66rem;color:var(--t2);font-family:var(--mono);line-height:1.8}
+.hist-file{color:var(--green)}
+
+/* SETTINGS */
+.set-card{background:var(--s1);border:1px solid var(--border);border-radius:12px;padding:12px;margin-bottom:7px}
+.set-label{font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--t2);margin-bottom:6px}
+.inp{background:var(--bg);border:1px solid var(--border);border-radius:9px;padding:10px 12px;color:var(--text);font-size:.88rem;outline:none;transition:border-color .15s;font-family:var(--sans);width:100%;margin-bottom:0}
+.inp:focus{border-color:var(--green)}
+.inp::placeholder{color:var(--t3)}
+
+/* MODAL */
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.82);z-index:200;align-items:flex-end;justify-content:center}
+.modal-bg.open{display:flex}
+.modal-sheet{width:100%;max-width:480px;background:var(--s1);border-radius:18px 18px 0 0;padding:14px 16px 34px;border-top:1px solid var(--border2)}
+.modal-handle{width:30px;height:3px;background:var(--border2);border-radius:2px;margin:0 auto 14px}
+.modal-title{font-size:.95rem;font-weight:800;margin-bottom:5px}
+.modal-hint{font-size:.73rem;color:var(--t2);margin-bottom:12px;line-height:1.5}
+.modal-inp{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:11px 13px;color:var(--text);font-size:.95rem;outline:none;margin-bottom:9px;transition:border-color .15s;font-family:var(--sans)}
+.modal-inp:focus{border-color:var(--green)}
+.modal-inp::placeholder{color:var(--t3)}
+.modal-row{display:flex;gap:8px;margin-bottom:9px}
+.modal-row .modal-inp{margin-bottom:0}
+
+/* TOAST */
+.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(14px);background:var(--s2);border:1px solid var(--border2);border-radius:10px;padding:8px 16px;font-size:.75rem;font-weight:600;opacity:0;transition:all .2s;pointer-events:none;white-space:nowrap;z-index:500;box-shadow:0 8px 24px rgba(0,0,0,.5)}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.toast.s{border-color:rgba(34,197,94,.35);color:var(--green)}
+.toast.e{border-color:rgba(239,68,68,.35);color:var(--red)}
+.toast.a{border-color:rgba(245,158,11,.35);color:var(--amber)}
+
+.empty{text-align:center;padding:32px 16px;color:var(--t2)}
+.empty-icon{font-size:1.8rem;margin-bottom:8px;opacity:.3}
+.empty-text{font-size:.78rem;line-height:1.7}
+
+.btn-row-sm{display:flex;gap:6px;margin-top:10px}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="logo">NCERT<em>.</em>tracker</div>
+  <div class="tbbtns">
+    <button class="icon-btn g" onclick="saveToGithub()">↑ Save</button>
+    <button class="icon-btn b" onclick="loadFromGithub()">↓ Load</button>
+  </div>
+</div>
+
+<div class="main">
+
+  <!-- HOME -->
+  <div class="page active" id="page-home">
+    <div class="page-inner">
+      <div class="hero">
+        <div class="hero-tag">Question Tracker</div>
+        <div class="hero-title">Har test mein fresh questions 📚</div>
+        <div class="hero-sub">Chapter kholo → image dekho → questions select karo</div>
+      </div>
+      <button class="big-btn big-btn-g" onclick="openModal('addClass')">＋ Add Class / Chapter</button>
+      <div class="slabel">Chapters</div>
+      <div id="classTree"></div>
+    </div>
+  </div>
+
+  <!-- CHAPTER VIEW -->
+  <div class="page" id="page-chapter">
+    <div class="ch-topbar">
+      <div class="ch-back" onclick="showPage('home')">← Back</div>
+      <div class="ch-topbar-title">
+        <div class="ch-topbar-name" id="chTopName">Chapter</div>
+        <div class="ch-topbar-cls" id="chTopCls">Class</div>
+      </div>
+      <button class="icon-btn a" onclick="openModal('addPage')" style="flex-shrink:0;">+ Page</button>
+    </div>
+
+    <!-- Page tabs -->
+    <div class="page-tabs-wrap" id="pageTabs"></div>
+
+    <!-- Image -->
+    <div class="ch-img-area" id="chImgArea">
+      <div class="img-loading"><div class="img-loading-icon">📄</div><div style="font-size:.75rem;">Page select karo</div></div>
+    </div>
+
+    <!-- Q Panel -->
+    <div class="q-panel">
+      <div class="q-panel-bar">
+        <div class="q-panel-info" id="qPanelInfo">—</div>
         <button class="icon-btn" onclick="openModal('setTotal')" style="height:28px;font-size:.65rem;">✏ Set</button>
       </div>
       <div id="newQSetup" style="display:none;" class="new-q-setup">
