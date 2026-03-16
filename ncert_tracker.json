@@ -52,6 +52,31 @@
       }
     }
   },
+ {
+  "ch11": {
+    "title": "Direct and Inverse Proportions",
+    "folder": "ch11",
+    "prefix": "ch11",
+    "pages": {
+      "1": { "qNums": [], "exNums": [], "questions": {}, "examples": {} },
+      "2": { "qNums": [], "exNums": [], "questions": {}, "examples": {} },
+      "3": { "qNums": [], "exNums": [], "questions": {}, "examples": {} },
+      "4": { "qNums": [], "exNums": [1], "questions": {}, "examples": {} },
+      "5": { "qNums": [], "exNums": [2], "questions": {}, "examples": {} },
+      "6": { "qNums": [], "exNums": [3], "questions": {}, "examples": {} },
+      "7": { "qNums": [], "exNums": [4,5], "questions": {}, "examples": {} },
+      "8": { "qNums": [1,2,3,4,5,6,7,8,9,10], "exNums": [], "questions": {}, "examples": {} },
+      "9": { "qNums": [], "exNums": [], "questions": {}, "examples": {} },
+      "10": { "qNums": [], "exNums": [], "questions": {}, "examples": {} },
+      "11": { "qNums": [], "exNums": [], "questions": {}, "examples": {} },
+      "12": { "qNums": [], "exNums": [7,8,9], "questions": {}, "examples": {} },
+      "13": { "qNums": [1,2,3,4,5,6,7,8,9,10,11], "exNums": [], "questions": {}, "examples": {} },
+      "14": { "qNums": [], "exNums": [], "questions": {}, "examples": {} },
+      "15": { "qNums": [], "exNums": [], "questions": {}, "examples": {} },
+      "16": { "qNums": [], "exNums": [], "questions": {}, "examples": {} }
+    }
+  }
+}
   "history": [
     {
       "date": "2026-03-13",
