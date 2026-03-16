@@ -799,15 +799,18 @@ async function saveToGithub(){
 
 async function loadFromGithub(){
   const s=getS();
-  if(!s.token) return;
 
   // Show loading state on home
   const tree=document.getElementById('classTree');
   tree.innerHTML=`<div style="text-align:center;padding:24px;color:var(--t2);font-size:.78rem;">⏳ Loading data from GitHub...</div>`;
 
   try{
-    const r=await fetch(`https://api.github.com/repos/${s.owner}/${s.repo}/contents/ncert_tracker.json`,{
-      headers:{Authorization:`token ${s.token}`,Accept:'application/vnd.github.v3+json'},
+    const owner=s.owner||'rohanapatel121212-debug';
+    const repo=s.repo||'ncert-tracker';
+    const headers={Accept:'application/vnd.github.v3+json'};
+    if(s.token) headers.Authorization=`token ${s.token}`;
+    const r=await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/ncert_tracker.json`,{
+      headers,
       cache:'no-cache'
     });
     if(r.ok){
