@@ -531,7 +531,7 @@ function getImgUrl(n){
   if(pg.githubPath) return `https://raw.githubusercontent.com/${s.owner}/${s.repo}/main/${pg.githubPath}`;
   const folder=chData.folder||'';
   const prefix=chData.prefix||ACH.toLowerCase().replace(/\s+/g,'_');
-  if(folder) return `https://raw.githubusercontent.com/${s.owner}/${s.repo}/main/${folder}/${prefix}_p${n}.png`;
+  if(folder) return `https://raw.githubusercontent.com/${s.owner}/${s.repo}/main/${folder.split('/').map(encodeURIComponent).join('/')}/${prefix}_p${n}.png`;
   return null;
 }
 
