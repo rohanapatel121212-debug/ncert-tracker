@@ -317,7 +317,17 @@
                 },
                 {
                   "questions": {},
-                  "examples": {}
+                  "examples": {
+                    "1": {
+                      "used": 0,
+                      "lastDate": null
+                    },
+                    "2": {
+                      "used": 0,
+                      "lastDate": null
+                    }
+                  },
+                  "exTotal": 2
                 },
                 {
                   "questions": {},
