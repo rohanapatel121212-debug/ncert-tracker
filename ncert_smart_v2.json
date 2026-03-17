@@ -12,73 +12,489 @@
               "folder": "books/class8/ch9-Mensuration",
               "prefix": "mensuration",
               "pages": [
-                {"questions": {},"examples": {}},
-                {"questions": {},"examples": {}},
-                {"questions": {"1": {"used": 5,"lastDate": "2026-03-17"}},"examples": {"2": {"used": 5,"lastDate": "2026-03-17"}}},
-                {"questions": {"4": {"used": 5,"lastDate": "2026-03-17"}},"examples": {}},
-                {"questions": {},"examples": {}},
-                {"questions": {},"examples": {}},
-                {"questions": {},"examples": {}},
-                {"questions": {},"examples": {}},
-                {"questions": {},"examples": {}},
-                {"questions": {},"examples": {}},
-                {"questions": {},"examples": {}},
-                {"questions": {},"examples": {}},
-                {"questions": {},"examples": {}}
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {
+                    "1": {
+                      "used": 5,
+                      "lastDate": "2026-03-17"
+                    }
+                  },
+                  "examples": {
+                    "2": {
+                      "used": 5,
+                      "lastDate": "2026-03-17"
+                    }
+                  }
+                },
+                {
+                  "questions": {
+                    "4": {
+                      "used": 5,
+                      "lastDate": "2026-03-17"
+                    }
+                  },
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                }
               ]
             },
             "Exponents and Powers": {
               "folder": "books/class8/ch10-Exponents and Power",
               "prefix": "exp",
               "pages": [
-                {"questions": {},"examples": {}},
-                {"questions": {},"examples": {}},
-                {"questions": {},"examples": {}},
-                {"questions": {},"examples": {"1": {"used": 2,"lastDate": "2026-03-17"},"2": {"used": 2,"lastDate": "2026-03-17"},"3": {"used": 2,"lastDate": "2026-03-17"},"4": {"used": 2,"lastDate": "2026-03-17"},"5": {"used": 2,"lastDate": "2026-03-17"}},"exTotal": 5},
-                {"questions": {"1": {"used": 2,"lastDate": "2026-03-17"},"2": {"used": 2,"lastDate": "2026-03-17"},"3": {"used": 2,"lastDate": "2026-03-17"}},"examples": {"6": {"used": 2,"lastDate": "2026-03-17"},"7": {"used": 2,"lastDate": "2026-03-17"}},"total": 3,"exTotal": 2},
-                {"questions": {"4": {"used": 2,"lastDate": "2026-03-17"},"5": {"used": 2,"lastDate": "2026-03-17"},"6": {"used": 2,"lastDate": "2026-03-17"},"7": {"used": 2,"lastDate": "2026-03-17"}},"examples": {},"total": 4},
-                {"questions": {},"examples": {}},
-                {"questions": {"1": {"used": 2,"lastDate": "2026-03-17"},"2": {"used": 2,"lastDate": "2026-03-17"},"3": {"used": 2,"lastDate": "2026-03-17"},"4": {"used": 2,"lastDate": "2026-03-17"}},"examples": {"8": {"used": 2,"lastDate": "2026-03-17"},"9": {"used": 2,"lastDate": "2026-03-17"}},"total": 4,"exTotal": 2}
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {
+                    "1": {
+                      "used": 2,
+                      "lastDate": "2026-03-17"
+                    },
+                    "2": {
+                      "used": 2,
+                      "lastDate": "2026-03-17"
+                    },
+                    "3": {
+                      "used": 2,
+                      "lastDate": "2026-03-17"
+                    },
+                    "4": {
+                      "used": 2,
+                      "lastDate": "2026-03-17"
+                    },
+                    "5": {
+                      "used": 2,
+                      "lastDate": "2026-03-17"
+                    }
+                  },
+                  "exTotal": 5
+                },
+                {
+                  "questions": {
+                    "1": {
+                      "used": 2,
+                      "lastDate": "2026-03-17"
+                    },
+                    "2": {
+                      "used": 2,
+                      "lastDate": "2026-03-17"
+                    },
+                    "3": {
+                      "used": 2,
+                      "lastDate": "2026-03-17"
+                    }
+                  },
+                  "examples": {
+                    "6": {
+                      "used": 2,
+                      "lastDate": "2026-03-17"
+                    },
+                    "7": {
+                      "used": 2,
+                      "lastDate": "2026-03-17"
+                    }
+                  },
+                  "total": 3,
+                  "exTotal": 2
+                },
+                {
+                  "questions": {
+                    "4": {
+                      "used": 2,
+                      "lastDate": "2026-03-17"
+                    },
+                    "5": {
+                      "used": 2,
+                      "lastDate": "2026-03-17"
+                    },
+                    "6": {
+                      "used": 2,
+                      "lastDate": "2026-03-17"
+                    },
+                    "7": {
+                      "used": 2,
+                      "lastDate": "2026-03-17"
+                    }
+                  },
+                  "examples": {},
+                  "total": 4
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {
+                    "1": {
+                      "used": 2,
+                      "lastDate": "2026-03-17"
+                    },
+                    "2": {
+                      "used": 2,
+                      "lastDate": "2026-03-17"
+                    },
+                    "3": {
+                      "used": 2,
+                      "lastDate": "2026-03-17"
+                    },
+                    "4": {
+                      "used": 2,
+                      "lastDate": "2026-03-17"
+                    }
+                  },
+                  "examples": {
+                    "8": {
+                      "used": 2,
+                      "lastDate": "2026-03-17"
+                    },
+                    "9": {
+                      "used": 2,
+                      "lastDate": "2026-03-17"
+                    }
+                  },
+                  "total": 4,
+                  "exTotal": 2
+                }
               ]
             },
             "Direct and Inverse Proportions": {
               "folder": "books/class8/ch11-Direct and inverse propertions",
               "prefix": "ch11",
               "pages": [
-                {"questions": {},"examples": {}},
-                {"questions": {},"examples": {}},
-                {"questions": {},"examples": {}},
-                {"questions": {},"examples": {"1": {"used": 1,"lastDate": "2026-03-17"}},"exTotal": 1},
-                {"questions": {},"examples": {"2": {"used": 1,"lastDate": "2026-03-17"}},"exTotal": 1},
-                {"questions": {},"examples": {"3": {"used": 1,"lastDate": "2026-03-17"},"4": {"used": 1,"lastDate": "2026-03-17"}},"exTotal": 2},
-                {"questions": {},"examples": {}},
-                {"questions": {},"examples": {}},
-                {"questions": {},"examples": {}},
-                {"questions": {},"examples": {}},
-                {"questions": {},"examples": {}},
-                {"questions": {},"examples": {}},
-                {"questions": {},"examples": {}},
-                {"questions": {},"examples": {}},
-                {"questions": {},"examples": {}},
-                {"questions": {},"examples": {}}
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {
+                    "1": {
+                      "used": 1,
+                      "lastDate": "2026-03-17"
+                    }
+                  },
+                  "exTotal": 1
+                },
+                {
+                  "questions": {},
+                  "examples": {
+                    "2": {
+                      "used": 1,
+                      "lastDate": "2026-03-17"
+                    }
+                  },
+                  "exTotal": 1
+                },
+                {
+                  "questions": {},
+                  "examples": {
+                    "3": {
+                      "used": 1,
+                      "lastDate": "2026-03-17"
+                    },
+                    "4": {
+                      "used": 1,
+                      "lastDate": "2026-03-17"
+                    }
+                  },
+                  "exTotal": 2
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                }
               ]
             },
             "Factorisation": {
               "folder": "books/class8/Ch12-Factorisation",
               "prefix": "fact",
               "pages": [
-                {"questions": {},"examples": {}},
-                {"questions": {},"examples": {}},
-                {"questions": {},"examples": {}},
-                {"questions": {},"examples": {}},
-                {"questions": {},"examples": {}},
-                {"questions": {},"examples": {}},
-                {"questions": {},"examples": {}},
-                {"questions": {},"examples": {}},
-                {"questions": {},"examples": {}},
-                {"questions": {},"examples": {}},
-                {"questions": {},"examples": {}},
-                {"questions": {},"examples": {}}
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {
+                    "1": {
+                      "used": 0,
+                      "lastDate": null
+                    },
+                    "2": {
+                      "used": 0,
+                      "lastDate": null
+                    }
+                  },
+                  "examples": {},
+                  "total": 2
+                },
+                {
+                  "questions": {
+                    "1": {
+                      "used": 0,
+                      "lastDate": null
+                    },
+                    "2": {
+                      "used": 0,
+                      "lastDate": null
+                    },
+                    "3": {
+                      "used": 0,
+                      "lastDate": null
+                    }
+                  },
+                  "examples": {
+                    "3": {
+                      "used": 0,
+                      "lastDate": null
+                    }
+                  },
+                  "total": 3,
+                  "exTotal": 1
+                },
+                {
+                  "questions": {},
+                  "examples": {
+                    "4": {
+                      "used": 0,
+                      "lastDate": null
+                    },
+                    "5": {
+                      "used": 0,
+                      "lastDate": null
+                    },
+                    "6": {
+                      "used": 0,
+                      "lastDate": null
+                    },
+                    "7": {
+                      "used": 0,
+                      "lastDate": null
+                    },
+                    "8": {
+                      "used": 0,
+                      "lastDate": null
+                    }
+                  },
+                  "exTotal": 5
+                },
+                {
+                  "questions": {},
+                  "examples": {
+                    "9": {
+                      "used": 0,
+                      "lastDate": null
+                    },
+                    "10": {
+                      "used": 0,
+                      "lastDate": null
+                    }
+                  },
+                  "exTotal": 2
+                },
+                {
+                  "questions": {
+                    "1": {
+                      "used": 0,
+                      "lastDate": null
+                    },
+                    "2": {
+                      "used": 0,
+                      "lastDate": null
+                    },
+                    "3": {
+                      "used": 0,
+                      "lastDate": null
+                    }
+                  },
+                  "examples": {
+                    "11": {
+                      "used": 0,
+                      "lastDate": null
+                    },
+                    "12": {
+                      "used": 0,
+                      "lastDate": null
+                    }
+                  },
+                  "total": 3,
+                  "exTotal": 2
+                },
+                {
+                  "questions": {
+                    "4": {
+                      "used": 0,
+                      "lastDate": null
+                    },
+                    "5": {
+                      "used": 0,
+                      "lastDate": null
+                    }
+                  },
+                  "examples": {
+                    "13": {
+                      "used": 0,
+                      "lastDate": null
+                    }
+                  },
+                  "total": 2,
+                  "exTotal": 1
+                },
+                {
+                  "questions": {},
+                  "examples": {
+                    "14": {
+                      "used": 0,
+                      "lastDate": null
+                    }
+                  },
+                  "exTotal": 1
+                },
+                {
+                  "questions": {},
+                  "examples": {
+                    "15": {
+                      "used": 0,
+                      "lastDate": null
+                    },
+                    "16": {
+                      "used": 0,
+                      "lastDate": null
+                    }
+                  },
+                  "exTotal": 2
+                },
+                {
+                  "questions": {
+                    "1": {
+                      "used": 0,
+                      "lastDate": null
+                    },
+                    "2": {
+                      "used": 0,
+                      "lastDate": null
+                    },
+                    "3": {
+                      "used": 0,
+                      "lastDate": null
+                    },
+                    "4": {
+                      "used": 0,
+                      "lastDate": null
+                    },
+                    "5": {
+                      "used": 0,
+                      "lastDate": null
+                    }
+                  },
+                  "examples": {},
+                  "total": 5
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                }
               ]
             }
           }
