@@ -1,0 +1,318 @@
+{
+  "students": [
+    {
+      "id": "migrated_1773733208764",
+      "name": "Student",
+      "emoji": "🎓",
+      "class": "Class 8",
+      "classes": {
+        "Class 8": {
+          "chapters": {
+            "Mensuration": {
+              "folder": "books/class8/ch9-Mensuration",
+              "prefix": "mensuration",
+              "pages": [
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {
+                    "1": {
+                      "used": 2,
+                      "lastDate": "2026-03-13"
+                    }
+                  },
+                  "examples": {
+                    "2": {
+                      "used": 1,
+                      "lastDate": "2026-03-13"
+                    }
+                  }
+                },
+                {
+                  "questions": {
+                    "4": {
+                      "used": 1,
+                      "lastDate": "2026-03-13"
+                    }
+                  },
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                }
+              ]
+            },
+            "Exponents and Powers": {
+              "folder": "books/class8/ch10-Exponents and Power",
+              "prefix": "exp",
+              "pages": [
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                }
+              ]
+            },
+            "Direct and Inverse Proportions": {
+              "folder": "books/class8/ch11-Direct and inverse propertions",
+              "prefix": "ch11",
+              "pages": [
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                }
+              ]
+            },
+            "Factorisation": {
+              "folder": "books/class8/Ch12-Factorisation",
+              "prefix": "fact",
+              "pages": [
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                }
+              ]
+            }
+          }
+        }
+      }
+    }
+  ],
+  "history": [
+    {
+      "date": "2026-03-13",
+      "datetime": "13/3/2026, 8:40:33 pm",
+      "className": "Class 8",
+      "chapter": "Mensuration",
+      "pages": [
+        {
+          "pageNum": 4,
+          "qNums": [
+            4
+          ],
+          "exNums": [],
+          "fname": "mensuration_p4_q4.png"
+        }
+      ]
+    },
+    {
+      "date": "2026-03-13",
+      "datetime": "13/3/2026, 3:37:49 pm",
+      "className": "Class 8",
+      "chapter": "Mensuration",
+      "pages": [
+        {
+          "pageNum": 3,
+          "qNums": [
+            1
+          ],
+          "exNums": [
+            2
+          ],
+          "fname": "mensuration_p3_q1_ex2.png"
+        }
+      ]
+    },
+    {
+      "date": "2026-03-13",
+      "datetime": "13/3/2026, 12:49:37 pm",
+      "className": "Class 8",
+      "chapter": "Mensuration",
+      "pages": [
+        {
+          "pageNum": 3,
+          "qNums": [],
+          "exNums": [
+            1
+          ],
+          "fname": "mensuration_p3_ex1.png"
+        }
+      ]
+    },
+    {
+      "date": "2026-03-13",
+      "datetime": "13/3/2026, 12:24:32 pm",
+      "className": "Class 8",
+      "chapter": "Mensuration",
+      "pages": [
+        {
+          "pageNum": 3,
+          "qs": [
+            1
+          ],
+          "fname": "mensuration_p3_q1.png"
+        }
+      ]
+    }
+  ]
+}
