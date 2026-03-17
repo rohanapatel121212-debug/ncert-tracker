@@ -1,4 +1,366 @@
 {
-  "students": [],
+  "students": [
+    {
+      "id": "migrated_1773733208764",
+      "name": "Student",
+      "emoji": "🎓",
+      "class": "Class 8",
+      "classes": {
+        "Class 8": {
+          "chapters": {
+            "Mensuration": {
+              "folder": "books/class8/ch9-Mensuration",
+              "prefix": "mensuration",
+              "pages": [
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {
+                    "1": {
+                      "used": 0,
+                      "lastDate": null
+                    }
+                  },
+                  "examples": {
+                    "2": {
+                      "used": 0,
+                      "lastDate": null
+                    }
+                  }
+                },
+                {
+                  "questions": {
+                    "4": {
+                      "used": 0,
+                      "lastDate": null
+                    }
+                  },
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                }
+              ]
+            },
+            "Exponents and Powers": {
+              "folder": "books/class8/ch10-Exponents and Power",
+              "prefix": "exp",
+              "pages": [
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {
+                    "1": {
+                      "used": 0,
+                      "lastDate": null
+                    },
+                    "2": {
+                      "used": 0,
+                      "lastDate": null
+                    },
+                    "3": {
+                      "used": 0,
+                      "lastDate": null
+                    },
+                    "4": {
+                      "used": 0,
+                      "lastDate": null
+                    },
+                    "5": {
+                      "used": 0,
+                      "lastDate": null
+                    }
+                  },
+                  "exTotal": 5
+                },
+                {
+                  "questions": {
+                    "1": {
+                      "used": 0,
+                      "lastDate": null
+                    },
+                    "2": {
+                      "used": 0,
+                      "lastDate": null
+                    },
+                    "3": {
+                      "used": 0,
+                      "lastDate": null
+                    }
+                  },
+                  "examples": {
+                    "6": {
+                      "used": 0,
+                      "lastDate": null
+                    },
+                    "7": {
+                      "used": 0,
+                      "lastDate": null
+                    }
+                  },
+                  "total": 3,
+                  "exTotal": 2
+                },
+                {
+                  "questions": {
+                    "4": {
+                      "used": 0,
+                      "lastDate": null
+                    },
+                    "5": {
+                      "used": 0,
+                      "lastDate": null
+                    },
+                    "6": {
+                      "used": 0,
+                      "lastDate": null
+                    },
+                    "7": {
+                      "used": 0,
+                      "lastDate": null
+                    }
+                  },
+                  "examples": {},
+                  "total": 4
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {
+                    "1": {
+                      "used": 0,
+                      "lastDate": null
+                    },
+                    "2": {
+                      "used": 0,
+                      "lastDate": null
+                    },
+                    "3": {
+                      "used": 0,
+                      "lastDate": null
+                    },
+                    "4": {
+                      "used": 0,
+                      "lastDate": null
+                    }
+                  },
+                  "examples": {
+                    "8": {
+                      "used": 0,
+                      "lastDate": null
+                    },
+                    "9": {
+                      "used": 0,
+                      "lastDate": null
+                    }
+                  },
+                  "total": 4,
+                  "exTotal": 2
+                }
+              ]
+            },
+            "Direct and Inverse Proportions": {
+              "folder": "books/class8/ch11-Direct and inverse propertions",
+              "prefix": "ch11",
+              "pages": [
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {
+                    "1": {
+                      "used": 0,
+                      "lastDate": null
+                    }
+                  },
+                  "exTotal": 1
+                },
+                {
+                  "questions": {},
+                  "examples": {
+                    "2": {
+                      "used": 0,
+                      "lastDate": null
+                    }
+                  },
+                  "exTotal": 1
+                },
+                {
+                  "questions": {},
+                  "examples": {
+                    "3": {
+                      "used": 0,
+                      "lastDate": null
+                    },
+                    "4": {
+                      "used": 0,
+                      "lastDate": null
+                    }
+                  },
+                  "exTotal": 2
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                }
+              ]
+            },
+            "Factorisation": {
+              "folder": "books/class8/Ch12-Factorisation",
+              "prefix": "fact",
+              "pages": [
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                }
+              ]
+            }
+          }
+        }
+      }
+    }
+  ],
   "history": []
 }
