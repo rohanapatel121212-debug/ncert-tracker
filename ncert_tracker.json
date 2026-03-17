@@ -78,10 +78,5 @@
       }
     }
   },
-  "history": [
-    {"date": "2026-03-13", "datetime": "13/3/2026, 8:40:33 pm", "className": "Class 8", "chapter": "Mensuration", "pages": [{"pageNum": 4, "qNums": [4], "exNums": [], "fname": "mensuration_p4_q4.png"}]},
-    {"date": "2026-03-13", "datetime": "13/3/2026, 3:37:49 pm", "className": "Class 8", "chapter": "Mensuration", "pages": [{"pageNum": 3, "qNums": [1], "exNums": [2], "fname": "mensuration_p3_q1_ex2.png"}]},
-    {"date": "2026-03-13", "datetime": "13/3/2026, 12:49:37 pm", "className": "Class 8", "chapter": "Mensuration", "pages": [{"pageNum": 3, "qNums": [], "exNums": [1], "fname": "mensuration_p3_ex1.png"}]},
-    {"date": "2026-03-13", "datetime": "13/3/2026, 12:24:32 pm", "className": "Class 8", "chapter": "Mensuration", "pages": [{"pageNum": 3, "qs": [1], "fname": "mensuration_p3_q1.png"}]}
-  ]
+  "history": [ ]
 }
