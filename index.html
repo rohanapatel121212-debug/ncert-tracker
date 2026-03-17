@@ -319,6 +319,14 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);max-width:48
 </head>
 <body>
 
+<!-- SPLASH / AUTO-SYNC SCREEN -->
+<div id="splash" style="display:none;position:fixed;inset:0;background:#0a0c10;z-index:999;flex-direction:column;align-items:center;justify-content:center;gap:16px;">
+  <div style="font-size:2.5rem;">📚</div>
+  <div style="font-family:'JetBrains Mono',monospace;font-size:1rem;font-weight:700;color:#e8eaf0;letter-spacing:.04em;">NCERT<span style="color:#22c55e;">.</span>smart</div>
+  <div style="width:40px;height:40px;border:3px solid #252a36;border-top-color:#22c55e;border-radius:50%;animation:spin .7s linear infinite;margin-top:8px;"></div>
+  <div style="font-size:.72rem;color:#5a6070;">GitHub se sync ho raha hai...</div>
+</div>
+
 <!-- TOPBAR -->
 <div class="topbar">
   <div class="logo">NCERT<em>.</em>smart <span class="logo-badge">v2</span></div>
@@ -462,22 +470,23 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);max-width:48
 <div class="page" id="page-settings">
 <div class="pi">
   <div class="sl" style="margin-top:4px;">GitHub Config</div>
+
+  <div class="set-card" style="background:rgba(6,182,212,.05);border-color:rgba(6,182,212,.15);">
+    <div style="font-size:.62rem;color:var(--cyan);font-weight:700;margin-bottom:6px;">📌 Repo (fixed)</div>
+    <div style="font-family:var(--mono);font-size:.78rem;color:var(--t2);">rohanapatel121212-debug / ncert-tracker</div>
+  </div>
+
   <div class="set-card">
-    <div class="set-lbl">Personal Access Token</div>
+    <div class="set-lbl">Personal Access Token <span style="color:var(--red);">*</span></div>
     <input class="inp" id="ghToken" type="password" placeholder="ghp_xxxxxxxxxxxx">
+    <div style="font-size:.6rem;color:var(--t2);margin-top:6px;line-height:1.7;">
+      GitHub → Profile → Settings → Developer settings →<br>
+      Personal access tokens → Tokens (classic) →<br>
+      Generate new token → <b style="color:var(--green);">repo</b> tick karo → Copy
+    </div>
   </div>
-  <div class="set-card">
-    <div class="set-lbl">Repo Owner</div>
-    <input class="inp" id="ghOwner" placeholder="username">
-  </div>
-  <div class="set-card">
-    <div class="set-lbl">Repo Name</div>
-    <input class="inp" id="ghRepo" placeholder="ncert-tracker">
-  </div>
-  <button class="big-btn btn-g" onclick="saveSettings()">Save Settings</button>
-  <div style="font-size:.65rem;color:var(--t3);margin-top:8px;line-height:1.8;">
-    Token: GitHub → Settings → Developer settings → Personal access tokens → repo scope
-  </div>
+
+  <button class="big-btn btn-g" onclick="saveSettings()">✓ Save Token & Sync</button>
 </div>
 </div>
 
@@ -578,8 +587,16 @@ const EMOJIS = ['👦','👧','🧑','🎓','⭐','🌟','🔥','💡','🎯','�
 window.onload = () => {
   loadSettingsUI();
   const s = getS();
-  if (s.token) loadFromGithub();
-  else { renderHome(); showToast('Settings mein GitHub token daalo', 'a'); }
+  if (s.token && s.owner && s.repo) {
+    document.getElementById('splash').style.display = 'flex';
+    loadFromGithub().finally(() => {
+      document.getElementById('splash').style.display = 'none';
+    });
+  } else {
+    renderHome();
+    showPage('settings');
+    showToast('Pehli baar: Settings mein GitHub token daalo ⚙️', 'a');
+  }
 };
 
 // ══════════════════════════════════════════════════════════
@@ -596,20 +613,36 @@ function showPage(name) {
 // ══════════════════════════════════════════════════════════
 // SETTINGS
 // ══════════════════════════════════════════════════════════
-function getS() { try { return JSON.parse(localStorage.getItem('ncerts2_cfg') || '{}'); } catch { return {}; } }
+const FIXED_OWNER = 'rohanapatel121212-debug';
+const FIXED_REPO  = 'ncert-tracker';
+
+function getS() {
+  try {
+    const s = JSON.parse(localStorage.getItem('ncerts2_cfg') || '{}');
+    s.owner = FIXED_OWNER;
+    s.repo  = FIXED_REPO;
+    return s;
+  } catch { return { owner: FIXED_OWNER, repo: FIXED_REPO }; }
+}
 function loadSettingsUI() {
   const s = getS();
   document.getElementById('ghToken').value = s.token || '';
-  document.getElementById('ghOwner').value = s.owner || '';
-  document.getElementById('ghRepo').value  = s.repo  || '';
 }
 function saveSettings() {
   localStorage.setItem('ncerts2_cfg', JSON.stringify({
     token: document.getElementById('ghToken').value.trim(),
-    owner: document.getElementById('ghOwner').value.trim(),
-    repo:  document.getElementById('ghRepo').value.trim()
+    owner: FIXED_OWNER,
+    repo:  FIXED_REPO
   }));
-  showToast('Saved!', 's');
+  showToast('✅ Token saved!', 's');
+  // Auto load after saving token
+  const s = getS();
+  if (s.token) {
+    document.getElementById('splash').style.display = 'flex';
+    loadFromGithub().finally(() => {
+      document.getElementById('splash').style.display = 'none';
+    });
+  }
 }
 
 // ══════════════════════════════════════════════════════════
