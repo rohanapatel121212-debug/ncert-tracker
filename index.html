@@ -249,6 +249,32 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);max-width:48
 .used-dot{width:5px;height:5px;border-radius:50%;background:var(--red);flex-shrink:0}
 .type-ex{font-size:.56rem;padding:1px 5px;border-radius:3px;background:var(--gdim);color:var(--green);font-weight:700}
 .type-exr{font-size:.56px;padding:1px 5px;border-radius:3px;background:var(--bdim);color:var(--blue);font-weight:700;font-size:.56rem}
+.q-actions-wrap{position:relative;flex-shrink:0;margin-left:2px}
+.q-act-toggle{background:none;border:none;color:var(--t2);font-size:.9rem;cursor:pointer;padding:2px 5px;border-radius:5px;line-height:1;transition:all .15s}
+.q-act-toggle:active{background:var(--s3);color:var(--text)}
+.q-act-popup{position:absolute;right:0;top:100%;background:var(--s2);border:1px solid var(--border2);border-radius:9px;padding:5px;z-index:50;display:flex;flex-direction:column;gap:4px;min-width:110px;box-shadow:0 8px 24px rgba(0,0,0,.5);animation:popIn .15s ease}
+.q-act-opt{padding:7px 11px;border-radius:6px;border:none;font-size:.75rem;font-weight:700;cursor:pointer;font-family:var(--sans);text-align:left;transition:all .1s;width:100%}
+.q-act-opt:active{transform:scale(.95)}
+.remove-opt{background:var(--rdim);color:var(--red);border:1px solid rgba(239,68,68,.2)}
+.replace-opt{background:var(--cdim);color:var(--cyan);border:1px solid rgba(6,182,212,.2)}
+.gp-q-row.removed{opacity:.3;text-decoration:line-through;pointer-events:none}
+.gp-q-row.replaced{background:rgba(6,182,212,.04)}
+
+/* Chapter distribution editor */
+.ch-dist-row{background:var(--s2);border:1px solid var(--border);border-radius:10px;padding:9px 12px;margin-bottom:6px;display:flex;align-items:center;gap:10px}
+.ch-dist-row.over-avail{border-color:rgba(239,68,68,.3);background:rgba(239,68,68,.03)}
+.cdr-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.cdr-info{flex:1;min-width:0}
+.cdr-name{font-size:.78rem;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cdr-avail{font-size:.6rem;color:var(--t2);font-family:var(--mono);margin-top:1px}
+.cdr-stepper{display:flex;align-items:center;gap:5px;flex-shrink:0}
+.cdr-btn{width:26px;height:26px;border-radius:7px;border:1px solid var(--border2);background:var(--s3);color:var(--text);font-size:.9rem;cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:700;transition:all .1s}
+.cdr-btn:active{transform:scale(.85);background:var(--s4)}
+.cdr-num{font-family:var(--mono);font-size:.85rem;font-weight:700;min-width:22px;text-align:center;color:var(--text)}
+.cdr-num-inp{width:36px;background:var(--s3);border:1px solid var(--border2);border-radius:6px;padding:3px 5px;color:var(--text);font-family:var(--mono);font-size:.82rem;font-weight:700;text-align:center;outline:none}
+.cdr-num-inp:focus{border-color:var(--cyan)}
+.dist-warn{font-size:.65rem;padding:6px 10px;border-radius:7px;background:var(--rdim);color:var(--red);border:1px solid rgba(239,68,68,.2);margin-bottom:8px;display:none}
+.dist-warn.show{display:block}
 
 /* Page thumbnail strip */
 .thumb-strip{display:flex;gap:6px;overflow-x:auto;padding:8px 14px;border-top:1px solid var(--border);scrollbar-width:none;background:rgba(0,0,0,.15)}
@@ -434,7 +460,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);max-width:48
     <div class="paper-config">
       <div class="pc-row">
         <span class="pc-label">Total Questions</span>
-        <input class="num-inp" id="paperQ" type="number" value="22" min="1" max="100">
+        <input class="num-inp" id="paperQ" type="number" value="22" min="1" max="100" oninput="updateChDist()">
       </div>
       <div class="pc-row">
         <span class="pc-label">Priority Mode</span>
@@ -445,6 +471,14 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);max-width:48
         </select>
       </div>
     </div>
+
+    <!-- Chapter Distribution Editor -->
+    <div class="sl">
+      Chapter Distribution
+      <span id="dist-total-badge" style="font-size:.6rem;padding:2px 8px;border-radius:4px;background:var(--gdim);color:var(--green);font-weight:700;letter-spacing:0;text-transform:none;margin-left:4px;">0/0</span>
+      <button class="icon-btn" onclick="resetChDist()" style="margin-left:auto;height:22px;font-size:.58rem;">↺ Auto</button>
+    </div>
+    <div id="ch-dist-editor" style="margin-bottom:10px;"></div>
 
     <!-- Output -->
     <div id="paperOutput" style="display:none;">
@@ -930,7 +964,8 @@ async function downloadAndMark() {
   const s = getS();
   const today = todayStr();
   const chData = getChData();
-  const chShort = activeChapter.replace(/\s+/g,'_').replace(/[^a-zA-Z0-9_]/g,'').toLowerCase().slice(0,12);
+  const chData2 = getChData();
+  const prefix = chData2?.prefix || activeChapter.replace(/\s+/g,'_').replace(/[^a-zA-Z0-9_]/g,'').toLowerCase().slice(0,12);
   showOverlay('Downloading...', 0);
   const hist = { date: today, datetime: new Date().toLocaleString('en-IN'), studentName: getStu(activeStuId)?.name, className: activeClass, chapter: activeChapter, pages: [] };
 
@@ -940,8 +975,9 @@ async function downloadAndMark() {
     const items = selQ[k];
     const qNums  = items.filter(x => x.startsWith('q')).map(x  => parseInt(x.slice(1))).sort((a,b)=>a-b);
     const exNums = items.filter(x => x.startsWith('ex')).map(x => parseInt(x.slice(2))).sort((a,b)=>a-b);
-    let nameParts = [`${chShort}_p${pn}`];
-    if (qNums.length)  nameParts.push(qNums.map(q  => `q${q}`).join('_'));
+    // Same structure as old app: prefix_pN_qX_qY_exA_exB.png
+    let nameParts = [`${prefix}_p${pn}`];
+    if (qNums.length)  nameParts.push(qNums.map(q => `q${q}`).join('_'));
     if (exNums.length) nameParts.push(exNums.map(e => `ex${e}`).join('_'));
     const fname = nameParts.join('_') + '.png';
     hist.pages.push({ pageNum: pn, qNums, exNums, fname });
@@ -994,10 +1030,135 @@ function renderPaperStuSelector() {
     const btn = document.createElement('button');
     btn.className = `stu-sel-btn${paperStuId === stu.id ? ' active' : ''}`;
     btn.innerHTML = `${stu.emoji || '👦'} ${esc(stu.name)}`;
-    btn.onclick = () => { paperStuId = stu.id; renderPaperStuSelector(); };
+    btn.onclick = () => { paperStuId = stu.id; renderPaperStuSelector(); renderChDistEditor(); };
     el.appendChild(btn);
   });
   if (!paperStuId && students.length) paperStuId = students[0].id;
+  renderChDistEditor();
+}
+
+// chDist = { chKey: count } — manual overrides
+let chDist = {};
+
+function getChKey(cls, chName) { return `${cls}||${chName}`; }
+
+function renderChDistEditor() {
+  const el = document.getElementById('ch-dist-editor');
+  if (!el) return;
+  const stu = getStu(paperStuId);
+  if (!stu) { el.innerHTML = ''; return; }
+
+  const Q = parseInt(document.getElementById('paperQ')?.value) || 22;
+  const autoQs = calcAutoChDist(stu, Q);
+
+  el.innerHTML = '';
+  let totalAssigned = 0;
+
+  Object.keys(stu.classes || {}).forEach(cls => {
+    Object.keys(stu.classes[cls].chapters || {}).forEach(chName => {
+      const ch = stu.classes[cls].chapters[chName];
+      const key = getChKey(cls, chName);
+      const { total: avail, used } = getChStats(ch);
+      const fresh = avail - used;
+      const autoQ = autoQs[key] || 0;
+      const manualQ = chDist[key] !== undefined ? chDist[key] : autoQ;
+      totalAssigned += manualQ;
+      const isOver = manualQ > avail;
+
+      const row = document.createElement('div');
+      row.className = `ch-dist-row${isOver ? ' over-avail' : ''}`;
+      row.id = `cdr-${key.replace(/[^a-z0-9]/gi,'_')}`;
+
+      const dotColor = fresh === 0 ? 'var(--red)' : fresh < 3 ? 'var(--amber)' : 'var(--green)';
+
+      row.innerHTML = `
+        <div class="cdr-dot" style="background:${dotColor}"></div>
+        <div class="cdr-info">
+          <div class="cdr-name">${esc(chName)}</div>
+          <div class="cdr-avail">${fresh} fresh · ${avail} total${isOver ? ' · <span style="color:var(--red)">⚠ not enough</span>' : ''}</div>
+        </div>
+        <div class="cdr-stepper">
+          <button class="cdr-btn" onclick="stepChDist('${esc(key)}',-1)">−</button>
+          <input class="cdr-num-inp" type="number" min="0" max="${avail}" value="${manualQ}"
+            onchange="setChDist('${esc(key)}',parseInt(this.value)||0)"
+            oninput="setChDist('${esc(key)}',parseInt(this.value)||0)">
+          <button class="cdr-btn" onclick="stepChDist('${esc(key)}',+1)">＋</button>
+        </div>`;
+      el.appendChild(row);
+    });
+  });
+
+  updateDistBadge(totalAssigned, Q);
+}
+
+function calcAutoChDist(stu, Q) {
+  // Same weight algorithm as generatePaper
+  const chapters = [];
+  Object.keys(stu.classes || {}).forEach(cls => {
+    Object.keys(stu.classes[cls].chapters || {}).forEach(chName => {
+      chapters.push({ cls, chName });
+    });
+  });
+  if (!chapters.length) return {};
+  const C = chapters.length;
+  const w = chapters.map((_, idx) => 1 / (C - idx));
+  const sum = w.reduce((a,b)=>a+b,0);
+  const nw = w.map(x=>x/sum);
+  let qs = nw.map(w => Math.round(w * Q));
+  let diff = Q - qs.reduce((a,b)=>a+b,0);
+  if (diff !== 0) {
+    const fracs = nw.map((w,i)=>({i,f:(w*Q)%1}));
+    fracs.sort((a,b)=>diff>0?b.f-a.f:a.f-b.f);
+    for (let k=0;k<Math.abs(diff);k++){qs[fracs[k].i]+=diff>0?1:-1;if(qs[fracs[k].i]<0)qs[fracs[k].i]=0;}
+  }
+  const result = {};
+  chapters.forEach((ch,i)=>{ result[getChKey(ch.cls,ch.chName)] = qs[i]; });
+  return result;
+}
+
+function stepChDist(key, delta) {
+  const stu = getStu(paperStuId);
+  const Q = parseInt(document.getElementById('paperQ')?.value) || 22;
+  const autoQs = calcAutoChDist(stu, Q);
+  const current = chDist[key] !== undefined ? chDist[key] : (autoQs[key] || 0);
+  const newVal = Math.max(0, current + delta);
+  chDist[key] = newVal;
+  renderChDistEditor();
+}
+
+function setChDist(key, val) {
+  chDist[key] = Math.max(0, val || 0);
+  updateDistBadge();
+}
+
+function updateDistBadge() {
+  const Q = parseInt(document.getElementById('paperQ')?.value) || 22;
+  const stu = getStu(paperStuId);
+  if (!stu) return;
+  const autoQs = calcAutoChDist(stu, Q);
+  let total = 0;
+  Object.keys(stu.classes || {}).forEach(cls => {
+    Object.keys(stu.classes[cls].chapters || {}).forEach(chName => {
+      const key = getChKey(cls, chName);
+      total += chDist[key] !== undefined ? chDist[key] : (autoQs[key] || 0);
+    });
+  });
+  const badge = document.getElementById('dist-total-badge');
+  if (!badge) return;
+  badge.textContent = `${total}/${Q}`;
+  badge.style.background = total === Q ? 'var(--gdim)' : total > Q ? 'var(--rdim)' : 'var(--adim)';
+  badge.style.color = total === Q ? 'var(--green)' : total > Q ? 'var(--red)' : 'var(--amber)';
+}
+
+function updateChDist() {
+  chDist = {}; // reset on total Q change
+  renderChDistEditor();
+}
+
+function resetChDist() {
+  chDist = {};
+  renderChDistEditor();
+  showToast('Auto distribution reset', 'a');
 }
 
 function generatePaper() {
@@ -1007,50 +1168,59 @@ function generatePaper() {
   const Q = parseInt(document.getElementById('paperQ').value) || 22;
   const mode = document.getElementById('paperMode').value;
 
-  // Collect all questions across all chapters for this student
-  const allItems = [];
-  Object.keys(stu.classes || {}).forEach(cls => {
-    Object.keys(stu.classes[cls].chapters || {}).forEach(chName => {
-      const ch = stu.classes[cls].chapters[chName];
-      (ch.pages || []).forEach((pg, pi) => {
-        const pn = pi + 1;
-        Object.keys(pg.questions || {}).forEach(n => {
-          const q = pg.questions[n];
-          allItems.push({ cls, chName, ch, pn, type: 'q', num: parseInt(n), used: q.used, lastDate: q.lastDate, loc: `Q${n}`, key: `q${n}_p${pn}` });
-        });
-        Object.keys(pg.examples || {}).forEach(n => {
-          const e = pg.examples[n];
-          allItems.push({ cls, chName, ch, pn, type: 'ex', num: parseInt(n), used: e.used, lastDate: e.lastDate, loc: `Example ${n}`, key: `ex${n}_p${pn}` });
-        });
-      });
-    });
-  });
+  // Get per-chapter counts — use manual chDist if set, else auto
+  const autoQs = calcAutoChDist(stu, Q);
 
-  if (!allItems.length) { showToast('Koi questions nahi hain — chapter mein Q/Ex add karo', 'e'); return; }
-
-  // SCORE each item (lower = higher priority)
+  // SCORE function
   const score = (item) => {
     const daysSince = item.lastDate ? Math.floor((Date.now() - new Date(item.lastDate).getTime()) / 86400000) : 9999;
     if (mode === 'fresh')    return item.used * 1000 - daysSince;
     if (mode === 'weak')     return item.used * 500  - daysSince;
-    return item.used * 800 - daysSince; // balanced
+    return item.used * 800 - daysSince;
   };
 
-  // Sort by priority
-  const sorted = [...allItems].sort((a, b) => score(a) - score(b));
-
-  // Pick top Q items, grouped by chapter
-  const picked = sorted.slice(0, Q);
-
-  // Group by chapter
   const groups = {};
-  picked.forEach(item => {
-    const k = `${item.cls}||${item.chName}`;
-    if (!groups[k]) groups[k] = { cls: item.cls, chName: item.chName, ch: item.ch, items: [] };
-    groups[k].items.push(item);
+  let anyQ = false;
+
+  Object.keys(stu.classes || {}).forEach(cls => {
+    Object.keys(stu.classes[cls].chapters || {}).forEach(chName => {
+      const ch = stu.classes[cls].chapters[chName];
+      const key = getChKey(cls, chName);
+      const wantCount = chDist[key] !== undefined ? chDist[key] : (autoQs[key] || 0);
+      if (!wantCount) return;
+
+      // Build pool for this chapter
+      const pool = [];
+      (ch.pages || []).forEach((pg, pi) => {
+        const pn = pi + 1;
+        Object.keys(pg.questions || {}).forEach(n => {
+          const q = pg.questions[n];
+          const num = parseInt(n);
+          pool.push({ cls, chName, ch, pn, type:'q', num, used: q.used||0, lastDate: q.lastDate||null, loc:`Q${num}`, key:`q${num}_p${pn}` });
+        });
+        Object.keys(pg.examples || {}).forEach(n => {
+          const e = pg.examples[n];
+          const num = parseInt(n);
+          pool.push({ cls, chName, ch, pn, type:'ex', num, used: e.used||0, lastDate: e.lastDate||null, loc:`Example ${num}`, key:`ex${num}_p${pn}` });
+        });
+      });
+
+      if (!pool.length) return;
+      anyQ = true;
+
+      // Sort by priority
+      const sorted = [...pool].sort((a,b) => score(a) - score(b));
+      // Pick top wantCount (cycle if fewer available)
+      const picked = [];
+      for (let i = 0; i < wantCount; i++) picked.push(sorted[i % sorted.length]);
+
+      groups[key] = { cls, chName, ch, items: picked };
+    });
   });
 
-  // Build paper blocks
+  if (!anyQ) { showToast('Koi questions nahi hain — chapter mein Q/Ex add karo', 'e'); return; }
+
+  // Build blocks with Q ranges
   let cursor = 1;
   const blocks = Object.values(groups).map(g => {
     const count = g.items.length;
@@ -1059,7 +1229,8 @@ function generatePaper() {
     return { ...g, start, end, count };
   });
 
-  currentPaper = { stuId: paperStuId, stuName: stu.name, date: todayStr(), totalQ: Q, blocks };
+  const totalQ = blocks.reduce((s,b) => s + b.count, 0);
+  currentPaper = { stuId: paperStuId, stuName: stu.name, date: todayStr(), totalQ, blocks };
   renderPaperOutput();
   document.getElementById('nb-paper').classList.add('show');
 }
@@ -1129,12 +1300,19 @@ function renderPaperOutput() {
       const dot = isFresh
         ? `<div class="fresh-dot" title="Fresh"></div>`
         : `<div class="used-dot" title="Used ${item.used}x"></div>`;
-      qHtml += `<div class="gp-q-row">
+      qHtml += `<div class="gp-q-row" id="qrow-${bi}-${qi}">
         <span class="gp-q-num">Q${qNum}.</span>
         <span class="gp-q-loc">${esc(item.loc)}</span>
         <span class="gp-q-page">P${item.pn}</span>
         ${typeTag}
         ${dot}
+        <div class="q-actions-wrap" id="qact-${bi}-${qi}">
+          <button class="q-act-btn q-act-toggle" onclick="toggleQActions(${bi},${qi})" title="Options">⋯</button>
+          <div class="q-act-popup" id="qpop-${bi}-${qi}" style="display:none;">
+            <button class="q-act-opt remove-opt" onclick="removeQuestion(${bi},${qi})">✕ Remove</button>
+            <button class="q-act-opt replace-opt" onclick="replaceQuestion(${bi},${qi})">↺ Replace</button>
+          </div>
+        </div>
       </div>`;
     });
 
@@ -1163,6 +1341,100 @@ function renderPaperOutput() {
 
   content.appendChild(wrap);
   document.getElementById('paperOutput').style.display = 'block';
+}
+
+// ── Q REMOVE / REPLACE ──────────────────────────────────
+function toggleQActions(bi, qi) {
+  // Close all other popups first
+  document.querySelectorAll('.q-act-popup').forEach(p => {
+    if (p.id !== `qpop-${bi}-${qi}`) p.style.display = 'none';
+  });
+  const pop = document.getElementById(`qpop-${bi}-${qi}`);
+  if (pop) pop.style.display = pop.style.display === 'none' ? 'flex' : 'none';
+}
+
+// Close popups when tapping outside
+document.addEventListener('click', e => {
+  if (!e.target.closest('.q-actions-wrap')) {
+    document.querySelectorAll('.q-act-popup').forEach(p => p.style.display = 'none');
+  }
+});
+
+function removeQuestion(bi, qi) {
+  if (!currentPaper) return;
+  const blk = currentPaper.blocks[bi];
+  // Remove from items
+  blk.items.splice(qi, 1);
+  blk.count = blk.items.length;
+  // Recalculate start/end for all blocks
+  recalcBlockRanges();
+  renderPaperOutput();
+  showToast('Question removed', 'a');
+}
+
+function replaceQuestion(bi, qi) {
+  if (!currentPaper) return;
+  const blk = currentPaper.blocks[bi];
+  const removedItem = blk.items[qi];
+
+  // Find a fresh unused question from same chapter, not already in paper
+  const stu = getStu(currentPaper.stuId);
+  const ch = blk.ch;
+
+  // All questions already in this paper (to avoid duplicates)
+  const usedKeys = new Set(blk.items.map(i => i.key));
+
+  // Build full pool for this chapter
+  const pool = [];
+  (ch.pages || []).forEach((pg, pi) => {
+    const pn = pi + 1;
+    Object.keys(pg.questions || {}).forEach(n => {
+      const q = pg.questions[n];
+      const num = parseInt(n);
+      const key = `q${num}_p${pn}`;
+      if (!usedKeys.has(key)) {
+        pool.push({ pn, type:'q', num, used: q.used||0, lastDate: q.lastDate||null, loc:`Q${num}`, key, ch });
+      }
+    });
+    Object.keys(pg.examples || {}).forEach(n => {
+      const e = pg.examples[n];
+      const num = parseInt(n);
+      const key = `ex${num}_p${pn}`;
+      if (!usedKeys.has(key)) {
+        pool.push({ pn, type:'ex', num, used: e.used||0, lastDate: e.lastDate||null, loc:`Example ${num}`, key, ch });
+      }
+    });
+  });
+
+  if (!pool.length) {
+    showToast('Is chapter mein aur fresh questions nahi hain!', 'e');
+    document.getElementById(`qpop-${bi}-${qi}`).style.display = 'none';
+    return;
+  }
+
+  // Sort by freshness — unused first, then least recently used
+  pool.sort((a, b) => {
+    const scoreA = a.used * 1000 - (a.lastDate ? Math.floor((Date.now()-new Date(a.lastDate).getTime())/86400000) : 9999);
+    const scoreB = b.used * 1000 - (b.lastDate ? Math.floor((Date.now()-new Date(b.lastDate).getTime())/86400000) : 9999);
+    return scoreA - scoreB;
+  });
+
+  const newItem = { ...pool[0], cls: blk.cls, chName: blk.chName };
+  blk.items[qi] = newItem;
+  recalcBlockRanges();
+  renderPaperOutput();
+  showToast(`↺ Replaced with ${newItem.loc} (P${newItem.pn})`, 's');
+}
+
+function recalcBlockRanges() {
+  let cursor = 1;
+  currentPaper.blocks.forEach(blk => {
+    blk.start = cursor;
+    blk.end   = cursor + blk.items.length - 1;
+    blk.count = blk.items.length;
+    cursor    = blk.end + 1;
+  });
+  currentPaper.totalQ = currentPaper.blocks.reduce((s, b) => s + b.items.length, 0);
 }
 
 function toggleSec(bi) {
@@ -1214,21 +1486,38 @@ async function markPaperDone() {
 async function downloadChapterImages(bi) {
   if (!currentPaper) return;
   const blk = currentPaper.blocks[bi];
-  const pages = [...new Set(blk.items.map(i => i.pn))].sort((a,b)=>a-b);
-  const chShort = blk.chName.replace(/\s+/g,'_').toLowerCase().slice(0,10);
+  const prefix = blk.ch.prefix || blk.chName.replace(/\s+/g,'_').toLowerCase().slice(0,12);
+
+  // Group items by page — ensure pn is integer
+  const byPage = {};
+  blk.items.forEach(item => {
+    const pn = parseInt(item.pn);
+    if (!byPage[pn]) byPage[pn] = { qNums:[], exNums:[] };
+    if (item.type === 'q')  byPage[pn].qNums.push(parseInt(item.num));
+    if (item.type === 'ex') byPage[pn].exNums.push(parseInt(item.num));
+  });
+  const pages = Object.keys(byPage).map(Number).sort((a,b)=>a-b);
+
   showOverlay('Downloading chapter images...', 0);
   let done = 0;
   for (const pn of pages) {
+    const { qNums, exNums } = byPage[pn];
+    // Same filename structure as old app: prefix_pN_qX_qY_exA_exB.png
+    let nameParts = [`${prefix}_p${pn}`];
+    if (qNums.length)  nameParts.push(qNums.sort((a,b)=>a-b).map(q => `q${q}`).join('_'));
+    if (exNums.length) nameParts.push(exNums.sort((a,b)=>a-b).map(e => `ex${e}`).join('_'));
+    const fname = nameParts.join('_') + '.png';
+
     const url = buildImgUrl(blk.ch, pn);
     if (!url) { done++; continue; }
-    updateOverlay(`${chShort}_p${pn}.png`, done / pages.length * 100);
+    updateOverlay(fname, done / pages.length * 100);
     try {
       const res = await fetch(url);
       if (res.ok) {
         const blob = await res.blob();
         const a = document.createElement('a');
         a.href = URL.createObjectURL(blob);
-        a.download = `${chShort}_p${pn}.png`;
+        a.download = fname;
         a.click();
         await new Promise(r => setTimeout(r, 400));
       }
@@ -1244,9 +1533,22 @@ async function downloadPaperImages() {
   if (!currentPaper) return;
   const allPages = [];
   currentPaper.blocks.forEach(blk => {
-    const pages = [...new Set(blk.items.map(i => i.pn))];
-    const chShort = blk.chName.replace(/\s+/g,'_').toLowerCase().slice(0,10);
-    pages.forEach(pn => allPages.push({ url: buildImgUrl(blk.ch, pn), name: `${chShort}_p${pn}.png` }));
+    const prefix = blk.ch.prefix || blk.chName.replace(/\s+/g,'_').toLowerCase().slice(0,12);
+    // Group items by page — ensure integers
+    const byPage = {};
+    blk.items.forEach(item => {
+      const pn = parseInt(item.pn);
+      if (!byPage[pn]) byPage[pn] = { qNums:[], exNums:[] };
+      if (item.type === 'q')  byPage[pn].qNums.push(parseInt(item.num));
+      if (item.type === 'ex') byPage[pn].exNums.push(parseInt(item.num));
+    });
+    Object.keys(byPage).map(Number).sort((a,b)=>a-b).forEach(pn => {
+      const { qNums, exNums } = byPage[pn];
+      let nameParts = [`${prefix}_p${pn}`];
+      if (qNums.length)  nameParts.push(qNums.sort((a,b)=>a-b).map(q=>`q${q}`).join('_'));
+      if (exNums.length) nameParts.push(exNums.sort((a,b)=>a-b).map(e=>`ex${e}`).join('_'));
+      allPages.push({ url: buildImgUrl(blk.ch, pn), name: nameParts.join('_') + '.png' });
+    });
   });
   const valid = allPages.filter(p => p.url);
   if (!valid.length) { showToast('Koi image URL nahi bana', 'a'); return; }
