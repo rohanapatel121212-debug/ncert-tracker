@@ -18,167 +18,38 @@
                 },
                 {
                   "questions": {},
-                  "examples": {
-                    "1": {
-                      "used": 1,
-                      "lastDate": "2026-03-17"
-                    }
-                  },
-                  "exTotal": 1
+                  "examples": {}
                 },
                 {
                   "questions": {
                     "1": {
-                      "used": 1,
-                      "lastDate": "2026-03-17"
+                      "used": 0,
+                      "lastDate": null
                     }
                   },
                   "examples": {
                     "2": {
-                      "used": 1,
-                      "lastDate": "2026-03-17"
+                      "used": 0,
+                      "lastDate": null
                     }
                   }
                 },
                 {
                   "questions": {
-                    "2": {
-                      "used": 1,
-                      "lastDate": "2026-03-17"
-                    },
-                    "3": {
-                      "used": 0,
-                      "lastDate": null
-                    },
-                    "4": {
-                      "used": 0,
-                      "lastDate": null
-                    },
-                    "5": {
-                      "used": 0,
-                      "lastDate": null
-                    },
-                    "6": {
-                      "used": 0,
-                      "lastDate": null
-                    },
-                    "7": {
-                      "used": 0,
-                      "lastDate": null
-                    },
-                    "8": {
-                      "used": 0,
-                      "lastDate": null
-                    },
-                    "9": {
-                      "used": 0,
-                      "lastDate": null
-                    },
-                    "10": {
-                      "used": 0,
-                      "lastDate": null
-                    },
-                    "11": {
-                      "used": 0,
-                      "lastDate": null
-                    }
-                  },
-                  "examples": {},
-                  "total": 10
-                },
-                {
-                  "questions": {},
-                  "examples": {}
-                },
-                {
-                  "questions": {},
-                  "examples": {}
-                },
-                {
-                  "questions": {},
-                  "examples": {}
-                },
-                {
-                  "questions": {},
-                  "examples": {}
-                },
-                {
-                  "questions": {},
-                  "examples": {}
-                },
-                {
-                  "questions": {},
-                  "examples": {
                     "4": {
                       "used": 0,
                       "lastDate": null
                     }
                   },
-                  "exTotal": 1
+                  "examples": {}
                 },
                 {
                   "questions": {},
-                  "examples": {
-                    "5": {
-                      "used": 0,
-                      "lastDate": null
-                    },
-                    "6": {
-                      "used": 0,
-                      "lastDate": null
-                    },
-                    "7": {
-                      "used": 0,
-                      "lastDate": null
-                    }
-                  },
-                  "exTotal": 3
+                  "examples": {}
                 },
                 {
-                  "questions": {
-                    "1": {
-                      "used": 0,
-                      "lastDate": null
-                    },
-                    "2": {
-                      "used": 0,
-                      "lastDate": null
-                    },
-                    "3": {
-                      "used": 0,
-                      "lastDate": null
-                    },
-                    "4": {
-                      "used": 0,
-                      "lastDate": null
-                    },
-                    "5": {
-                      "used": 0,
-                      "lastDate": null
-                    },
-                    "6": {
-                      "used": 0,
-                      "lastDate": null
-                    },
-                    "7": {
-                      "used": 0,
-                      "lastDate": null
-                    },
-                    "8": {
-                      "used": 0,
-                      "lastDate": null
-                    },
-                    "9": {
-                      "used": 0,
-                      "lastDate": null
-                    },
-                    "10": {
-                      "used": 0,
-                      "lastDate": null
-                    }
-                  },
-                  "examples": {},
-                  "total": 10
+                  "questions": {},
+                  "examples": {}
                 },
                 {
                   "questions": {},
@@ -194,71 +65,19 @@
                 },
                 {
                   "questions": {},
-                  "examples": {
-                    "8": {
-                      "used": 0,
-                      "lastDate": null
-                    },
-                    "9": {
-                      "used": 0,
-                      "lastDate": null
-                    },
-                    "10": {
-                      "used": 0,
-                      "lastDate": null
-                    }
-                  },
-                  "exTotal": 3
+                  "examples": {}
                 },
                 {
-                  "questions": {
-                    "1": {
-                      "used": 0,
-                      "lastDate": null
-                    },
-                    "2": {
-                      "used": 0,
-                      "lastDate": null
-                    },
-                    "3": {
-                      "used": 0,
-                      "lastDate": null
-                    },
-                    "4": {
-                      "used": 0,
-                      "lastDate": null
-                    },
-                    "5": {
-                      "used": 0,
-                      "lastDate": null
-                    },
-                    "6": {
-                      "used": 0,
-                      "lastDate": null
-                    },
-                    "7": {
-                      "used": 0,
-                      "lastDate": null
-                    }
-                  },
-                  "examples": {
-                    "11": {
-                      "used": 0,
-                      "lastDate": null
-                    }
-                  },
-                  "total": 7,
-                  "exTotal": 1
+                  "questions": {},
+                  "examples": {}
                 },
                 {
-                  "questions": {
-                    "8": {
-                      "used": 0,
-                      "lastDate": null
-                    }
-                  },
-                  "examples": {},
-                  "total": 1
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
                 }
               ]
             },
@@ -282,20 +101,20 @@
                   "questions": {},
                   "examples": {
                     "1": {
-                      "used": 1,
-                      "lastDate": "2026-03-17"
+                      "used": 0,
+                      "lastDate": null
                     },
                     "2": {
-                      "used": 1,
-                      "lastDate": "2026-03-17"
+                      "used": 0,
+                      "lastDate": null
                     },
                     "3": {
-                      "used": 1,
-                      "lastDate": "2026-03-17"
+                      "used": 0,
+                      "lastDate": null
                     },
                     "4": {
-                      "used": 1,
-                      "lastDate": "2026-03-17"
+                      "used": 0,
+                      "lastDate": null
                     },
                     "5": {
                       "used": 0,
@@ -412,8 +231,8 @@
                   "questions": {},
                   "examples": {
                     "1": {
-                      "used": 1,
-                      "lastDate": "2026-03-17"
+                      "used": 0,
+                      "lastDate": null
                     }
                   },
                   "exTotal": 1
@@ -422,8 +241,8 @@
                   "questions": {},
                   "examples": {
                     "2": {
-                      "used": 1,
-                      "lastDate": "2026-03-17"
+                      "used": 0,
+                      "lastDate": null
                     }
                   },
                   "exTotal": 1
@@ -432,71 +251,27 @@
                   "questions": {},
                   "examples": {
                     "3": {
-                      "used": 1,
-                      "lastDate": "2026-03-17"
+                      "used": 0,
+                      "lastDate": null
                     },
                     "4": {
-                      "used": 1,
-                      "lastDate": "2026-03-17"
+                      "used": 0,
+                      "lastDate": null
                     }
                   },
                   "exTotal": 2
                 },
                 {
                   "questions": {},
-                  "examples": {
-                    "5": {
-                      "used": 0,
-                      "lastDate": null
-                    }
-                  },
-                  "exTotal": 1
+                  "examples": {}
                 },
                 {
-                  "questions": {
-                    "1": {
-                      "used": 0,
-                      "lastDate": null
-                    },
-                    "2": {
-                      "used": 0,
-                      "lastDate": null
-                    },
-                    "3": {
-                      "used": 0,
-                      "lastDate": null
-                    },
-                    "4": {
-                      "used": 0,
-                      "lastDate": null
-                    },
-                    "5": {
-                      "used": 0,
-                      "lastDate": null
-                    },
-                    "6": {
-                      "used": 0,
-                      "lastDate": null
-                    },
-                    "7": {
-                      "used": 0,
-                      "lastDate": null
-                    },
-                    "8": {
-                      "used": 0,
-                      "lastDate": null
-                    },
-                    "9": {
-                      "used": 0,
-                      "lastDate": null
-                    },
-                    "10": {
-                      "used": 0,
-                      "lastDate": null
-                    }
-                  },
-                  "examples": {},
-                  "total": 10
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
                 },
                 {
                   "questions": {},
@@ -512,77 +287,11 @@
                 },
                 {
                   "questions": {},
-                  "examples": {
-                    "7": {
-                      "used": 0,
-                      "lastDate": null
-                    },
-                    "8": {
-                      "used": 0,
-                      "lastDate": null
-                    },
-                    "9": {
-                      "used": 0,
-                      "lastDate": null
-                    }
-                  },
-                  "exTotal": 3
+                  "examples": {}
                 },
                 {
-                  "questions": {
-                    "1": {
-                      "used": 0,
-                      "lastDate": null
-                    },
-                    "2": {
-                      "used": 0,
-                      "lastDate": null
-                    },
-                    "3": {
-                      "used": 0,
-                      "lastDate": null
-                    }
-                  },
-                  "examples": {},
-                  "total": 3
-                },
-                {
-                  "questions": {
-                    "4": {
-                      "used": 0,
-                      "lastDate": null
-                    },
-                    "5": {
-                      "used": 0,
-                      "lastDate": null
-                    },
-                    "6": {
-                      "used": 0,
-                      "lastDate": null
-                    },
-                    "7": {
-                      "used": 0,
-                      "lastDate": null
-                    },
-                    "8": {
-                      "used": 0,
-                      "lastDate": null
-                    },
-                    "9": {
-                      "used": 0,
-                      "lastDate": null
-                    },
-                    "10": {
-                      "used": 0,
-                      "lastDate": null
-                    },
-                    "11": {
-                      "used": 0,
-                      "lastDate": null
-                    }
-                  },
-                  "examples": {},
-                  "total": 8
+                  "questions": {},
+                  "examples": {}
                 },
                 {
                   "questions": {},
@@ -608,179 +317,39 @@
                 },
                 {
                   "questions": {},
-                  "examples": {
-                    "1": {
-                      "used": 1,
-                      "lastDate": "2026-03-17"
-                    },
-                    "2": {
-                      "used": 1,
-                      "lastDate": "2026-03-17"
-                    }
-                  },
-                  "exTotal": 2
-                },
-                {
-                  "questions": {
-                    "1": {
-                      "used": 1,
-                      "lastDate": "2026-03-17"
-                    },
-                    "2": {
-                      "used": 0,
-                      "lastDate": null
-                    },
-                    "3": {
-                      "used": 0,
-                      "lastDate": null
-                    }
-                  },
-                  "examples": {
-                    "3": {
-                      "used": 0,
-                      "lastDate": null
-                    }
-                  },
-                  "total": 3,
-                  "exTotal": 1
+                  "examples": {}
                 },
                 {
                   "questions": {},
-                  "examples": {
-                    "4": {
-                      "used": 0,
-                      "lastDate": null
-                    },
-                    "5": {
-                      "used": 0,
-                      "lastDate": null
-                    },
-                    "6": {
-                      "used": 0,
-                      "lastDate": null
-                    },
-                    "7": {
-                      "used": 0,
-                      "lastDate": null
-                    },
-                    "8": {
-                      "used": 0,
-                      "lastDate": null
-                    }
-                  },
-                  "exTotal": 5
+                  "examples": {}
                 },
                 {
                   "questions": {},
-                  "examples": {
-                    "9": {
-                      "used": 0,
-                      "lastDate": null
-                    },
-                    "10": {
-                      "used": 0,
-                      "lastDate": null
-                    }
-                  },
-                  "exTotal": 2
-                },
-                {
-                  "questions": {
-                    "1": {
-                      "used": 0,
-                      "lastDate": null
-                    },
-                    "2": {
-                      "used": 0,
-                      "lastDate": null
-                    },
-                    "3": {
-                      "used": 0,
-                      "lastDate": null
-                    }
-                  },
-                  "examples": {
-                    "11": {
-                      "used": 0,
-                      "lastDate": null
-                    },
-                    "12": {
-                      "used": 0,
-                      "lastDate": null
-                    }
-                  },
-                  "total": 3,
-                  "exTotal": 2
-                },
-                {
-                  "questions": {
-                    "4": {
-                      "used": 0,
-                      "lastDate": null
-                    },
-                    "5": {
-                      "used": 0,
-                      "lastDate": null
-                    }
-                  },
-                  "examples": {
-                    "13": {
-                      "used": 0,
-                      "lastDate": null
-                    }
-                  },
-                  "total": 2,
-                  "exTotal": 1
+                  "examples": {}
                 },
                 {
                   "questions": {},
-                  "examples": {
-                    "14": {
-                      "used": 0,
-                      "lastDate": null
-                    }
-                  },
-                  "exTotal": 1
+                  "examples": {}
                 },
                 {
                   "questions": {},
-                  "examples": {
-                    "15": {
-                      "used": 0,
-                      "lastDate": null
-                    },
-                    "16": {
-                      "used": 0,
-                      "lastDate": null
-                    }
-                  },
-                  "exTotal": 2
+                  "examples": {}
                 },
                 {
-                  "questions": {
-                    "1": {
-                      "used": 0,
-                      "lastDate": null
-                    },
-                    "2": {
-                      "used": 0,
-                      "lastDate": null
-                    },
-                    "3": {
-                      "used": 0,
-                      "lastDate": null
-                    },
-                    "4": {
-                      "used": 0,
-                      "lastDate": null
-                    },
-                    "5": {
-                      "used": 0,
-                      "lastDate": null
-                    }
-                  },
-                  "examples": {},
-                  "total": 5
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
                 },
                 {
                   "questions": {},
@@ -793,35 +362,5 @@
       }
     }
   ],
-  "history": [
-    {
-      "date": "2026-03-17",
-      "datetime": "17/3/2026, 11:02:44 pm",
-      "studentName": "Student",
-      "totalQ": 15,
-      "type": "auto-paper",
-      "chapters": [
-        {
-          "chapter": "Mensuration",
-          "cls": "Class 8",
-          "count": 4
-        },
-        {
-          "chapter": "Exponents and Powers",
-          "cls": "Class 8",
-          "count": 4
-        },
-        {
-          "chapter": "Direct and Inverse Proportions",
-          "cls": "Class 8",
-          "count": 4
-        },
-        {
-          "chapter": "Factorisation",
-          "cls": "Class 8",
-          "count": 3
-        }
-      ]
-    }
-  ]
+  "history": []
 }
