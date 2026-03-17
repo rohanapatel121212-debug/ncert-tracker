@@ -23,22 +23,22 @@
                 {
                   "questions": {
                     "1": {
-                      "used": 2,
-                      "lastDate": "2026-03-13"
+                      "used": 3,
+                      "lastDate": "2026-03-17"
                     }
                   },
                   "examples": {
                     "2": {
-                      "used": 1,
-                      "lastDate": "2026-03-13"
+                      "used": 2,
+                      "lastDate": "2026-03-17"
                     }
                   }
                 },
                 {
                   "questions": {
                     "4": {
-                      "used": 1,
-                      "lastDate": "2026-03-13"
+                      "used": 2,
+                      "lastDate": "2026-03-17"
                     }
                   },
                   "examples": {}
@@ -249,6 +249,20 @@
     }
   ],
   "history": [
+    {
+      "date": "2026-03-17",
+      "datetime": "17/3/2026, 1:16:22 pm",
+      "studentName": "Student",
+      "totalQ": 22,
+      "type": "auto-paper",
+      "chapters": [
+        {
+          "chapter": "Mensuration",
+          "cls": "Class 8",
+          "count": 3
+        }
+      ]
+    },
     {
       "date": "2026-03-13",
       "datetime": "13/3/2026, 8:40:33 pm",
