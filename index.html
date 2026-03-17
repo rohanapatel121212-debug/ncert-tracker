@@ -1396,8 +1396,14 @@ async function saveToGithub() {
 
 async function loadFromGithub() {
   const s = getS();
+  if (!s.token || !s.owner || !s.repo) {
+    showToast('Settings mein token/owner/repo daalo', 'e');
+    showPage('settings');
+    return;
+  }
   showToast('Loading from GitHub...', 'a');
   try {
+    // 1. Try new format first
     const r = await fetch(`https://api.github.com/repos/${s.owner}/${s.repo}/contents/ncert_smart_v2.json`, {
       headers: { Authorization: `token ${s.token}`, Accept: 'application/vnd.github.v3+json' },
       cache: 'no-cache'
@@ -1408,17 +1414,60 @@ async function loadFromGithub() {
       if (!data.history) data.history = [];
       renderHome();
       showToast('✓ Data loaded!', 's');
-    } else if (r.status === 404) {
-      data = { students: [], history: [] };
-      renderHome();
-      showToast('Fresh start!', 'a');
-    } else {
-      showToast('Load failed: ' + r.status, 'e');
+      return;
     }
+    // 2. Try OLD format (ncert_tracker.json) — auto migrate
+    const rOld = await fetch(`https://api.github.com/repos/${s.owner}/${s.repo}/contents/ncert_tracker.json`, {
+      headers: { Authorization: `token ${s.token}`, Accept: 'application/vnd.github.v3+json' },
+      cache: 'no-cache'
+    });
+    if (rOld.ok) {
+      const dOld = await rOld.json();
+      const old = JSON.parse(decodeURIComponent(escape(atob(dOld.content))));
+      data = migrateOldData(old);
+      renderHome();
+      await saveToGithub();
+      const clsCount = Object.keys(old.classes || {}).length;
+      let chCount = 0;
+      Object.values(old.classes || {}).forEach(c => chCount += Object.keys(c.chapters || {}).length);
+      showToast('Purana data import ho gaya! ' + chCount + ' chapters migrated', 's');
+      return;
+    }
+    // 3. Fresh start
+    data = { students: [], history: [] };
+    renderHome();
+    showToast('Fresh start! Student add karo.', 'a');
   } catch(e) {
-    showToast('Network error', 'e');
+    showToast('Network error: ' + e.message, 'e');
     renderHome();
   }
+}
+
+function migrateOldData(old) {
+  // Old: { classes: { "Class 10": { chapters: { "Ch": { folder, prefix, pages } } } }, history, studentName }
+  // New: { students: [{ id, name, emoji, class, classes }], history }
+  const defaultStudent = {
+    id: 'migrated_' + Date.now(),
+    name: old.studentName || 'Student',
+    emoji: '🎓',
+    class: Object.keys(old.classes || {})[0] || '',
+    classes: {}
+  };
+  Object.keys(old.classes || {}).forEach(cls => {
+    defaultStudent.classes[cls] = { chapters: {} };
+    Object.keys((old.classes[cls] || {}).chapters || {}).forEach(chName => {
+      const oldCh = old.classes[cls].chapters[chName];
+      defaultStudent.classes[cls].chapters[chName] = {
+        folder: oldCh.folder || '',
+        prefix: oldCh.prefix || '',
+        pages: (oldCh.pages || []).map(pg => ({
+          questions: pg.questions || {},
+          examples:  pg.examples  || {}
+        }))
+      };
+    });
+  });
+  return { students: [defaultStudent], history: old.history || [] };
 }
 
 // ══════════════════════════════════════════════════════════
