@@ -18,7 +18,13 @@
                 },
                 {
                   "questions": {},
-                  "examples": {}
+                  "examples": {
+                    "1": {
+                      "used": 0,
+                      "lastDate": null
+                    }
+                  },
+                  "exTotal": 1
                 },
                 {
                   "questions": {
