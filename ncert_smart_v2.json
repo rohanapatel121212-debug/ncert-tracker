@@ -239,11 +239,27 @@
                 },
                 {
                   "questions": {},
-                  "examples": {}
+                  "examples": {
+                    "2": {
+                      "used": 0,
+                      "lastDate": null
+                    }
+                  },
+                  "exTotal": 1
                 },
                 {
                   "questions": {},
-                  "examples": {}
+                  "examples": {
+                    "3": {
+                      "used": 0,
+                      "lastDate": null
+                    },
+                    "4": {
+                      "used": 0,
+                      "lastDate": null
+                    }
+                  },
+                  "exTotal": 2
                 },
                 {
                   "questions": {},
