@@ -10,6 +10,7 @@
 <meta name="theme-color" content="#0a0c10">
 <link rel="manifest" href="manifest.json">
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 :root{
@@ -484,7 +485,10 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);max-width:48
     <div id="paperOutput" style="display:none;">
       <div class="sl">Generated Paper</div>
       <div id="paperContent"></div>
-      <button class="big-btn btn-c" onclick="downloadPaperImages()">🖼 Download All Images</button>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:7px;">
+        <button class="big-btn btn-c" style="margin:0;font-size:.75rem;" onclick="downloadPaperImages()">🖼 Alag Alag</button>
+        <button class="big-btn btn-c" style="margin:0;font-size:.75rem;background:var(--cyan);color:#000;" onclick="downloadPaperImagesZip()">🗜 ZIP File</button>
+      </div>
       <button class="big-btn btn-g" onclick="markPaperDone()">✓ Mark All Done + Save History</button>
       <button class="big-btn btn-o" onclick="generatePaper()">↺ Regenerate</button>
     </div>
@@ -1332,8 +1336,9 @@ function renderPaperOutput() {
       <div class="gp-sec-body open" id="gsec-${bi}">
         ${thumbHtml}
         ${qHtml}
-        <div class="paper-dl-bar">
-          <button class="paper-dl-btn" onclick="downloadChapterImages(${bi})">↓ Download Chapter Images</button>
+        <div class="paper-dl-bar" style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
+          <button class="paper-dl-btn" onclick="downloadChapterImages(${bi})">🖼 Alag Alag</button>
+          <button class="paper-dl-btn" style="background:rgba(6,182,212,.15);border-color:rgba(6,182,212,.3);" onclick="downloadChapterImagesZip(${bi})">🗜 ZIP</button>
         </div>
       </div>`;
     wrap.appendChild(sec);
@@ -1571,6 +1576,111 @@ async function downloadPaperImages() {
   }
   hideOverlay();
   showToast(`✓ ${done} images downloaded!`, 's');
+}
+
+// ══════════════════════════════════════════════════════════
+// ZIP DOWNLOAD FUNCTIONS
+// ══════════════════════════════════════════════════════════
+
+// Helper — collect pages list with filenames for a block
+function getBlockPages(blk) {
+  const prefix = blk.ch.prefix || blk.chName.replace(/\s+/g,'_').toLowerCase().slice(0,12);
+  const byPage = {};
+  blk.items.forEach(item => {
+    const pn = parseInt(item.pn);
+    if (!byPage[pn]) byPage[pn] = { qNums:[], exNums:[] };
+    if (item.type === 'q')  byPage[pn].qNums.push(parseInt(item.num));
+    if (item.type === 'ex') byPage[pn].exNums.push(parseInt(item.num));
+  });
+  const result = [];
+  Object.keys(byPage).map(Number).sort((a,b)=>a-b).forEach(pn => {
+    const { qNums, exNums } = byPage[pn];
+    let nameParts = [`${prefix}_p${pn}`];
+    if (qNums.length)  nameParts.push(qNums.sort((a,b)=>a-b).map(q=>`q${q}`).join('_'));
+    if (exNums.length) nameParts.push(exNums.sort((a,b)=>a-b).map(e=>`ex${e}`).join('_'));
+    result.push({ url: buildImgUrl(blk.ch, pn), name: nameParts.join('_') + '.png', pn });
+  });
+  return result;
+}
+
+// ZIP — single chapter
+async function downloadChapterImagesZip(bi) {
+  if (!currentPaper) return;
+  const blk = currentPaper.blocks[bi];
+  const pages = getBlockPages(blk);
+  const valid = pages.filter(p => p.url);
+  if (!valid.length) { showToast('Koi image URL nahi bana', 'a'); return; }
+
+  if (typeof JSZip === 'undefined') { showToast('JSZip load nahi hua, retry karo', 'e'); return; }
+
+  const zip = new JSZip();
+  const chShort = blk.chName.replace(/\s+/g,'_').toLowerCase().slice(0,12);
+  showOverlay('ZIP ban raha hai...', 0);
+
+  let done = 0;
+  for (const item of valid) {
+    updateOverlay(item.name, done / valid.length * 100);
+    try {
+      const res = await fetch(item.url);
+      if (res.ok) {
+        const blob = await res.blob();
+        zip.file(item.name, blob);
+      }
+    } catch(e) {}
+    done++;
+  }
+
+  updateOverlay('ZIP compress ho raha hai...', 95);
+  const zipBlob = await zip.generateAsync({ type:'blob', compression:'DEFLATE', compressionOptions:{ level:6 } });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(zipBlob);
+  a.download = `${chShort}_paper_${todayStr()}.zip`;
+  a.click();
+  hideOverlay();
+  showToast(`✅ ZIP downloaded! (${done} images)`, 's');
+}
+
+// ZIP — full paper (all chapters)
+async function downloadPaperImagesZip() {
+  if (!currentPaper) return;
+  if (typeof JSZip === 'undefined') { showToast('JSZip load nahi hua, retry karo', 'e'); return; }
+
+  const allPages = [];
+  currentPaper.blocks.forEach(blk => {
+    getBlockPages(blk).forEach(p => allPages.push({ ...p, chName: blk.chName }));
+  });
+  const valid = allPages.filter(p => p.url);
+  if (!valid.length) { showToast('Koi image URL nahi bana', 'a'); return; }
+
+  const zip = new JSZip();
+  const stu = getStu(currentPaper.stuId);
+  const stuName = (stu?.name || 'student').replace(/\s+/g,'_');
+
+  showOverlay('ZIP ban raha hai...', 0);
+
+  let done = 0;
+  for (const item of valid) {
+    updateOverlay(item.name, Math.round(done / valid.length * 90));
+    try {
+      const res = await fetch(item.url);
+      if (res.ok) {
+        const blob = await res.blob();
+        // Folder per chapter inside ZIP
+        const chFolder = item.chName.replace(/\s+/g,'_').toLowerCase().slice(0,15);
+        zip.file(`${chFolder}/${item.name}`, blob);
+      }
+    } catch(e) {}
+    done++;
+  }
+
+  updateOverlay('ZIP compress ho raha hai...', 95);
+  const zipBlob = await zip.generateAsync({ type:'blob', compression:'DEFLATE', compressionOptions:{ level:6 } });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(zipBlob);
+  a.download = `${stuName}_paper_${todayStr()}.zip`;
+  a.click();
+  hideOverlay();
+  showToast(`✅ ZIP downloaded! (${done} images)`, 's');
 }
 
 // ══════════════════════════════════════════════════════════
