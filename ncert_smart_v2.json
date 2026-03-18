@@ -486,12 +486,12 @@
                 {
                   "questions": {
                     "1": {
-                      "used": 0,
-                      "lastDate": null
+                      "used": 1,
+                      "lastDate": "2026-03-18"
                     },
                     "2": {
-                      "used": 0,
-                      "lastDate": null
+                      "used": 1,
+                      "lastDate": "2026-03-18"
                     },
                     "3": {
                       "used": 0,
@@ -500,8 +500,8 @@
                   },
                   "examples": {
                     "6": {
-                      "used": 0,
-                      "lastDate": null
+                      "used": 1,
+                      "lastDate": "2026-03-18"
                     },
                     "7": {
                       "used": 0,
@@ -1017,6 +1017,26 @@
     }
   ],
   "history": [
+    {
+      "date": "2026-03-18",
+      "datetime": "19/3/2026, 12:18:52 am",
+      "studentName": "Student",
+      "className": "Class 8",
+      "chapter": "Exponents and Powers",
+      "pages": [
+        {
+          "pageNum": 5,
+          "qNums": [
+            1,
+            2
+          ],
+          "exNums": [
+            6
+          ],
+          "fname": "exp_p5_q1_q2_ex6.png"
+        }
+      ]
+    },
     {
       "date": "2026-03-18",
       "datetime": "19/3/2026, 12:17:57 am",
