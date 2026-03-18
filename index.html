@@ -261,6 +261,44 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);max-width:48
 .gp-q-row.removed{opacity:.3;text-decoration:line-through;pointer-events:none}
 .gp-q-row.replaced{background:rgba(6,182,212,.04)}
 
+/* Wrong / Forgetting curve styles */
+.q-chip.wrong{background:rgba(239,68,68,.12);border-color:rgba(239,68,68,.4)}
+.q-chip.wrong .qnum{color:var(--red)}
+.q-chip.wrong-due{background:rgba(245,158,11,.12);border-color:rgba(245,158,11,.4)}
+.q-chip.wrong-due .qnum{color:var(--amber)}
+.wrong-badge{font-size:.38rem;padding:1px 3px;border-radius:2px;background:var(--red);color:#fff;font-weight:700;line-height:1.2}
+.due-badge{font-size:.38rem;padding:1px 3px;border-radius:2px;background:var(--amber);color:#000;font-weight:700;line-height:1.2}
+
+/* Wrong mark popup in chip */
+.diff-popup{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:250;display:none;align-items:flex-end;justify-content:center}
+.diff-popup.open{display:flex}
+.diff-sheet{width:100%;max-width:480px;background:var(--s1);border-radius:18px 18px 0 0;padding:14px 16px 34px;border-top:1px solid var(--border2)}
+.diff-handle{width:30px;height:3px;background:var(--border2);border-radius:2px;margin:0 auto 12px}
+.diff-title{font-size:.88rem;font-weight:800;margin-bottom:4px}
+.diff-sub{font-size:.7rem;color:var(--t2);margin-bottom:14px}
+.diff-btns{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:10px}
+.diff-btn{padding:12px 8px;border-radius:11px;border:none;font-size:.78rem;font-weight:700;cursor:pointer;font-family:var(--sans);transition:all .15s;text-align:center}
+.diff-btn:active{transform:scale(.93)}
+.diff-easy{background:rgba(34,197,94,.12);color:var(--green);border:1px solid rgba(34,197,94,.25)}
+.diff-medium{background:rgba(245,158,11,.12);color:var(--amber);border:1px solid rgba(245,158,11,.25)}
+.diff-hard{background:rgba(239,68,68,.12);color:var(--red);border:1px solid rgba(239,68,68,.25)}
+.diff-next{font-size:.62rem;color:var(--t2);text-align:center;margin-top:6px}
+
+/* Paper review section */
+.review-banner{background:rgba(245,158,11,.07);border:1px solid rgba(245,158,11,.2);border-radius:11px;padding:11px 13px;margin-bottom:10px;display:none}
+.review-banner.show{display:block}
+.review-banner-title{font-size:.78rem;font-weight:800;color:var(--amber);margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.review-item{display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid rgba(245,158,11,.1);font-size:.72rem}
+.review-item:last-child{border-bottom:none}
+.review-ch{color:var(--t2);font-size:.62rem;font-family:var(--mono)}
+.review-loc{font-weight:600;flex:1}
+.diff-pill-s{font-size:.55rem;padding:1px 6px;border-radius:4px;font-weight:700}
+.dp-easy{background:rgba(34,197,94,.15);color:var(--green)}
+.dp-medium{background:rgba(245,158,11,.15);color:var(--amber)}
+.dp-hard{background:rgba(239,68,68,.15);color:var(--red)}
+.gp-q-row.is-wrong{background:rgba(239,68,68,.04);border-left:2px solid var(--red)}
+.gp-q-row.is-due{background:rgba(245,158,11,.04);border-left:2px solid var(--amber)}
+
 /* Chapter distribution editor */
 .ch-dist-row{background:var(--s2);border:1px solid var(--border);border-radius:10px;padding:9px 12px;margin-bottom:6px;display:flex;align-items:center;gap:10px}
 .ch-dist-row.over-avail{border-color:rgba(239,68,68,.3);background:rgba(239,68,68,.03)}
@@ -434,6 +472,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);max-width:48
       <div class="sel-summary" id="selSummary">Koi select nahi</div>
       <div class="btn-row">
         <button class="btn btn-ghost" onclick="clearSel()">Clear</button>
+        <button class="btn" style="background:rgba(239,68,68,.15);color:var(--red);border:1px solid rgba(239,68,68,.2);" onclick="openWrongFromChapter()">✗ Wrong</button>
         <button class="btn btn-green" onclick="downloadAndMark()">↓ Download + Mark</button>
       </div>
     </div>
@@ -451,6 +490,12 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);max-width:48
     <button class="icon-btn c" onclick="generatePaper()" style="flex-shrink:0;">Generate</button>
   </div>
   <div style="flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:12px;">
+
+    <!-- Review Banner — due questions -->
+    <div class="review-banner" id="reviewBanner">
+      <div class="review-banner-title">🔁 Aaj Review Karo <span id="reviewCount" style="font-size:.62rem;background:var(--amber);color:#000;padding:1px 6px;border-radius:4px;"></span></div>
+      <div id="reviewList"></div>
+    </div>
 
     <!-- Student selector -->
     <div class="sl" style="margin-top:4px;">Student</div>
@@ -533,7 +578,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);max-width:48
 <!-- BOTTOM NAV -->
 <div class="bnav">
   <div class="ni active" id="ni-home"     onclick="showPage('home')"><div class="ni-icon">📚</div><div class="ni-lbl">Home</div></div>
-  <div class="ni"        id="ni-paper"    onclick="showPage('paper');renderPaperStuSelector()"><div class="ni-icon">⚡</div><div class="ni-lbl">Paper</div><div class="ni-badge" id="nb-paper"></div></div>
+  <div class="ni"        id="ni-paper"    onclick="showPage('paper');renderPaperStuSelector();renderReviewBanner()"><div class="ni-icon">⚡</div><div class="ni-lbl">Paper</div><div class="ni-badge" id="nb-paper"></div></div>
   <div class="ni"        id="ni-history"  onclick="showPage('history');renderHistory()"><div class="ni-icon">🕐</div><div class="ni-lbl">History</div></div>
   <div class="ni"        id="ni-settings" onclick="showPage('settings')"><div class="ni-icon">⚙️</div><div class="ni-lbl">Settings</div></div>
 </div>
@@ -569,6 +614,22 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);max-width:48
       <button class="mbtn mbtn-ghost" onclick="closeModal()">Cancel</button>
       <button class="mbtn mbtn-g" id="mConfirmBtn" onclick="confirmModal()">Confirm</button>
     </div>
+  </div>
+</div>
+
+<!-- DIFFICULTY / WRONG MARK POPUP -->
+<div class="diff-popup" id="diffPopup" onclick="if(event.target===this)closeDiffPopup()">
+  <div class="diff-sheet">
+    <div class="diff-handle"></div>
+    <div class="diff-title" id="diffPopupTitle">Wrong Mark Karo</div>
+    <div class="diff-sub" id="diffPopupSub">Kitna mushkil tha?</div>
+    <div class="diff-btns">
+      <button class="diff-btn diff-easy"  onclick="markWrong('easy')">😊 Easy<br><span style="font-size:.58rem;opacity:.7">7 din baad</span></button>
+      <button class="diff-btn diff-medium" onclick="markWrong('medium')">😐 Medium<br><span style="font-size:.58rem;opacity:.7">3 din baad</span></button>
+      <button class="diff-btn diff-hard"  onclick="markWrong('hard')">😰 Hard<br><span style="font-size:.58rem;opacity:.7">1 din baad</span></button>
+    </div>
+    <button class="big-btn btn-o" style="margin:0;font-size:.78rem;" onclick="closeDiffPopup()">Cancel</button>
+    <div class="diff-next" id="diffPopupNext"></div>
   </div>
 </div>
 
@@ -871,12 +932,19 @@ function renderQPanel(pn) {
   if (qNums.length) {
     let html = '';
     qNums.forEach(n => {
-      const q = pg.questions[n];
+      const q = pg.questions[String(n)];
       const isUsed = q.used > 0;
       const isSel  = sel.includes('q' + n);
-      const cls = isSel ? 'selected' : isUsed ? 'used' : 'fresh';
+      const isWrong = q.wrong && q.wrong.count > 0;
+      const isDue   = isWrong && q.wrong.nextReview && q.wrong.nextReview <= todayStr();
+      const chipCls = isSel ? 'selected' : isDue ? 'wrong-due' : isWrong ? 'wrong' : isUsed ? 'used' : 'fresh';
       const dateStr = q.lastDate ? fmtD(q.lastDate) : '';
-      html += `<div class="q-chip ${cls}" onclick="toggleItem(${pn},'q',${n})"><div class="qnum">Q${n}</div><div class="qdate">${dateStr}</div></div>`;
+      const badge   = isDue ? `<div class="due-badge">DUE</div>` : isWrong ? `<div class="wrong-badge">${q.wrong.count}✗</div>` : '';
+      html += `<div class="q-chip ${chipCls}" onclick="toggleItem(${pn},'q',${n})">
+        <div class="qnum">Q${n}</div>
+        <div class="qdate">${dateStr}</div>
+        ${badge}
+      </div>`;
     });
     document.getElementById('qGrid').innerHTML = html;
     document.getElementById('qTray').style.display = 'block';
@@ -888,12 +956,19 @@ function renderQPanel(pn) {
   if (exNums.length) {
     let html = '';
     exNums.forEach(n => {
-      const e = pg.examples[n];
+      const e = pg.examples[String(n)];
       const isUsed = e.used > 0;
       const isSel  = sel.includes('ex' + n);
-      const cls = isSel ? 'selected' : isUsed ? 'used' : 'fresh';
+      const isWrong = e.wrong && e.wrong.count > 0;
+      const isDue   = isWrong && e.wrong.nextReview && e.wrong.nextReview <= todayStr();
+      const chipCls = isSel ? 'selected' : isDue ? 'wrong-due' : isWrong ? 'wrong' : isUsed ? 'used' : 'fresh';
       const dateStr = e.lastDate ? fmtD(e.lastDate) : '';
-      html += `<div class="q-chip ${cls}" onclick="toggleItem(${pn},'ex',${n})"><div class="qnum">E${n}</div><div class="qdate">${dateStr}</div></div>`;
+      const badge   = isDue ? `<div class="due-badge">DUE</div>` : isWrong ? `<div class="wrong-badge">${e.wrong.count}✗</div>` : '';
+      html += `<div class="q-chip ${chipCls}" onclick="toggleItem(${pn},'ex',${n})">
+        <div class="qnum">E${n}</div>
+        <div class="qdate">${dateStr}</div>
+        ${badge}
+      </div>`;
     });
     document.getElementById('exGrid').innerHTML = html;
     document.getElementById('exTray').style.display = 'block';
@@ -1005,10 +1080,10 @@ async function downloadAndMark() {
       } catch(e) {}
     }
 
-    // Mark used
+    // Mark used — string keys zaroori hain
     const pg = chData.pages[pn - 1];
-    qNums.forEach(q  => { if (!pg.questions[q]) pg.questions[q] = { used:0, lastDate:null }; pg.questions[q].used++; pg.questions[q].lastDate = today; });
-    exNums.forEach(e => { if (!pg.examples[e])  pg.examples[e]  = { used:0, lastDate:null }; pg.examples[e].used++;  pg.examples[e].lastDate  = today; });
+    qNums.forEach(q  => { const k=String(q); if (!pg.questions[k]) pg.questions[k] = { used:0, lastDate:null }; pg.questions[k].used++; pg.questions[k].lastDate = today; });
+    exNums.forEach(e => { const k=String(e); if (!pg.examples[k])  pg.examples[k]  = { used:0, lastDate:null }; pg.examples[k].used++;  pg.examples[k].lastDate  = today; });
   }
 
   if (!data.history) data.history = [];
@@ -1315,6 +1390,7 @@ function renderPaperOutput() {
           <div class="q-act-popup" id="qpop-${bi}-${qi}" style="display:none;">
             <button class="q-act-opt remove-opt" onclick="removeQuestion(${bi},${qi})">✕ Remove</button>
             <button class="q-act-opt replace-opt" onclick="replaceQuestion(${bi},${qi})">↺ Replace</button>
+            <button class="q-act-opt" style="background:rgba(239,68,68,.1);color:var(--red);border:1px solid rgba(239,68,68,.2);" onclick="openWrongFromPaper(${bi},${qi})">✗ Wrong Mark</button>
           </div>
         </div>
       </div>`;
@@ -1431,6 +1507,154 @@ function replaceQuestion(bi, qi) {
   showToast(`↺ Replaced with ${newItem.loc} (P${newItem.pn})`, 's');
 }
 
+// ══════════════════════════════════════════════════════════
+// FORGETTING CURVE — WRONG QUESTION TRACKER
+// ══════════════════════════════════════════════════════════
+
+// Intervals by difficulty (days)
+const FC_INTERVALS = { easy: 7, medium: 3, hard: 1 };
+// After each review: easy→15, medium→7, hard→3
+const FC_NEXT = { easy: [7,15,30], medium: [3,7,15], hard: [1,3,7] };
+
+let _wrongTarget = null; // {type:'chapter'|'paper', bi, qi, pn, qtype, num, chRef}
+
+function addDays(dateStr, days) {
+  const d = new Date(dateStr);
+  d.setDate(d.getDate() + days);
+  return d.toISOString().split('T')[0];
+}
+
+// From chapter view — selected chips
+function openWrongFromChapter() {
+  const keys = Object.keys(selQ).filter(k => selQ[k].length > 0);
+  if (!keys.length) { showToast('Pehle questions select karo', 'e'); return; }
+  // Mark wrong for all selected
+  _wrongTarget = { type: 'chapter-bulk', keys };
+  document.getElementById('diffPopupTitle').textContent = 'Wrong Questions Mark Karo';
+  document.getElementById('diffPopupSub').textContent = `${keys.reduce((s,k)=>s+selQ[k].length,0)} questions selected — kitna mushkil tha?`;
+  document.getElementById('diffPopup').classList.add('open');
+}
+
+// From paper ⋯ menu
+function openWrongFromPaper(bi, qi) {
+  const blk = currentPaper.blocks[bi];
+  const item = blk.items[qi];
+  _wrongTarget = { type: 'paper', bi, qi, item };
+  document.getElementById('diffPopupTitle').textContent = `${item.loc} — Wrong Mark`;
+  document.getElementById('diffPopupSub').textContent = `${esc(item.chName)} · P${item.pn} — kitna mushkil tha?`;
+  document.getElementById(`qpop-${bi}-${qi}`).style.display = 'none';
+  document.getElementById('diffPopup').classList.add('open');
+}
+
+function closeDiffPopup() {
+  document.getElementById('diffPopup').classList.remove('open');
+  _wrongTarget = null;
+}
+
+function markWrong(difficulty) {
+  if (!_wrongTarget) return;
+  const today = todayStr();
+  const interval = FC_INTERVALS[difficulty];
+  const nextReview = addDays(today, interval);
+
+  function applyWrong(pgObj, type, num) {
+    const k = String(num);
+    const store = type === 'q' ? pgObj.questions : pgObj.examples;
+    if (!store[k]) store[k] = { used: 0, lastDate: null };
+    if (!store[k].wrong) store[k].wrong = { count: 0, lastDate: null, nextReview: null, difficulty: null, history: [] };
+    store[k].wrong.count++;
+    store[k].wrong.lastDate = today;
+    store[k].wrong.difficulty = difficulty;
+    // Progressive interval: each wrong adds more days
+    const intervals = FC_NEXT[difficulty];
+    const reviewDays = intervals[Math.min(store[k].wrong.count - 1, intervals.length - 1)];
+    store[k].wrong.nextReview = addDays(today, reviewDays);
+    store[k].wrong.history = store[k].wrong.history || [];
+    store[k].wrong.history.push({ date: today, difficulty });
+  }
+
+  if (_wrongTarget.type === 'chapter-bulk') {
+    const ch = getChData();
+    Object.keys(selQ).forEach(pnStr => {
+      const pn = parseInt(pnStr);
+      const pg = ch.pages[pn - 1];
+      if (!pg) return;
+      selQ[pnStr].forEach(key => {
+        if (key.startsWith('q'))  applyWrong(pg, 'q',  parseInt(key.slice(1)));
+        if (key.startsWith('ex')) applyWrong(pg, 'ex', parseInt(key.slice(2)));
+      });
+    });
+    renderQPanel(activePage);
+    showToast(`✗ Wrong marked! Review: ${nextReview}`, 'e');
+
+  } else if (_wrongTarget.type === 'paper') {
+    const item = _wrongTarget.item;
+    const ch = item.ch;
+    const pg = ch.pages[item.pn - 1];
+    applyWrong(pg, item.type, item.num);
+    renderPaperOutput();
+    showToast(`✗ Wrong! Review in ${interval} din (${nextReview})`, 'e');
+  }
+
+  saveToGithub();
+  closeDiffPopup();
+  renderReviewBanner();
+}
+
+// Collect all due/wrong questions for current student
+function getDueQuestions() {
+  const today = todayStr();
+  const due = [], upcoming = [];
+  const stu = getStu(paperStuId) || (data.students || [])[0];
+  if (!stu) return { due, upcoming };
+
+  Object.keys(stu.classes || {}).forEach(cls => {
+    Object.keys(stu.classes[cls].chapters || {}).forEach(chName => {
+      const ch = stu.classes[cls].chapters[chName];
+      (ch.pages || []).forEach((pg, pi) => {
+        const pn = pi + 1;
+        [...Object.entries(pg.questions || {}), ...Object.entries(pg.examples || {})].forEach(([n, q]) => {
+          if (!q.wrong || !q.wrong.count) return;
+          const item = {
+            chName, cls, pn,
+            type: pg.questions[n] ? 'q' : 'ex',
+            num: parseInt(n),
+            loc: pg.questions[n] ? `Q${n}` : `Ex${n}`,
+            difficulty: q.wrong.difficulty,
+            nextReview: q.wrong.nextReview,
+            count: q.wrong.count
+          };
+          if (q.wrong.nextReview <= today) due.push(item);
+          else upcoming.push(item);
+        });
+      });
+    });
+  });
+  return { due, upcoming };
+}
+
+function renderReviewBanner() {
+  const banner = document.getElementById('reviewBanner');
+  const list   = document.getElementById('reviewList');
+  const countEl = document.getElementById('reviewCount');
+  if (!banner) return;
+
+  const { due } = getDueQuestions();
+  if (!due.length) { banner.classList.remove('show'); return; }
+
+  banner.classList.add('show');
+  countEl.textContent = due.length + ' due';
+  list.innerHTML = due.slice(0, 8).map(item => {
+    const diffCls = `dp-${item.difficulty}`;
+    return `<div class="review-item">
+      <span class="review-loc">${esc(item.loc)}</span>
+      <span class="review-ch">${esc(item.chName)} · P${item.pn}</span>
+      <span class="diff-pill-s ${diffCls}">${item.difficulty}</span>
+      <span style="font-size:.6rem;color:var(--red);font-family:var(--mono);">${item.count}✗</span>
+    </div>`;
+  }).join('') + (due.length > 8 ? `<div style="font-size:.62rem;color:var(--t2);padding:4px 0;">+${due.length-8} more...</div>` : '');
+}
+
 function recalcBlockRanges() {
   let cursor = 1;
   currentPaper.blocks.forEach(blk => {
@@ -1460,14 +1684,16 @@ async function markPaperDone() {
     blk.items.forEach(item => {
       const ch = blk.ch;
       const pg = ch.pages[item.pn - 1];
+      if (!pg) return;
+      const key = String(item.num); // ← FIX: string key, integer se match nahi hota tha
       if (item.type === 'q') {
-        if (!pg.questions[item.num]) pg.questions[item.num] = { used:0, lastDate:null };
-        pg.questions[item.num].used++;
-        pg.questions[item.num].lastDate = today;
+        if (!pg.questions[key]) pg.questions[key] = { used:0, lastDate:null };
+        pg.questions[key].used++;
+        pg.questions[key].lastDate = today;
       } else {
-        if (!pg.examples[item.num])  pg.examples[item.num]  = { used:0, lastDate:null };
-        pg.examples[item.num].used++;
-        pg.examples[item.num].lastDate = today;
+        if (!pg.examples[key]) pg.examples[key] = { used:0, lastDate:null };
+        pg.examples[key].used++;
+        pg.examples[key].lastDate = today;
       }
     });
   });
