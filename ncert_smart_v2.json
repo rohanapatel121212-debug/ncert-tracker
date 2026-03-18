@@ -461,24 +461,24 @@
                   "questions": {},
                   "examples": {
                     "1": {
-                      "used": 0,
-                      "lastDate": null
+                      "used": 1,
+                      "lastDate": "2026-03-18"
                     },
                     "2": {
-                      "used": 0,
-                      "lastDate": null
+                      "used": 1,
+                      "lastDate": "2026-03-18"
                     },
                     "3": {
-                      "used": 0,
-                      "lastDate": null
+                      "used": 1,
+                      "lastDate": "2026-03-18"
                     },
                     "4": {
-                      "used": 0,
-                      "lastDate": null
+                      "used": 1,
+                      "lastDate": "2026-03-18"
                     },
                     "5": {
-                      "used": 0,
-                      "lastDate": null
+                      "used": 1,
+                      "lastDate": "2026-03-18"
                     }
                   },
                   "exTotal": 5
@@ -1016,5 +1016,27 @@
       }
     }
   ],
-  "history": []
+  "history": [
+    {
+      "date": "2026-03-18",
+      "datetime": "19/3/2026, 12:17:57 am",
+      "studentName": "Student",
+      "className": "Class 8",
+      "chapter": "Exponents and Powers",
+      "pages": [
+        {
+          "pageNum": 4,
+          "qNums": [],
+          "exNums": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "fname": "exp_p4_ex1_ex2_ex3_ex4_ex5.png"
+        }
+      ]
+    }
+  ]
 }
