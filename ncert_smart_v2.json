@@ -970,6 +970,50 @@
           }
         }
       }
+    },
+    {
+      "id": "stu_bhumi_c5",
+      "name": "Bhumi",
+      "emoji": "👧",
+      "class": "Class 5",
+      "classes": {
+        "Class 5": {
+          "chapters": {}
+        }
+      }
+    },
+    {
+      "id": "stu_shivansh_c5",
+      "name": "Shivansh",
+      "emoji": "👦",
+      "class": "Class 5",
+      "classes": {
+        "Class 5": {
+          "chapters": {}
+        }
+      }
+    },
+    {
+      "id": "stu_bhumurai_c6",
+      "name": "Bhumi Rai",
+      "emoji": "🌟",
+      "class": "Class 6",
+      "classes": {
+        "Class 6": {
+          "chapters": {}
+        }
+      }
+    },
+    {
+      "id": "stu_jnv_c6",
+      "name": "JNV",
+      "emoji": "🏆",
+      "class": "Class 6",
+      "classes": {
+        "Class 6": {
+          "chapters": {}
+        }
+      }
     }
   ],
   "history": []
