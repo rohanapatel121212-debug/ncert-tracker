@@ -800,35 +800,6 @@
   ],
   "history": [
     {
-      "date": "2026-03-18",
-      "datetime": "18/3/2026, 10:20:43 am",
-      "studentName": "Student",
-      "totalQ": 22,
-      "type": "auto-paper",
-      "chapters": [
-        {
-          "chapter": "Mensuration",
-          "cls": "Class 8",
-          "count": 3
-        },
-        {
-          "chapter": "Exponents and Powers",
-          "cls": "Class 8",
-          "count": 4
-        },
-        {
-          "chapter": "Direct and Inverse Proportions",
-          "cls": "Class 8",
-          "count": 4
-        },
-        {
-          "chapter": "Factorisation",
-          "cls": "Class 8",
-          "count": 11
-        }
-      ]
-    },
-    {
       "date": "2026-03-17",
       "datetime": "17/3/2026, 11:41:43 pm",
       "studentName": "Student",
