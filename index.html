@@ -2242,18 +2242,44 @@ function renderHistory() {
     const wrongCount = (h.snapshot || []).filter(s => s.wrong).length;
     const hasSnap = isAuto && h.snapshot && h.snapshot.length > 0;
 
-    // Build question rows if snapshot exists
+    // Build question rows grouped by page with images
     let qRowsHtml = '';
     if (hasSnap) {
-      qRowsHtml = h.snapshot.map((item, si) => {
-        const w = item.wrong;
-        const pillCls = w ? `wp-${w.difficulty}` : 'wp-none';
-        const pillTxt = w ? `✗ ${w.difficulty}` : '✓ OK';
-        return `<div class="hist-q-row${w ? ' wrong-row' : ''}" onclick="cycleWrong(${hi},${si})">
-          <span class="hist-q-loc">${esc(item.loc||((item.type==='q'?'Q':'Ex')+item.num))}</span>
-          <span class="hist-q-ch">${esc(item.chName)} · P${item.pn}</span>
-          <span class="wrong-pill ${pillCls}">${pillTxt}</span>
-        </div>`;
+      const stu = getStu(h.stuId);
+      // Group items by chName+pn
+      const pageGroups = {};
+      h.snapshot.forEach((item, si) => {
+        const key = item.chName + '||' + item.pn;
+        if (!pageGroups[key]) pageGroups[key] = { chName: item.chName, cls: item.cls, pn: item.pn, items: [] };
+        pageGroups[key].items.push({ ...item, si });
+      });
+
+      qRowsHtml = Object.values(pageGroups).map(pg => {
+        // Build image URL
+        const ch = stu?.classes?.[pg.cls]?.chapters?.[pg.chName];
+        const imgUrl = ch ? buildImgUrl(ch, pg.pn) : null;
+
+        const imgHtml = imgUrl
+          ? `<div style="padding:8px 12px 4px;border-bottom:1px solid var(--border);">
+              <img src="${imgUrl}" loading="lazy"
+                style="width:100%;border-radius:7px;cursor:pointer;display:block;"
+                onclick="openImgFs('${imgUrl}','${esc(pg.chName)} · P${pg.pn}')"
+                onerror="this.parentElement.style.display='none'">
+            </div>`
+          : '';
+
+        const qRows = pg.items.map(item => {
+          const w = item.wrong;
+          const pillCls = w ? `wp-${w.difficulty}` : 'wp-none';
+          const pillTxt = w ? `✗ ${w.difficulty}` : '✓ OK';
+          return `<div class="hist-q-row${w ? ' wrong-row' : ''}" onclick="cycleWrong(${hi},${item.si})">
+            <span class="hist-q-loc">${esc(item.loc||((item.type==='q'?'Q':'Ex')+item.num))}</span>
+            <span class="hist-q-ch">${esc(item.chName)} · P${item.pn}</span>
+            <span class="wrong-pill ${pillCls}">${pillTxt}</span>
+          </div>`;
+        }).join('');
+
+        return imgHtml + qRows;
       }).join('');
 
       qRowsHtml += `<div style="padding:9px 13px;display:flex;gap:7px;background:var(--s2);border-top:1px solid var(--border);">
