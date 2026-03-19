@@ -229,6 +229,34 @@
                       "used": 1,
                       "lastDate": "2026-03-19",
                       "wrong": {
+                        "count": 4,
+                        "lastDate": "2026-03-19",
+                        "nextReview": "2026-04-03",
+                        "difficulty": "medium",
+                        "history": [
+                          {
+                            "date": "2026-03-19",
+                            "difficulty": "medium"
+                          },
+                          {
+                            "date": "2026-03-19",
+                            "difficulty": "medium"
+                          },
+                          {
+                            "date": "2026-03-19",
+                            "difficulty": "medium"
+                          },
+                          {
+                            "date": "2026-03-19",
+                            "difficulty": "medium"
+                          }
+                        ]
+                      }
+                    },
+                    "4": {
+                      "used": 1,
+                      "lastDate": "2026-03-19",
+                      "wrong": {
                         "count": 2,
                         "lastDate": "2026-03-19",
                         "nextReview": "2026-03-26",
@@ -245,25 +273,25 @@
                         ]
                       }
                     },
-                    "4": {
+                    "5": {
                       "used": 1,
                       "lastDate": "2026-03-19",
                       "wrong": {
-                        "count": 1,
+                        "count": 2,
                         "lastDate": "2026-03-19",
-                        "nextReview": "2026-03-22",
+                        "nextReview": "2026-03-26",
                         "difficulty": "medium",
                         "history": [
+                          {
+                            "date": "2026-03-19",
+                            "difficulty": "medium"
+                          },
                           {
                             "date": "2026-03-19",
                             "difficulty": "medium"
                           }
                         ]
                       }
-                    },
-                    "5": {
-                      "used": 1,
-                      "lastDate": "2026-03-19"
                     },
                     "6": {
                       "used": 0,
