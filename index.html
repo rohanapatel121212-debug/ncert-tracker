@@ -1891,9 +1891,8 @@ async function downloadPaperImagesZip() {
       const res = await fetch(item.url);
       if (res.ok) {
         const blob = await res.blob();
-        // Folder per chapter inside ZIP
-        const chFolder = item.chName.replace(/\s+/g,'_').toLowerCase().slice(0,15);
-        zip.file(`${chFolder}/${item.name}`, blob);
+        // Flat structure — no subfolders
+        zip.file(item.name, blob);
       }
     } catch(e) {}
     done++;
