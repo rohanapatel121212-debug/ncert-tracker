@@ -2599,6 +2599,62 @@ async function downloadQueuedPaper(qi) {
   await markPaperDone();
 }
 
+// Download individual images from queue — auto marks used + saves history
+async function downloadQueuedPaperImages(qi) {
+  const entry = data.queue?.[qi];
+  if (!entry) return;
+  const stu = getStu(entry.stuId);
+  if (!stu) { showToast('Student nahi mila!', 'e'); return; }
+
+  let cursor = 1;
+  const blocks = entry.blocks.map(blk => {
+    const ch = stu.classes?.[blk.cls]?.chapters?.[blk.chName];
+    if (!ch) return null;
+    const items = blk.items.map(item => ({ ...item, ch }));
+    const count = items.length;
+    const start = cursor, end = cursor + count - 1;
+    cursor = end + 1;
+    return { cls: blk.cls, chName: blk.chName, ch, count, start, end, items };
+  }).filter(Boolean);
+
+  if (!blocks.length) { showToast('Paper rebuild nahi hua!', 'e'); return; }
+
+  currentPaper = {
+    stuId: entry.stuId, stuName: entry.stuName,
+    date: entry.date, totalQ: blocks.reduce((s,b) => s+b.count, 0),
+    blocks, fromQueueIdx: qi
+  };
+
+  const allPages = [];
+  currentPaper.blocks.forEach(blk => {
+    getBlockPages(blk).forEach(p => allPages.push({ ...p, chName: blk.chName }));
+  });
+  const valid = allPages.filter(p => p.url);
+  if (!valid.length) { showToast('Koi image URL nahi bana', 'a'); currentPaper = null; return; }
+
+  showOverlay('Images download ho rahi hain...', 0);
+  let done = 0;
+  for (const item of valid) {
+    updateOverlay(item.name, Math.round(done / valid.length * 100));
+    try {
+      const res = await fetch(item.url);
+      if (res.ok) {
+        const blob = await res.blob();
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = item.name;
+        a.click();
+        await new Promise(r => setTimeout(r, 400));
+      }
+    } catch(e) {}
+    done++;
+  }
+  hideOverlay();
+  showToast(`✅ ${done} images downloaded! History mein save ho raha hai...`, 's');
+  await markPaperDone();
+}
+
+
 function deleteFromQueue(qi) {
   if (!data.queue) return;
   if (!confirm('Is paper ko queue se delete karein?')) return;
@@ -2644,9 +2700,10 @@ function renderQueuePage() {
         <div style="font-size:.7rem;color:var(--cyan);font-weight:700;flex-shrink:0;padding-top:2px;">${entry.totalQ}Q</div>
       </div>
       <div class="q-card-actions">
-        <button class="btn btn-ghost" style="font-size:.72rem;padding:8px;" onclick="deleteFromQueue(${qi})">🗑 Delete</button>
+        <button class="btn btn-ghost" style="font-size:.72rem;padding:8px;" onclick="deleteFromQueue(${qi})">🗑</button>
         <button class="btn" style="font-size:.72rem;flex:1;background:rgba(59,130,246,.15);border:1px solid rgba(59,130,246,.3);color:var(--blue);" onclick="loadQueuedPaper(${qi})">👁 Preview</button>
-        <button class="btn btn-green" style="font-size:.72rem;flex:1;" onclick="downloadQueuedPaper(${qi})">⬇ Download</button>
+        <button class="btn" style="font-size:.72rem;flex:1;background:rgba(6,182,212,.15);border:1px solid rgba(6,182,212,.3);color:var(--cyan);" onclick="downloadQueuedPaperImages(${qi})">🖼 Alag</button>
+        <button class="btn btn-green" style="font-size:.72rem;flex:1;" onclick="downloadQueuedPaper(${qi})">🗜 ZIP</button>
       </div>
     </div>`;
   }).join('');
