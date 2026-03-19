@@ -28,8 +28,8 @@
                       "wrong": {
                         "count": 1,
                         "lastDate": "2026-03-19",
-                        "nextReview": "2026-03-26",
-                        "difficulty": "easy",
+                        "nextReview": "2026-03-22",
+                        "difficulty": "medium",
                         "history": [
                           {
                             "date": "2026-03-19",
@@ -44,8 +44,8 @@
                       "wrong": {
                         "count": 1,
                         "lastDate": "2026-03-19",
-                        "nextReview": "2026-03-26",
-                        "difficulty": "easy",
+                        "nextReview": "2026-03-22",
+                        "difficulty": "medium",
                         "history": [
                           {
                             "date": "2026-03-19",
@@ -3099,7 +3099,7 @@
           "type": "q",
           "num": 1,
           "wrong": {
-            "difficulty": "easy",
+            "difficulty": "medium",
             "date": "2026-03-19"
           }
         },
@@ -3111,7 +3111,7 @@
           "type": "q",
           "num": 2,
           "wrong": {
-            "difficulty": "easy",
+            "difficulty": "medium",
             "date": "2026-03-19"
           }
         },
