@@ -23,8 +23,8 @@
                 {
                   "questions": {
                     "1": {
-                      "used": 0,
-                      "lastDate": null,
+                      "used": 1,
+                      "lastDate": "2026-03-19",
                       "wrong": {
                         "count": 1,
                         "lastDate": "2026-03-19",
@@ -39,12 +39,12 @@
                       }
                     },
                     "2": {
-                      "used": 0,
-                      "lastDate": null
+                      "used": 1,
+                      "lastDate": "2026-03-19"
                     },
                     "3": {
-                      "used": 0,
-                      "lastDate": null,
+                      "used": 1,
+                      "lastDate": "2026-03-19",
                       "wrong": {
                         "count": 1,
                         "lastDate": "2026-03-19",
@@ -218,8 +218,8 @@
                   "questions": {},
                   "examples": {
                     "1": {
-                      "used": 0,
-                      "lastDate": null
+                      "used": 1,
+                      "lastDate": "2026-03-19"
                     }
                   },
                   "exTotal": 1
@@ -227,8 +227,8 @@
                 {
                   "questions": {
                     "1": {
-                      "used": 0,
-                      "lastDate": null,
+                      "used": 1,
+                      "lastDate": "2026-03-19",
                       "wrong": {
                         "count": 1,
                         "lastDate": "2026-03-19",
@@ -245,8 +245,8 @@
                   },
                   "examples": {
                     "2": {
-                      "used": 0,
-                      "lastDate": null
+                      "used": 1,
+                      "lastDate": "2026-03-19"
                     },
                     "3": {
                       "used": 0,
@@ -497,8 +497,8 @@
                   "questions": {},
                   "examples": {
                     "1": {
-                      "used": 0,
-                      "lastDate": null,
+                      "used": 1,
+                      "lastDate": "2026-03-19",
                       "wrong": {
                         "count": 1,
                         "lastDate": "2026-03-19",
@@ -513,8 +513,8 @@
                       }
                     },
                     "2": {
-                      "used": 0,
-                      "lastDate": null,
+                      "used": 1,
+                      "lastDate": "2026-03-19",
                       "wrong": {
                         "count": 1,
                         "lastDate": "2026-03-19",
@@ -529,8 +529,8 @@
                       }
                     },
                     "3": {
-                      "used": 0,
-                      "lastDate": null
+                      "used": 1,
+                      "lastDate": "2026-03-19"
                     },
                     "4": {
                       "used": 0,
@@ -671,8 +671,8 @@
                   "questions": {},
                   "examples": {
                     "1": {
-                      "used": 0,
-                      "lastDate": null
+                      "used": 1,
+                      "lastDate": "2026-03-19"
                     }
                   },
                   "exTotal": 1
@@ -681,8 +681,8 @@
                   "questions": {},
                   "examples": {
                     "2": {
-                      "used": 0,
-                      "lastDate": null,
+                      "used": 1,
+                      "lastDate": "2026-03-19",
                       "wrong": {
                         "count": 1,
                         "lastDate": "2026-03-19",
@@ -703,8 +703,8 @@
                   "questions": {},
                   "examples": {
                     "3": {
-                      "used": 0,
-                      "lastDate": null
+                      "used": 1,
+                      "lastDate": "2026-03-19"
                     },
                     "4": {
                       "used": 0,
@@ -881,12 +881,12 @@
                   "questions": {},
                   "examples": {
                     "1": {
-                      "used": 0,
-                      "lastDate": null
+                      "used": 1,
+                      "lastDate": "2026-03-19"
                     },
                     "2": {
-                      "used": 0,
-                      "lastDate": null
+                      "used": 1,
+                      "lastDate": "2026-03-19"
                     }
                   },
                   "exTotal": 2
@@ -894,8 +894,8 @@
                 {
                   "questions": {
                     "1": {
-                      "used": 0,
-                      "lastDate": null
+                      "used": 1,
+                      "lastDate": "2026-03-19"
                     },
                     "2": {
                       "used": 0,
@@ -3103,223 +3103,164 @@
       }
     }
   ],
-  "history": [],
-  "queue": [
+  "history": [
     {
-      "id": 1773946392634,
       "date": "2026-03-19",
-      "datetime": "20/3/2026, 12:23:12 am",
+      "datetime": "20/3/2026, 12:23:47 am",
+      "studentName": "Student",
       "stuId": "migrated_1773733208764",
-      "stuName": "Student",
       "totalQ": 15,
-      "label": "Student · 15Q · 2026-03-19",
-      "blocks": [
+      "type": "auto-paper",
+      "chapters": [
         {
+          "chapter": "Comparing Quantities",
+          "cls": "Class 8",
+          "count": 3
+        },
+        {
+          "chapter": "Mensuration",
+          "cls": "Class 8",
+          "count": 3
+        },
+        {
+          "chapter": "Exponents and Powers",
+          "cls": "Class 8",
+          "count": 3
+        },
+        {
+          "chapter": "Direct and Inverse Proportions",
+          "cls": "Class 8",
+          "count": 3
+        },
+        {
+          "chapter": "Factorisation",
+          "cls": "Class 8",
+          "count": 3
+        }
+      ],
+      "snapshot": [
+        {
+          "stuId": "migrated_1773733208764",
           "cls": "Class 8",
           "chName": "Comparing Quantities",
-          "folder": "books/class8/Ch7-Comparing Quantities",
-          "prefix": "ch7",
-          "count": 3,
-          "start": 1,
-          "end": 3,
-          "items": [
-            {
-              "cls": "Class 8",
-              "chName": "Comparing Quantities",
-              "pn": 3,
-              "type": "q",
-              "num": 1,
-              "loc": "Q1",
-              "used": 0,
-              "key": "q1_p3"
-            },
-            {
-              "cls": "Class 8",
-              "chName": "Comparing Quantities",
-              "pn": 3,
-              "type": "q",
-              "num": 2,
-              "loc": "Q2",
-              "used": 0,
-              "key": "q2_p3"
-            },
-            {
-              "cls": "Class 8",
-              "chName": "Comparing Quantities",
-              "pn": 3,
-              "type": "q",
-              "num": 3,
-              "loc": "Q3",
-              "used": 0,
-              "key": "q3_p3"
-            }
-          ]
+          "pn": 3,
+          "type": "q",
+          "num": 1
         },
         {
+          "stuId": "migrated_1773733208764",
+          "cls": "Class 8",
+          "chName": "Comparing Quantities",
+          "pn": 3,
+          "type": "q",
+          "num": 2
+        },
+        {
+          "stuId": "migrated_1773733208764",
+          "cls": "Class 8",
+          "chName": "Comparing Quantities",
+          "pn": 3,
+          "type": "q",
+          "num": 3
+        },
+        {
+          "stuId": "migrated_1773733208764",
           "cls": "Class 8",
           "chName": "Mensuration",
-          "folder": "books/class8/ch9-Mensuration",
-          "prefix": "mensuration",
-          "count": 3,
-          "start": 4,
-          "end": 6,
-          "items": [
-            {
-              "cls": "Class 8",
-              "chName": "Mensuration",
-              "pn": 2,
-              "type": "ex",
-              "num": 1,
-              "loc": "Example 1",
-              "used": 0,
-              "key": "ex1_p2"
-            },
-            {
-              "cls": "Class 8",
-              "chName": "Mensuration",
-              "pn": 3,
-              "type": "q",
-              "num": 1,
-              "loc": "Q1",
-              "used": 0,
-              "key": "q1_p3"
-            },
-            {
-              "cls": "Class 8",
-              "chName": "Mensuration",
-              "pn": 3,
-              "type": "ex",
-              "num": 2,
-              "loc": "Example 2",
-              "used": 0,
-              "key": "ex2_p3"
-            }
-          ]
+          "pn": 2,
+          "type": "ex",
+          "num": 1
         },
         {
+          "stuId": "migrated_1773733208764",
+          "cls": "Class 8",
+          "chName": "Mensuration",
+          "pn": 3,
+          "type": "q",
+          "num": 1
+        },
+        {
+          "stuId": "migrated_1773733208764",
+          "cls": "Class 8",
+          "chName": "Mensuration",
+          "pn": 3,
+          "type": "ex",
+          "num": 2
+        },
+        {
+          "stuId": "migrated_1773733208764",
           "cls": "Class 8",
           "chName": "Exponents and Powers",
-          "folder": "books/class8/ch10-Exponents and Power",
-          "prefix": "exp",
-          "count": 3,
-          "start": 7,
-          "end": 9,
-          "items": [
-            {
-              "cls": "Class 8",
-              "chName": "Exponents and Powers",
-              "pn": 4,
-              "type": "ex",
-              "num": 1,
-              "loc": "Example 1",
-              "used": 0,
-              "key": "ex1_p4"
-            },
-            {
-              "cls": "Class 8",
-              "chName": "Exponents and Powers",
-              "pn": 4,
-              "type": "ex",
-              "num": 2,
-              "loc": "Example 2",
-              "used": 0,
-              "key": "ex2_p4"
-            },
-            {
-              "cls": "Class 8",
-              "chName": "Exponents and Powers",
-              "pn": 4,
-              "type": "ex",
-              "num": 3,
-              "loc": "Example 3",
-              "used": 0,
-              "key": "ex3_p4"
-            }
-          ]
+          "pn": 4,
+          "type": "ex",
+          "num": 1
         },
         {
+          "stuId": "migrated_1773733208764",
+          "cls": "Class 8",
+          "chName": "Exponents and Powers",
+          "pn": 4,
+          "type": "ex",
+          "num": 2
+        },
+        {
+          "stuId": "migrated_1773733208764",
+          "cls": "Class 8",
+          "chName": "Exponents and Powers",
+          "pn": 4,
+          "type": "ex",
+          "num": 3
+        },
+        {
+          "stuId": "migrated_1773733208764",
           "cls": "Class 8",
           "chName": "Direct and Inverse Proportions",
-          "folder": "books/class8/ch11-Direct and inverse propertions",
-          "prefix": "ch11",
-          "count": 3,
-          "start": 10,
-          "end": 12,
-          "items": [
-            {
-              "cls": "Class 8",
-              "chName": "Direct and Inverse Proportions",
-              "pn": 4,
-              "type": "ex",
-              "num": 1,
-              "loc": "Example 1",
-              "used": 0,
-              "key": "ex1_p4"
-            },
-            {
-              "cls": "Class 8",
-              "chName": "Direct and Inverse Proportions",
-              "pn": 5,
-              "type": "ex",
-              "num": 2,
-              "loc": "Example 2",
-              "used": 0,
-              "key": "ex2_p5"
-            },
-            {
-              "cls": "Class 8",
-              "chName": "Direct and Inverse Proportions",
-              "pn": 6,
-              "type": "ex",
-              "num": 3,
-              "loc": "Example 3",
-              "used": 0,
-              "key": "ex3_p6"
-            }
-          ]
+          "pn": 4,
+          "type": "ex",
+          "num": 1
         },
         {
+          "stuId": "migrated_1773733208764",
+          "cls": "Class 8",
+          "chName": "Direct and Inverse Proportions",
+          "pn": 5,
+          "type": "ex",
+          "num": 2
+        },
+        {
+          "stuId": "migrated_1773733208764",
+          "cls": "Class 8",
+          "chName": "Direct and Inverse Proportions",
+          "pn": 6,
+          "type": "ex",
+          "num": 3
+        },
+        {
+          "stuId": "migrated_1773733208764",
           "cls": "Class 8",
           "chName": "Factorisation",
-          "folder": "books/class8/Ch12-Factorisation",
-          "prefix": "fact",
-          "count": 3,
-          "start": 13,
-          "end": 15,
-          "items": [
-            {
-              "cls": "Class 8",
-              "chName": "Factorisation",
-              "pn": 3,
-              "type": "ex",
-              "num": 1,
-              "loc": "Example 1",
-              "used": 0,
-              "key": "ex1_p3"
-            },
-            {
-              "cls": "Class 8",
-              "chName": "Factorisation",
-              "pn": 3,
-              "type": "ex",
-              "num": 2,
-              "loc": "Example 2",
-              "used": 0,
-              "key": "ex2_p3"
-            },
-            {
-              "cls": "Class 8",
-              "chName": "Factorisation",
-              "pn": 4,
-              "type": "q",
-              "num": 1,
-              "loc": "Q1",
-              "used": 0,
-              "key": "q1_p4"
-            }
-          ]
+          "pn": 3,
+          "type": "ex",
+          "num": 1
+        },
+        {
+          "stuId": "migrated_1773733208764",
+          "cls": "Class 8",
+          "chName": "Factorisation",
+          "pn": 3,
+          "type": "ex",
+          "num": 2
+        },
+        {
+          "stuId": "migrated_1773733208764",
+          "cls": "Class 8",
+          "chName": "Factorisation",
+          "pn": 4,
+          "type": "q",
+          "num": 1
         }
       ]
     }
-  ]
+  ],
+  "queue": []
 }
