@@ -24,19 +24,7 @@
                   "questions": {
                     "1": {
                       "used": 0,
-                      "lastDate": null,
-                      "wrong": {
-                        "count": 1,
-                        "lastDate": "2026-03-19",
-                        "nextReview": "2026-03-26",
-                        "difficulty": "easy",
-                        "history": [
-                          {
-                            "date": "2026-03-19",
-                            "difficulty": "easy"
-                          }
-                        ]
-                      }
+                      "lastDate": null
                     },
                     "2": {
                       "used": 0,
