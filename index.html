@@ -328,10 +328,28 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);max-width:48
 .paper-dl-btn:active{transform:scale(.97)}
 
 /* ══════════════ HISTORY PAGE ══════════════ */
-.hist-card{background:var(--s1);border:1px solid var(--border);border-radius:11px;margin-bottom:7px;padding:11px 13px}
+.hist-card{background:var(--s1);border:1px solid var(--border);border-radius:11px;margin-bottom:7px;overflow:hidden}
+.hist-card-hdr{padding:11px 13px;cursor:pointer;display:flex;align-items:flex-start;gap:8px}
+.hist-card-hdr:active{background:var(--s2)}
+.hist-hdr-main{flex:1;min-width:0}
 .hist-date{font-size:.65rem;font-family:var(--mono);color:var(--amber);margin-bottom:4px;font-weight:600}
 .hist-chapter{font-size:.82rem;font-weight:700;margin-bottom:3px}
 .hist-pages{font-size:.66rem;color:var(--t2);font-family:var(--mono);line-height:1.8}
+.hist-chev{color:var(--t2);font-size:.65rem;transition:transform .2s;margin-top:3px;flex-shrink:0}
+.hist-chev.open{transform:rotate(180deg)}
+.hist-card-body{display:none;border-top:1px solid var(--border)}
+.hist-card-body.open{display:block}
+.hist-q-row{padding:8px 13px;display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--border);cursor:pointer;transition:background .1s}
+.hist-q-row:last-child{border-bottom:none}
+.hist-q-row:active{background:var(--s2)}
+.hist-q-row.wrong-row{background:rgba(239,68,68,.04)}
+.hist-q-loc{font-family:var(--mono);font-size:.75rem;font-weight:700;flex:1}
+.hist-q-ch{font-size:.6rem;color:var(--t2);flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.wrong-pill{font-size:.58rem;padding:2px 7px;border-radius:4px;font-weight:700;cursor:pointer}
+.wp-none{background:var(--s3);color:var(--t3);border:1px solid var(--border)}
+.wp-easy{background:rgba(34,197,94,.12);color:var(--green);border:1px solid rgba(34,197,94,.25)}
+.wp-medium{background:rgba(245,158,11,.12);color:var(--amber);border:1px solid rgba(245,158,11,.25)}
+.wp-hard{background:rgba(239,68,68,.12);color:var(--red);border:1px solid rgba(239,68,68,.25)}
 
 /* ══════════════ SETTINGS PAGE ══════════════ */
 .set-card{background:var(--s1);border:1px solid var(--border);border-radius:11px;padding:12px;margin-bottom:7px}
@@ -472,7 +490,6 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);max-width:48
       <div class="sel-summary" id="selSummary">Koi select nahi</div>
       <div class="btn-row">
         <button class="btn btn-ghost" onclick="clearSel()">Clear</button>
-        <button class="btn" style="background:rgba(239,68,68,.15);color:var(--red);border:1px solid rgba(239,68,68,.2);" onclick="openWrongFromChapter()">✗ Wrong</button>
         <button class="btn btn-green" onclick="downloadAndMark()">↓ Download + Mark</button>
       </div>
     </div>
@@ -515,8 +532,9 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);max-width:48
           <option value="weak">🔴 Weak Chapters First</option>
           <option value="balanced">⚖ Balanced</option>
           <option value="only_wrong">✗ Only Wrong Questions</option>
-          <option value="only_due">⚡ Only Due Today</option>
+          <option value="only_due">🔴 Only Hard Questions</option>
           <option value="important">⭐ Important (2+ baar galat)</option>
+          <option value="all_equal">📊 All Chapters Equal</option>
           <option value="custom">🎛 Custom (Manual)</option>
         </select>
       </div>
@@ -1149,15 +1167,20 @@ function renderChDistEditor() {
   if (!el) return;
   const stu = getStu(paperStuId);
   if (!stu) { el.innerHTML = ''; return; }
+  const mode = document.getElementById('paperMode')?.value;
+  const isCustom = mode === 'custom';
 
-  const Q = parseInt(document.getElementById('paperQ')?.value) || 22;
+  const rawQ = document.getElementById('paperQ')?.value;
+  const Q = parseInt(rawQ) || 0;
   const autoQs = calcAutoChDist(stu, Q);
 
   el.innerHTML = '';
   let totalAssigned = 0;
+  let chNum = 0;
 
   Object.keys(stu.classes || {}).forEach(cls => {
     Object.keys(stu.classes[cls].chapters || {}).forEach(chName => {
+      chNum++;
       const ch = stu.classes[cls].chapters[chName];
       const key = getChKey(cls, chName);
       const { total: avail, used } = getChStats(ch);
@@ -1169,11 +1192,11 @@ function renderChDistEditor() {
 
       const row = document.createElement('div');
       row.className = `ch-dist-row${isOver ? ' over-avail' : ''}`;
-      row.id = `cdr-${key.replace(/[^a-z0-9]/gi,'_')}`;
 
       const dotColor = fresh === 0 ? 'var(--red)' : fresh < 3 ? 'var(--amber)' : 'var(--green)';
 
       row.innerHTML = `
+        <div style="font-family:var(--mono);font-size:.7rem;font-weight:700;color:var(--cyan);min-width:28px;flex-shrink:0;">Ch${chNum}</div>
         <div class="cdr-dot" style="background:${dotColor}"></div>
         <div class="cdr-info">
           <div class="cdr-name">${esc(chName)}</div>
@@ -1266,24 +1289,28 @@ function resetChDist() {
 
 function onModeChange() {
   const mode = document.getElementById('paperMode').value;
-  const chDistSection  = document.getElementById('chDistSection');
+  const chDistSection   = document.getElementById('chDistSection');
   const modeHintSection = document.getElementById('modeHintSection');
-  const qRow = document.getElementById('paperQ').closest('.pc-row');
 
   const specialModes = ['only_wrong', 'only_due', 'important'];
   if (specialModes.includes(mode)) {
     chDistSection.style.display = 'none';
     modeHintSection.style.display = 'block';
     const hints = {
-      only_wrong: '✗ <b style="color:var(--red)">Only Wrong:</b> Sirf wo questions jo kabhi galat hue — sabhi chapters se. Total Q se limit hoga.',
-      only_due: '⚡ <b style="color:var(--amber)">Only Due Today:</b> Sirf wo questions jinka aaj review due hai (forgetting curve). Total Q ignore hoga — jo due hain sab aayenge.',
-      important: '⭐ <b style="color:var(--cyan)">Important:</b> Jo questions 2+ baar galat hue ya "hard" mark hain. Sabse kamzor questions pehle aayenge.',
+      only_wrong: '✗ <b style="color:var(--red)">Only Wrong:</b> Sirf wo questions jo history mein kabhi galat hue — sabhi chapters se. Total Q se limit hoga.',
+      only_due:   '🔴 <b style="color:var(--red)">Only Hard:</b> Sirf "Hard" mark kiye hue questions — jo sabse zyada mushkil the. Total Q se limit hoga.',
+      important:  '⭐ <b style="color:var(--cyan)">Important:</b> Medium + Hard mark kiye questions. Worst first order mein aayenge.',
     };
     modeHintSection.innerHTML = hints[mode] || '';
+  } else if (mode === 'all_equal') {
+    chDistSection.style.display = 'none';
+    modeHintSection.style.display = 'block';
+    modeHintSection.innerHTML = '📊 <b style="color:var(--green)">All Chapters Equal:</b> Total Q ko sabhi chapters mein barabar baant diya jaayega. Har chapter se same count.';
   } else if (mode === 'custom') {
     chDistSection.style.display = 'block';
     modeHintSection.style.display = 'block';
-    modeHintSection.innerHTML = '🎛 <b style="color:var(--cyan)">Custom:</b> Neeche chapter distribution editor se manually Q count set karo har chapter ke liye.';
+    modeHintSection.innerHTML = '🎛 <b style="color:var(--cyan)">Custom:</b> Neeche Ch 1, Ch 2... se chapters identify karo aur manually Q count set karo.';
+    renderChDistEditor(); // re-render with numbers visible
   } else {
     chDistSection.style.display = 'block';
     modeHintSection.style.display = 'none';
@@ -1309,8 +1336,8 @@ function generatePaper() {
   // ── SPECIAL MODE: Only Wrong ──
   if (mode === 'only_wrong') {
     const pool = buildWrongPool(stu, false);
-    if (!pool.length) { showToast('Koi wrong questions nahi hain!', 'e'); return; }
-    pool.sort((a, b) => b.wrongCount - a.wrongCount);
+    if (!pool.length) { showToast('Koi wrong questions nahi hain! History mein mark karo.', 'e'); return; }
+    pool.sort((a, b) => { const d = {hard:0,medium:1,easy:2}; return (d[a.difficulty]??3)-(d[b.difficulty]??3); });
     const picked = pool.slice(0, Q);
     currentPaper = buildPaperFromFlat(picked, stu);
     renderPaperOutput();
@@ -1318,21 +1345,21 @@ function generatePaper() {
     return;
   }
 
-  // ── SPECIAL MODE: Only Due Today ──
+  // ── SPECIAL MODE: Only Hard ──
   if (mode === 'only_due') {
-    const pool = buildWrongPool(stu, true); // true = only due
-    if (!pool.length) { showToast('Aaj koi due questions nahi! 🎉', 's'); return; }
-    currentPaper = buildPaperFromFlat(pool, stu);
+    const pool = buildWrongPool(stu, true); // true = only hard
+    if (!pool.length) { showToast('Koi Hard marked question nahi! History mein mark karo.', 'e'); return; }
+    currentPaper = buildPaperFromFlat(pool.slice(0, Q), stu);
     renderPaperOutput();
     document.getElementById('nb-paper').classList.add('show');
     return;
   }
 
-  // ── SPECIAL MODE: Important (2+ wrong or hard) ──
+  // ── SPECIAL MODE: Important (medium + hard) ──
   if (mode === 'important') {
-    const pool = buildWrongPool(stu, false).filter(i => i.wrongCount >= 2 || i.difficulty === 'hard');
-    if (!pool.length) { showToast('Koi important (2+ baar galat) question nahi!', 'e'); return; }
-    pool.sort((a, b) => b.wrongCount - a.wrongCount);
+    const pool = buildWrongPool(stu, false).filter(i => i.difficulty === 'medium' || i.difficulty === 'hard');
+    if (!pool.length) { showToast('Koi medium/hard question nahi! History mein mark karo.', 'e'); return; }
+    pool.sort((a, b) => { const d = {hard:0,medium:1}; return (d[a.difficulty]??2)-(d[b.difficulty]??2); });
     const picked = pool.slice(0, Q);
     currentPaper = buildPaperFromFlat(picked, stu);
     renderPaperOutput();
@@ -1340,7 +1367,52 @@ function generatePaper() {
     return;
   }
 
-  // ── NORMAL MODES: fresh, weak, balanced, custom ──
+  // ── SPECIAL MODE: All Chapters Equal ──
+  if (mode === 'all_equal') {
+    const chapters = [];
+    Object.keys(stu.classes || {}).forEach(cls => {
+      Object.keys(stu.classes[cls].chapters || {}).forEach(chName => {
+        chapters.push({ cls, chName, ch: stu.classes[cls].chapters[chName] });
+      });
+    });
+    if (!chapters.length) { showToast('Koi chapters nahi hain!', 'e'); return; }
+    const perCh = Math.floor(Q / chapters.length);
+    const remainder = Q % chapters.length;
+    const groups = {};
+    chapters.forEach((c, ci) => {
+      const wantCount = perCh + (ci < remainder ? 1 : 0);
+      if (!wantCount) return;
+      const pool = [];
+      (c.ch.pages || []).forEach((pg, pi) => {
+        const pn = pi + 1;
+        Object.keys(pg.questions || {}).forEach(n => {
+          const q = pg.questions[n]; const num = parseInt(n);
+          pool.push({ cls:c.cls, chName:c.chName, ch:c.ch, pn, type:'q', num, used:q.used||0, lastDate:q.lastDate||null, loc:`Q${num}`, key:`q${num}_p${pn}` });
+        });
+        Object.keys(pg.examples || {}).forEach(n => {
+          const e = pg.examples[n]; const num = parseInt(n);
+          pool.push({ cls:c.cls, chName:c.chName, ch:c.ch, pn, type:'ex', num, used:e.used||0, lastDate:e.lastDate||null, loc:`Example ${num}`, key:`ex${num}_p${pn}` });
+        });
+      });
+      if (!pool.length) return;
+      // Fresh first
+      pool.sort((a,b) => (a.used*1000-(a.lastDate?Math.floor((Date.now()-new Date(a.lastDate))/86400000):9999)) - (b.used*1000-(b.lastDate?Math.floor((Date.now()-new Date(b.lastDate))/86400000):9999)));
+      const picked = [];
+      for (let i = 0; i < wantCount; i++) picked.push(pool[i % pool.length]);
+      groups[getChKey(c.cls, c.chName)] = { cls:c.cls, chName:c.chName, ch:c.ch, items: picked };
+    });
+    if (!Object.keys(groups).length) { showToast('Koi questions nahi hain!', 'e'); return; }
+    let cursor = 1;
+    const blocks = Object.values(groups).map(g => {
+      const count = g.items.length; const start = cursor; const end = cursor + count - 1;
+      cursor = end + 1;
+      return { ...g, start, end, count };
+    });
+    currentPaper = { stuId: paperStuId, stuName: stu.name, date: todayStr(), totalQ: blocks.reduce((s,b)=>s+b.count,0), blocks };
+    renderPaperOutput();
+    document.getElementById('nb-paper').classList.add('show');
+    return;
+  }
   const autoQs = calcAutoChDist(stu, Q);
   const score = (item) => {
     const daysSince = item.lastDate ? Math.floor((Date.now() - new Date(item.lastDate).getTime()) / 86400000) : 9999;
@@ -1397,31 +1469,30 @@ function generatePaper() {
   document.getElementById('nb-paper').classList.add('show');
 }
 
-// Build flat wrong question pool for a student
-function buildWrongPool(stu, onlyDue) {
-  const today = todayStr();
+// Build flat wrong question pool for a student — reads from history snapshots
+function buildWrongPool(stu, onlyHard) {
+  const seen = new Set();
   const pool = [];
-  Object.keys(stu.classes || {}).forEach(cls => {
-    Object.keys(stu.classes[cls].chapters || {}).forEach(chName => {
-      const ch = stu.classes[cls].chapters[chName];
-      (ch.pages || []).forEach((pg, pi) => {
-        const pn = pi + 1;
-        [...Object.entries(pg.questions || {}), ...Object.entries(pg.examples || {})].forEach(([n, q]) => {
-          if (!q.wrong || !q.wrong.count) return;
-          if (onlyDue && (!q.wrong.nextReview || q.wrong.nextReview > today)) return;
-          const isQ = !!pg.questions[n];
-          pool.push({
-            cls, chName, ch, pn,
-            type: isQ ? 'q' : 'ex',
-            num: parseInt(n),
-            used: q.used || 0,
-            lastDate: q.lastDate || null,
-            loc: isQ ? `Q${n}` : `Example ${n}`,
-            key: `${isQ?'q':'ex'}${n}_p${pn}`,
-            wrongCount: q.wrong.count,
-            difficulty: q.wrong.difficulty
-          });
-        });
+  (data.history || []).forEach(h => {
+    if (h.stuId !== stu.id) return;
+    (h.snapshot || []).forEach(item => {
+      if (!item.wrong) return;
+      if (onlyHard && item.wrong.difficulty !== 'hard') return;
+      const key = `${item.type}${item.num}_p${item.pn}_${item.chName}`;
+      if (seen.has(key)) return; // deduplicate
+      seen.add(key);
+      const ch = stu.classes?.[item.cls]?.chapters?.[item.chName];
+      if (!ch) return;
+      const pg = ch.pages?.[item.pn - 1];
+      const qData = pg ? (item.type === 'q' ? pg.questions?.[String(item.num)] : pg.examples?.[String(item.num)]) : null;
+      pool.push({
+        cls: item.cls, chName: item.chName, ch, pn: item.pn,
+        type: item.type, num: item.num,
+        used: qData?.used || 0, lastDate: qData?.lastDate || null,
+        loc: item.loc || ((item.type === 'q' ? 'Q' : 'Ex') + item.num),
+        key,
+        wrongCount: 1,
+        difficulty: item.wrong.difficulty
       });
     });
   });
@@ -1523,7 +1594,6 @@ function renderPaperOutput() {
           <div class="q-act-popup" id="qpop-${bi}-${qi}" style="display:none;">
             <button class="q-act-opt remove-opt" onclick="removeQuestion(${bi},${qi})">✕ Remove</button>
             <button class="q-act-opt replace-opt" onclick="replaceQuestion(${bi},${qi})">↺ Replace</button>
-            <button class="q-act-opt" style="background:rgba(239,68,68,.1);color:var(--red);border:1px solid rgba(239,68,68,.2);" onclick="openWrongFromPaper(${bi},${qi})">✗ Wrong Mark</button>
           </div>
         </div>
       </div>`;
@@ -1809,12 +1879,27 @@ async function markPaperDone() {
   if (!stu) return;
   const today = todayStr();
 
+  // Save exact question snapshot BEFORE marking — needed for undo
+  const snapshot = [];
+  currentPaper.blocks.forEach(blk => {
+    blk.items.forEach(item => {
+      snapshot.push({
+        stuId: currentPaper.stuId,
+        cls: item.cls || blk.cls,
+        chName: item.chName || blk.chName,
+        pn: item.pn,
+        type: item.type,
+        num: item.num
+      });
+    });
+  });
+
   currentPaper.blocks.forEach(blk => {
     blk.items.forEach(item => {
       const ch = blk.ch;
       const pg = ch.pages[item.pn - 1];
       if (!pg) return;
-      const key = String(item.num); // ← FIX: string key, integer se match nahi hota tha
+      const key = String(item.num);
       if (item.type === 'q') {
         if (!pg.questions[key]) pg.questions[key] = { used:0, lastDate:null };
         pg.questions[key].used++;
@@ -1829,8 +1914,10 @@ async function markPaperDone() {
 
   const hist = {
     date: today, datetime: new Date().toLocaleString('en-IN'),
-    studentName: stu.name, totalQ: currentPaper.totalQ, type: 'auto-paper',
-    chapters: currentPaper.blocks.map(b => ({ chapter: b.chName, cls: b.cls, count: b.count }))
+    studentName: stu.name, stuId: currentPaper.stuId,
+    totalQ: currentPaper.totalQ, type: 'auto-paper',
+    chapters: currentPaper.blocks.map(b => ({ chapter: b.chName, cls: b.cls, count: b.count })),
+    snapshot  // ← full question list for undo
   };
   if (!data.history) data.history = [];
   data.history.unshift(hist);
@@ -1840,6 +1927,46 @@ async function markPaperDone() {
   saveToGithub();
   currentPaper = null;
   document.getElementById('paperOutput').style.display = 'none';
+}
+
+function confirmUndo() {
+  const last = data.history?.[0];
+  if (!last) return;
+  const qCount = last.snapshot?.length || 0;
+  if (confirm(`↩ Undo karein?\n\n"${last.studentName}" ka ${last.date} wala paper (${qCount} questions) wapas fresh ho jaayega.\nHistory se bhi hata diya jaayega.\n\nKya aap sure hain?`)) {
+    undoLastPaper();
+  }
+}
+function undoLastPaper() {
+  if (!data.history || !data.history.length) return;
+  const last = data.history[0];
+  if (!last.snapshot || !last.snapshot.length) {
+    showToast('Is entry mein undo data nahi hai', 'e'); return;
+  }
+
+  let undone = 0;
+  last.snapshot.forEach(item => {
+    const stu = getStu(item.stuId);
+    if (!stu) return;
+    const pg = stu.classes?.[item.cls]?.chapters?.[item.chName]?.pages?.[item.pn - 1];
+    if (!pg) return;
+    const store = item.type === 'q' ? pg.questions : pg.examples;
+    const key = String(item.num);
+    if (store[key] && store[key].used > 0) {
+      store[key].used--;
+      // Agar used 0 ho gaya to lastDate bhi clear karo
+      if (store[key].used === 0) store[key].lastDate = null;
+      undone++;
+    }
+  });
+
+  // History se bhi hatao
+  data.history.shift();
+  renderHome();
+  renderHistoryPage();
+  renderHistory();
+  saveToGithub();
+  showToast(`↩ Undo ho gaya! ${undone} questions wapas fresh hue`, 's');
 }
 
 // Download all images for a chapter block
@@ -2069,17 +2196,123 @@ function renderHistory() {
   const el = document.getElementById('histList');
   const hist = data.history || [];
   if (!hist.length) { el.innerHTML = `<div class="empty"><div class="empty-icon">🕐</div><div class="empty-text">Koi history nahi</div></div>`; return; }
-  el.innerHTML = hist.slice(0, 50).map(h => {
+
+  el.innerHTML = hist.slice(0, 50).map((h, hi) => {
     const isAuto = h.type === 'auto-paper';
     const detail = isAuto
       ? (h.chapters || []).map(c => `${c.chapter} (${c.count}Q)`).join(' · ')
       : (h.pages || []).map(p => { const qs = p.qNums?.length ? 'Q' + p.qNums.join(',Q') : ''; const es = p.exNums?.length ? 'Ex' + p.exNums.join(',Ex') : ''; return `P${p.pageNum}: ${[qs,es].filter(Boolean).join(' ')}`; }).join(' | ');
-    return `<div class="hist-card">
-      <div class="hist-date">${h.datetime || h.date} ${isAuto ? '· <span style="color:var(--cyan)">Auto Paper</span>' : ''}</div>
-      <div class="hist-chapter">${isAuto ? `${h.studentName} · ${h.totalQ}Q` : `${h.chapter} — ${h.className}`}</div>
-      <div class="hist-pages">${detail}</div>
+    const canUndo = hi === 0 && h.snapshot && h.snapshot.length > 0;
+    const wrongCount = (h.snapshot || []).filter(s => s.wrong).length;
+    const hasSnap = isAuto && h.snapshot && h.snapshot.length > 0;
+
+    // Build question rows if snapshot exists
+    let qRowsHtml = '';
+    if (hasSnap) {
+      qRowsHtml = h.snapshot.map((item, si) => {
+        const w = item.wrong;
+        const pillCls = w ? `wp-${w.difficulty}` : 'wp-none';
+        const pillTxt = w ? `✗ ${w.difficulty}` : '✓ OK';
+        return `<div class="hist-q-row${w ? ' wrong-row' : ''}" onclick="cycleWrong(${hi},${si})">
+          <span class="hist-q-loc">${esc(item.loc||((item.type==='q'?'Q':'Ex')+item.num))}</span>
+          <span class="hist-q-ch">${esc(item.chName)} · P${item.pn}</span>
+          <span class="wrong-pill ${pillCls}">${pillTxt}</span>
+        </div>`;
+      }).join('');
+
+      qRowsHtml += `<div style="padding:9px 13px;display:flex;gap:7px;background:var(--s2);border-top:1px solid var(--border);">
+        <div style="font-size:.62rem;color:var(--t2);flex:1;">Tap karke wrong mark karo · Cycle: OK → Easy → Medium → Hard → OK</div>
+      </div>`;
+    }
+
+    return `<div class="hist-card" id="hcard-${hi}" style="${canUndo ? 'border-color:rgba(245,158,11,.3);' : ''}">
+      <div class="hist-card-hdr" onclick="toggleHistCard(${hi})">
+        <div class="hist-hdr-main">
+          <div class="hist-date">${h.datetime || h.date} ${isAuto ? '· <span style="color:var(--cyan)">Auto Paper</span>' : ''}${wrongCount > 0 ? ` · <span style="color:var(--red)">✗ ${wrongCount} wrong</span>` : ''}</div>
+          <div class="hist-chapter">${isAuto ? `${h.studentName} · ${h.totalQ}Q` : `${h.chapter} — ${h.className}`}</div>
+          <div class="hist-pages">${detail}</div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:5px;flex-shrink:0;">
+          ${canUndo ? `<button onclick="event.stopPropagation();confirmUndo()" style="background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.3);color:var(--amber);border-radius:8px;padding:4px 9px;font-size:.65rem;font-weight:700;cursor:pointer;white-space:nowrap;">↩ Undo</button>` : ''}
+          ${hasSnap ? `<span class="hist-chev" id="hchev-${hi}">▾</span>` : ''}
+        </div>
+      </div>
+      ${hasSnap ? `<div class="hist-card-body" id="hbody-${hi}">${qRowsHtml}</div>` : ''}
     </div>`;
   }).join('');
+}
+
+function toggleHistCard(hi) {
+  const body = document.getElementById(`hbody-${hi}`);
+  const chev = document.getElementById(`hchev-${hi}`);
+  if (!body) return;
+  const open = body.classList.toggle('open');
+  if (chev) chev.classList.toggle('open', open);
+}
+
+// Cycle wrong difficulty: none → easy → medium → hard → none
+function cycleWrong(hi, si) {
+  const h = data.history?.[hi];
+  if (!h || !h.snapshot?.[si]) return;
+  const item = h.snapshot[si];
+  const cycle = [null, 'easy', 'medium', 'hard'];
+  const cur = item.wrong ? item.wrong.difficulty : null;
+  const nextIdx = (cycle.indexOf(cur) + 1) % cycle.length;
+  const next = cycle[nextIdx];
+
+  if (next === null) {
+    // Remove wrong from snapshot
+    delete item.wrong;
+    // Also remove from chapter q.wrong
+    _applyWrongToChapter(h.stuId, item, null);
+  } else {
+    item.wrong = { difficulty: next, date: item.wrong?.date || todayStr() };
+    // Apply to chapter q.wrong for forgetting curve
+    _applyWrongToChapter(h.stuId, item, next);
+  }
+
+  saveToGithub();
+  renderHistory();
+  renderHistoryPage();
+  // Keep card open
+  setTimeout(() => {
+    const body = document.getElementById(`hbody-${hi}`);
+    const chev = document.getElementById(`hchev-${hi}`);
+    if (body) { body.classList.add('open'); }
+    if (chev) { chev.classList.add('open'); }
+  }, 0);
+}
+
+// Sync wrong status to chapter data (for forgetting curve / review banner)
+function _applyWrongToChapter(stuId, item, difficulty) {
+  const stu = getStu(stuId);
+  if (!stu) return;
+  const pg = stu.classes?.[item.cls]?.chapters?.[item.chName]?.pages?.[item.pn - 1];
+  if (!pg) return;
+  const store = item.type === 'q' ? pg.questions : pg.examples;
+  const key = String(item.num);
+  if (!store[key]) store[key] = { used: 0, lastDate: null };
+
+  if (difficulty === null) {
+    delete store[key].wrong;
+    return;
+  }
+  const today = todayStr();
+  const FC_INTERVALS = { easy: 7, medium: 3, hard: 1 };
+  const interval = FC_INTERVALS[difficulty] || 3;
+  if (!store[key].wrong) store[key].wrong = { count: 0, lastDate: null, nextReview: null, difficulty: null, history: [] };
+  // Only increment count if this is a new wrong (not re-marking same entry)
+  const existing = store[key].wrong;
+  if (existing.difficulty !== difficulty) {
+    existing.count = Math.max(existing.count || 0, 1);
+    existing.lastDate = today;
+    existing.difficulty = difficulty;
+    existing.nextReview = addDays(today, interval);
+    existing.history = existing.history || [];
+    if (!existing.history.find(h => h.date === today)) {
+      existing.history.push({ date: today, difficulty });
+    }
+  }
 }
 
 function renderHistoryPage() {
@@ -2094,46 +2327,41 @@ function renderHistoryPage() {
     dlEmpty.style.display   = 'block';
   }
 
-  // --- Last Test Review: wrong questions ---
+  // --- Last Test Review: wrong questions from history snapshots ---
   const reviewEl = document.getElementById('lastTestReview');
   if (!reviewEl) return;
 
-  // Gather ALL wrong questions from all students
+  // Gather wrong questions FROM history snapshots (not from chapter data)
   const allWrong = [];
-  (data.students || []).forEach(stu => {
-    Object.keys(stu.classes || {}).forEach(cls => {
-      Object.keys(stu.classes[cls].chapters || {}).forEach(chName => {
-        const ch = stu.classes[cls].chapters[chName];
-        (ch.pages || []).forEach((pg, pi) => {
-          const pn = pi + 1;
-          [...Object.entries(pg.questions || {})].forEach(([n, q]) => {
-            if (q.wrong && q.wrong.count > 0) {
-              allWrong.push({ stuId: stu.id, stuName: stu.name, cls, chName, pn, type:'q', num: parseInt(n), loc: `Q${n}`, count: q.wrong.count, lastDate: q.wrong.lastDate, difficulty: q.wrong.difficulty, nextReview: q.wrong.nextReview });
-            }
-          });
-          [...Object.entries(pg.examples || {})].forEach(([n, e]) => {
-            if (e.wrong && e.wrong.count > 0) {
-              allWrong.push({ stuId: stu.id, stuName: stu.name, cls, chName, pn, type:'ex', num: parseInt(n), loc: `Ex${n}`, count: e.wrong.count, lastDate: e.wrong.lastDate, difficulty: e.wrong.difficulty, nextReview: e.wrong.nextReview });
-            }
-          });
-        });
+  (data.history || []).forEach((h, hi) => {
+    if (!h.snapshot) return;
+    h.snapshot.forEach((item, si) => {
+      if (!item.wrong) return;
+      allWrong.push({
+        hi, si,
+        stuId: h.stuId,
+        stuName: h.studentName,
+        cls: item.cls,
+        chName: item.chName,
+        pn: item.pn,
+        type: item.type,
+        num: item.num,
+        loc: item.loc || ((item.type === 'q' ? 'Q' : 'Ex') + item.num),
+        difficulty: item.wrong.difficulty,
+        date: item.wrong.date,
+        paperDate: h.date
       });
     });
   });
 
   if (!allWrong.length) {
-    reviewEl.innerHTML = `<div class="empty"><div class="empty-icon">🎯</div><div class="empty-text">Koi wrong question mark nahi hua abhi tak</div></div>`;
+    reviewEl.innerHTML = `<div class="empty"><div class="empty-icon">🎯</div><div class="empty-text">Koi wrong question mark nahi hua abhi tak.<br><span style="font-size:.65rem;">History tab mein paper open karke mark karo.</span></div></div>`;
     return;
   }
 
-  // Sort: due first, then by count desc
-  const today = todayStr();
-  allWrong.sort((a, b) => {
-    const aDue = a.nextReview <= today ? 0 : 1;
-    const bDue = b.nextReview <= today ? 0 : 1;
-    if (aDue !== bDue) return aDue - bDue;
-    return b.count - a.count;
-  });
+  // Sort: hard first, then medium, then easy
+  const diffOrder = { hard: 0, medium: 1, easy: 2 };
+  allWrong.sort((a, b) => (diffOrder[a.difficulty] ?? 3) - (diffOrder[b.difficulty] ?? 3));
 
   const diffColor = { easy: 'var(--green)', medium: 'var(--amber)', hard: 'var(--red)' };
   const diffBg    = { easy: 'var(--gdim)',  medium: 'var(--adim)',  hard: 'var(--rdim)' };
@@ -2142,42 +2370,38 @@ function renderHistoryPage() {
     <div style="background:var(--s1);border:1px solid var(--border);border-radius:13px;overflow:hidden;margin-bottom:10px;">
       <div style="padding:10px 13px;background:var(--s2);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;">
         <div style="font-size:.75rem;font-weight:700;">Wrong Questions <span style="font-size:.62rem;background:var(--rdim);color:var(--red);padding:1px 7px;border-radius:4px;border:1px solid rgba(239,68,68,.2);">${allWrong.length} total</span></div>
-        <div style="font-size:.62rem;color:var(--t2);">Due aaj: <b style="color:var(--amber);">${allWrong.filter(w => w.nextReview <= today).length}</b></div>
+        <div style="font-size:.62rem;color:var(--t2);">Hard: <b style="color:var(--red);">${allWrong.filter(w=>w.difficulty==='hard').length}</b></div>
       </div>
-      ${allWrong.slice(0, 30).map((w, wi) => {
-        const isDue = w.nextReview && w.nextReview <= today;
+      ${allWrong.slice(0, 40).map(w => {
         const dc = diffColor[w.difficulty] || 'var(--t2)';
         const db = diffBg[w.difficulty]   || 'var(--s3)';
-        return `<div style="padding:9px 13px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px;${isDue ? 'background:rgba(245,158,11,.04);' : ''}">
-          <div style="width:7px;height:7px;border-radius:50%;background:${isDue ? 'var(--amber)' : 'var(--red)'};flex-shrink:0;"></div>
+        return `<div style="padding:9px 13px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px;">
+          <div style="width:7px;height:7px;border-radius:50%;background:${dc};flex-shrink:0;"></div>
           <div style="flex:1;min-width:0;">
             <div style="font-size:.8rem;font-weight:700;font-family:var(--mono);">${esc(w.loc)} <span style="font-size:.65rem;color:var(--t2);font-family:var(--sans);">${esc(w.chName)} · P${w.pn}</span></div>
-            <div style="font-size:.6rem;color:var(--t2);margin-top:2px;">${esc(w.stuName)} · ${w.count} baar wrong · Last: ${fmtD(w.lastDate)||'—'}</div>
+            <div style="font-size:.6rem;color:var(--t2);margin-top:2px;">${esc(w.stuName)} · Paper: ${fmtD(w.paperDate)||'—'}</div>
           </div>
           <div style="display:flex;flex-direction:column;align-items:flex-end;gap:3px;">
             <span style="font-size:.58rem;padding:1px 7px;border-radius:4px;font-weight:700;background:${db};color:${dc};border:1px solid ${dc}22;">${w.difficulty||'—'}</span>
-            ${isDue ? `<span style="font-size:.55rem;color:var(--amber);font-weight:700;">⚡ DUE</span>` : `<span style="font-size:.55rem;color:var(--t2);">Review: ${fmtD(w.nextReview)||'—'}</span>`}
           </div>
-          <button onclick="removeWrongQuestion('${w.stuId}','${esc(w.cls)}','${esc(w.chName)}',${w.pn},'${w.type}',${w.num})" style="flex-shrink:0;background:var(--rdim);border:1px solid rgba(239,68,68,.2);color:var(--red);border-radius:7px;padding:4px 8px;font-size:.68rem;font-weight:700;cursor:pointer;" title="Wrong list se hatao">🗑</button>
+          <button onclick="removeWrongFromHistory(${w.hi},${w.si})" style="flex-shrink:0;background:var(--rdim);border:1px solid rgba(239,68,68,.2);color:var(--red);border-radius:7px;padding:4px 8px;font-size:.68rem;font-weight:700;cursor:pointer;" title="Hatao">🗑</button>
         </div>`;
       }).join('')}
-      ${allWrong.length > 30 ? `<div style="padding:10px;text-align:center;font-size:.65rem;color:var(--t2);">+${allWrong.length-30} aur wrong questions hain</div>` : ''}
+      ${allWrong.length > 40 ? `<div style="padding:10px;text-align:center;font-size:.65rem;color:var(--t2);">+${allWrong.length-40} aur wrong questions hain</div>` : ''}
     </div>`;
 }
 
-function removeWrongQuestion(stuId, cls, chName, pn, type, num) {
-  const stu = getStu(stuId);
-  if (!stu) return;
-  const pg = stu.classes?.[cls]?.chapters?.[chName]?.pages?.[pn - 1];
-  if (!pg) return;
-  const store = type === 'q' ? pg.questions : pg.examples;
-  const key = String(num);
-  if (store[key]) {
-    delete store[key].wrong;
-  }
+function removeWrongFromHistory(hi, si) {
+  const h = data.history?.[hi];
+  if (!h?.snapshot?.[si]) return;
+  const item = h.snapshot[si];
+  delete item.wrong;
+  // Also clear from chapter data
+  _applyWrongToChapter(h.stuId, item, null);
   saveToGithub();
   showToast('✓ Wrong list se hata diya!', 's');
   renderHistoryPage();
+  renderHistory();
 }
 // ══════════════════════════════════════════════════════════
 function openModal(mode, target) {
