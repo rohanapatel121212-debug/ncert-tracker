@@ -211,8 +211,8 @@
                       "wrong": {
                         "count": 1,
                         "lastDate": "2026-03-19",
-                        "nextReview": "2026-03-26",
-                        "difficulty": "easy",
+                        "nextReview": "2026-03-20",
+                        "difficulty": "hard",
                         "history": [
                           {
                             "date": "2026-03-19",
@@ -232,8 +232,8 @@
                       "wrong": {
                         "count": 1,
                         "lastDate": "2026-03-19",
-                        "nextReview": "2026-03-22",
-                        "difficulty": "medium",
+                        "nextReview": "2026-03-20",
+                        "difficulty": "hard",
                         "history": [
                           {
                             "date": "2026-03-19",
@@ -3151,7 +3151,7 @@
           "type": "ex",
           "num": 1,
           "wrong": {
-            "difficulty": "easy",
+            "difficulty": "hard",
             "date": "2026-03-19"
           }
         },
@@ -3163,7 +3163,7 @@
           "type": "q",
           "num": 1,
           "wrong": {
-            "difficulty": "medium",
+            "difficulty": "hard",
             "date": "2026-03-19"
           }
         },
