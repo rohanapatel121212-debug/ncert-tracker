@@ -9,8 +9,25 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="theme-color" content="#0a0c10">
 <link rel="manifest" href="manifest.json">
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"></noscript>
+<script>
+// Lazy load JSZip only when needed
+let _jszipLoaded = false;
+function loadJSZip() {
+  return new Promise((res, rej) => {
+    if (typeof JSZip !== 'undefined') return res();
+    if (_jszipLoaded) return res();
+    const s = document.createElement('script');
+    s.src = 'https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js';
+    s.onload = () => { _jszipLoaded = true; res(); };
+    s.onerror = rej;
+    document.head.appendChild(s);
+  });
+}
+</script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 :root{
@@ -249,7 +266,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);max-width:48
 .fresh-dot{width:5px;height:5px;border-radius:50%;background:var(--green);flex-shrink:0}
 .used-dot{width:5px;height:5px;border-radius:50%;background:var(--red);flex-shrink:0}
 .type-ex{font-size:.56rem;padding:1px 5px;border-radius:3px;background:var(--gdim);color:var(--green);font-weight:700}
-.type-exr{font-size:.56px;padding:1px 5px;border-radius:3px;background:var(--bdim);color:var(--blue);font-weight:700;font-size:.56rem}
+.type-exr{font-size:.56rem;padding:1px 5px;border-radius:3px;background:var(--bdim);color:var(--blue);font-weight:700}
 .q-actions-wrap{position:relative;flex-shrink:0;margin-left:2px}
 .q-act-toggle{background:none;border:none;color:var(--t2);font-size:.9rem;cursor:pointer;padding:2px 5px;border-radius:5px;line-height:1;transition:all .15s}
 .q-act-toggle:active{background:var(--s3);color:var(--text)}
@@ -309,11 +326,8 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);max-width:48
 .cdr-stepper{display:flex;align-items:center;gap:5px;flex-shrink:0}
 .cdr-btn{width:26px;height:26px;border-radius:7px;border:1px solid var(--border2);background:var(--s3);color:var(--text);font-size:.9rem;cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:700;transition:all .1s}
 .cdr-btn:active{transform:scale(.85);background:var(--s4)}
-.cdr-num{font-family:var(--mono);font-size:.85rem;font-weight:700;min-width:22px;text-align:center;color:var(--text)}
 .cdr-num-inp{width:36px;background:var(--s3);border:1px solid var(--border2);border-radius:6px;padding:3px 5px;color:var(--text);font-family:var(--mono);font-size:.82rem;font-weight:700;text-align:center;outline:none}
 .cdr-num-inp:focus{border-color:var(--cyan)}
-.dist-warn{font-size:.65rem;padding:6px 10px;border-radius:7px;background:var(--rdim);color:var(--red);border:1px solid rgba(239,68,68,.2);margin-bottom:8px;display:none}
-.dist-warn.show{display:block}
 
 /* Page thumbnail strip */
 .thumb-strip{display:flex;gap:6px;overflow-x:auto;padding:8px 14px;border-top:1px solid var(--border);scrollbar-width:none;background:rgba(0,0,0,.15)}
@@ -326,6 +340,16 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);max-width:48
 .paper-dl-bar{padding:10px 12px;background:rgba(6,182,212,.04);border-top:1px solid rgba(6,182,212,.1)}
 .paper-dl-btn{width:100%;padding:11px;border-radius:9px;border:1px solid rgba(6,182,212,.25);background:rgba(6,182,212,.08);color:var(--cyan);font-family:var(--sans);font-size:.82rem;font-weight:700;cursor:pointer;transition:all .15s}
 .paper-dl-btn:active{transform:scale(.97)}
+
+/* ══════════════ QUEUE PAGE ══════════════ */
+.q-card{background:var(--s1);border:1px solid var(--border);border-radius:12px;margin-bottom:8px;overflow:hidden;animation:fadeUp .2s ease both}
+.q-card-hdr{padding:11px 13px;display:flex;align-items:flex-start;gap:10px;cursor:pointer}
+.q-card-hdr:active{background:var(--s2)}
+.q-card-icon{font-size:1.1rem;flex-shrink:0;margin-top:1px}
+.q-card-info{flex:1;min-width:0}
+.q-card-label{font-size:.84rem;font-weight:800;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.q-card-meta{font-size:.62rem;color:var(--t2);font-family:var(--mono)}
+.q-card-actions{display:flex;gap:6px;padding:0 13px 12px}
 
 /* ══════════════ HISTORY PAGE ══════════════ */
 .hist-card{background:var(--s1);border:1px solid var(--border);border-radius:11px;margin-bottom:7px;overflow:hidden}
@@ -555,11 +579,25 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);max-width:48
     <div id="paperOutput" style="display:none;">
       <div class="sl">Generated Paper</div>
       <div id="paperContent"></div>
-      <button class="big-btn btn-g" onclick="markPaperDone()">✓ Mark All Done + Save History</button>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:7px;">
+        <button class="big-btn btn-c" style="margin:0;font-size:.75rem;" onclick="downloadPaperImages()">🖼 Alag Alag</button>
+        <button class="big-btn btn-c" style="margin:0;font-size:.75rem;background:var(--cyan);color:#000;" onclick="downloadPaperImagesZip()">🗜 ZIP File</button>
+      </div>
+      <button class="big-btn" style="background:rgba(6,182,212,.15);border:1px solid rgba(6,182,212,.3);color:var(--cyan);" onclick="saveToQueue()">📋 Queue mein Save (baad ke liye)</button>
+      <button class="big-btn btn-g" onclick="markPaperDone()">✓ Mark Done + History</button>
       <button class="big-btn btn-o" onclick="generatePaper()">↺ Regenerate</button>
     </div>
 
   </div>
+</div>
+
+<!-- ══════ QUEUE ══════ -->
+<div class="page" id="page-queue">
+<div class="pi">
+  <div class="sl" style="margin-top:4px;">📋 Paper Queue <span id="queueCount" style="font-size:.6rem;padding:1px 7px;border-radius:4px;background:var(--cdim);color:var(--cyan);font-weight:700;letter-spacing:0;text-transform:none;margin-left:4px;"></span></div>
+  <div style="font-size:.68rem;color:var(--t2);margin-bottom:10px;line-height:1.7;">Papers yahan save hote hain. Jab test dena ho tab open karo → download karo → Mark Done dabao — tab used aur history mein add hoga.</div>
+  <div id="queueList"></div>
+</div>
 </div>
 
 <!-- ══════ HISTORY ══════ -->
@@ -573,16 +611,11 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);max-width:48
   <div class="sl" style="margin-top:10px;">📥 Download</div>
   <div id="histDownloadSection" style="display:none;">
     <div style="background:var(--s2);border:1px solid var(--border);border-radius:12px;padding:13px;margin-bottom:10px;">
-      <div style="font-size:.72rem;color:var(--t2);margin-bottom:10px;font-family:var(--mono);">Last generated paper ke images download karo</div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:7px;">
-        <button class="big-btn btn-c" style="margin:0;font-size:.75rem;" onclick="downloadPaperImages()">🖼 Alag Alag</button>
-        <button class="big-btn btn-c" style="margin:0;font-size:.75rem;background:var(--cyan);color:#000;" onclick="downloadPaperImagesZip()">🗜 ZIP File</button>
-      </div>
+      <div style="font-size:.72rem;color:var(--t2);margin-bottom:10px;font-family:var(--mono);">Generated paper abhi active hai — Paper tab mein download karo</div>
+      <button class="big-btn btn-c" style="margin:0;" onclick="showPage('paper')">⚡ Paper Tab Pe Jao</button>
     </div>
   </div>
-  <div id="histDownloadEmpty" style="background:var(--s1);border:1px solid var(--border);border-radius:12px;padding:13px;margin-bottom:10px;text-align:center;font-size:.72rem;color:var(--t2);">
-    Pehle Paper tab se test generate karo
-  </div>
+  <div id="histDownloadEmpty" style="display:none;"></div>
 
   <!-- TEST HISTORY -->
   <div class="sl" style="margin-top:10px;">🕐 Test History</div>
@@ -620,6 +653,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);max-width:48
 <div class="bnav">
   <div class="ni active" id="ni-home"     onclick="showPage('home')"><div class="ni-icon">📚</div><div class="ni-lbl">Home</div></div>
   <div class="ni"        id="ni-paper"    onclick="showPage('paper');renderPaperStuSelector();renderReviewBanner()"><div class="ni-icon">⚡</div><div class="ni-lbl">Paper</div><div class="ni-badge" id="nb-paper"></div></div>
+  <div class="ni"        id="ni-queue"    onclick="showPage('queue');renderQueuePage()"><div class="ni-icon">📋</div><div class="ni-lbl">Queue</div><div class="ni-badge" id="nb-queue"></div></div>
   <div class="ni"        id="ni-history"  onclick="showPage('history');renderHistory();renderHistoryPage()"><div class="ni-icon">🕐</div><div class="ni-lbl">History</div></div>
   <div class="ni"        id="ni-settings" onclick="showPage('settings')"><div class="ni-icon">⚙️</div><div class="ni-lbl">Settings</div></div>
 </div>
@@ -707,7 +741,7 @@ DATA STRUCTURE (GitHub: ncert_smart_v2.json)
 }
 */
 
-let data = { students: [], history: [] };
+let data = { students: [], history: [], queue: [] };
 let activeStuId = null;  // currently open student
 let activeClass = null;
 let activeChapter = null;
@@ -1878,6 +1912,7 @@ async function markPaperDone() {
   const stu = getStu(currentPaper.stuId);
   if (!stu) return;
   const today = todayStr();
+  const fromQueueIdx = currentPaper.fromQueueIdx;
 
   // Save exact question snapshot BEFORE marking — needed for undo
   const snapshot = [];
@@ -1924,6 +1959,13 @@ async function markPaperDone() {
   renderHome();
   document.getElementById('nb-paper').classList.remove('show');
   showToast('✓ Paper marked done! Saved to history', 's');
+
+  // Remove from queue if loaded from queue
+  if (fromQueueIdx !== undefined && data.queue) {
+    data.queue.splice(fromQueueIdx, 1);
+    updateQueueBadge();
+  }
+
   saveToGithub();
   currentPaper = null;
   document.getElementById('paperOutput').style.display = 'none';
@@ -2088,12 +2130,9 @@ function getBlockPages(blk) {
 // ZIP — single chapter
 async function downloadChapterImagesZip(bi) {
   if (!currentPaper) return;
-  const blk = currentPaper.blocks[bi];
-  const pages = getBlockPages(blk);
-  const valid = pages.filter(p => p.url);
-  if (!valid.length) { showToast('Koi image URL nahi bana', 'a'); return; }
-
+  await loadJSZip();
   if (typeof JSZip === 'undefined') { showToast('JSZip load nahi hua, retry karo', 'e'); return; }
+  const blk = currentPaper.blocks[bi];
 
   const zip = new JSZip();
   const chShort = blk.chName.replace(/\s+/g,'_').toLowerCase().slice(0,12);
@@ -2396,15 +2435,159 @@ function removeWrongFromHistory(hi, si) {
   if (!h?.snapshot?.[si]) return;
   const item = h.snapshot[si];
   delete item.wrong;
-  // Also clear from chapter data
   _applyWrongToChapter(h.stuId, item, null);
   saveToGithub();
   showToast('✓ Wrong list se hata diya!', 's');
   renderHistoryPage();
   renderHistory();
 }
+
 // ══════════════════════════════════════════════════════════
-function openModal(mode, target) {
+// PAPER QUEUE
+// ══════════════════════════════════════════════════════════
+
+// Serialize currentPaper for queue (no live ch references)
+function saveToQueue() {
+  if (!currentPaper) return;
+  const stu = getStu(currentPaper.stuId);
+  if (!stu) return;
+
+  if (!data.queue) data.queue = [];
+
+  const qEntry = {
+    id: Date.now(),
+    date: todayStr(),
+    datetime: new Date().toLocaleString('en-IN'),
+    stuId: currentPaper.stuId,
+    stuName: currentPaper.stuName,
+    totalQ: currentPaper.totalQ,
+    label: `${currentPaper.stuName} · ${currentPaper.totalQ}Q · ${todayStr()}`,
+    blocks: currentPaper.blocks.map(blk => ({
+      cls: blk.cls,
+      chName: blk.chName,
+      folder: blk.ch.folder || '',
+      prefix: blk.ch.prefix || '',
+      count: blk.count,
+      start: blk.start,
+      end: blk.end,
+      items: blk.items.map(item => ({
+        cls: item.cls || blk.cls,
+        chName: item.chName || blk.chName,
+        pn: item.pn,
+        type: item.type,
+        num: item.num,
+        loc: item.loc,
+        used: item.used,
+        key: item.key
+      }))
+    }))
+  };
+
+  data.queue.unshift(qEntry);
+  saveToGithub();
+  updateQueueBadge();
+  showToast(`📋 Queue mein save ho gaya! (${data.queue.length} papers)`, 's');
+  document.getElementById('paperOutput').style.display = 'none';
+  currentPaper = null;
+  document.getElementById('nb-paper').classList.remove('show');
+}
+
+// Rebuild live currentPaper from queue entry (re-attach ch references)
+function loadQueuedPaper(qi) {
+  const entry = data.queue?.[qi];
+  if (!entry) return;
+  const stu = getStu(entry.stuId);
+  if (!stu) { showToast('Student nahi mila!', 'e'); return; }
+
+  let cursor = 1;
+  const blocks = entry.blocks.map(blk => {
+    const ch = stu.classes?.[blk.cls]?.chapters?.[blk.chName];
+    if (!ch) return null;
+    const items = blk.items.map(item => {
+      const pg = ch.pages?.[item.pn - 1];
+      const qData = pg ? (item.type === 'q' ? pg.questions?.[String(item.num)] : pg.examples?.[String(item.num)]) : null;
+      return {
+        ...item,
+        ch,
+        used: qData?.used || item.used || 0,
+        lastDate: qData?.lastDate || null
+      };
+    });
+    const count = items.length;
+    const start = cursor, end = cursor + count - 1;
+    cursor = end + 1;
+    return { cls: blk.cls, chName: blk.chName, ch, count, start, end, items };
+  }).filter(Boolean);
+
+  currentPaper = {
+    stuId: entry.stuId,
+    stuName: entry.stuName,
+    date: entry.date,
+    totalQ: blocks.reduce((s, b) => s + b.count, 0),
+    blocks,
+    fromQueueIdx: qi  // remember which queue entry this came from
+  };
+
+  // Go to paper tab and show
+  showPage('paper');
+  renderPaperStuSelector();
+  renderPaperOutput();
+  document.getElementById('paperOutput').style.display = 'block';
+  document.getElementById('nb-paper').classList.add('show');
+  showToast('Paper load ho gaya! Download karo phir Mark Done dabao.', 's');
+}
+
+function deleteFromQueue(qi) {
+  if (!data.queue) return;
+  if (!confirm('Is paper ko queue se delete karein?')) return;
+  data.queue.splice(qi, 1);
+  saveToGithub();
+  updateQueueBadge();
+  renderQueuePage();
+  showToast('Queue se hata diya', 'a');
+}
+
+function updateQueueBadge() {
+  const count = (data.queue || []).length;
+  const badge = document.getElementById('nb-queue');
+  if (badge) badge.classList.toggle('show', count > 0);
+  const countEl = document.getElementById('queueCount');
+  if (countEl) countEl.textContent = count > 0 ? count : '';
+}
+
+function renderQueuePage() {
+  updateQueueBadge();
+  const el = document.getElementById('queueList');
+  if (!el) return;
+  const queue = data.queue || [];
+
+  if (!queue.length) {
+    el.innerHTML = `<div class="empty">
+      <div class="empty-icon">📋</div>
+      <div class="empty-text">Queue khali hai.<br>Paper tab pe paper banao → <b style="color:var(--cyan);">Queue mein Save</b> dabao.</div>
+    </div>`;
+    return;
+  }
+
+  el.innerHTML = queue.map((entry, qi) => {
+    const chSummary = (entry.blocks || []).map(b => `${b.chName} (${b.count}Q)`).join(' · ');
+    return `<div class="q-card">
+      <div class="q-card-hdr" onclick="loadQueuedPaper(${qi})">
+        <div class="q-card-icon">📄</div>
+        <div class="q-card-info">
+          <div class="q-card-label">${esc(entry.stuName)} · ${entry.totalQ} Questions</div>
+          <div class="q-card-meta">${entry.datetime || entry.date}</div>
+          <div class="q-card-meta" style="margin-top:3px;white-space:normal;line-height:1.6;">${esc(chSummary)}</div>
+        </div>
+        <div style="font-size:.7rem;color:var(--cyan);font-weight:700;flex-shrink:0;padding-top:2px;">Open →</div>
+      </div>
+      <div class="q-card-actions">
+        <button class="btn btn-ghost" style="font-size:.72rem;padding:8px;" onclick="deleteFromQueue(${qi})">🗑 Delete</button>
+        <button class="btn btn-green" style="font-size:.72rem;flex:1;" onclick="loadQueuedPaper(${qi})">▶ Open + Download</button>
+      </div>
+    </div>`;
+  }).join('');
+}
   modalMode = mode;
   const body = document.getElementById('mBody');
   body.innerHTML = '';
@@ -2530,7 +2713,9 @@ async function loadFromGithub() {
       const d = await r.json();
       data = JSON.parse(decodeURIComponent(escape(atob(d.content))));
       if (!data.history) data.history = [];
+      if (!data.queue) data.queue = [];
       renderHome();
+      updateQueueBadge();
       showToast('✓ Data loaded!', 's');
       return;
     }
