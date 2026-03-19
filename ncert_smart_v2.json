@@ -227,31 +227,7 @@
                     },
                     "3": {
                       "used": 1,
-                      "lastDate": "2026-03-19",
-                      "wrong": {
-                        "count": 4,
-                        "lastDate": "2026-03-19",
-                        "nextReview": "2026-04-03",
-                        "difficulty": "medium",
-                        "history": [
-                          {
-                            "date": "2026-03-19",
-                            "difficulty": "medium"
-                          },
-                          {
-                            "date": "2026-03-19",
-                            "difficulty": "medium"
-                          },
-                          {
-                            "date": "2026-03-19",
-                            "difficulty": "medium"
-                          },
-                          {
-                            "date": "2026-03-19",
-                            "difficulty": "medium"
-                          }
-                        ]
-                      }
+                      "lastDate": "2026-03-19"
                     },
                     "4": {
                       "used": 1,
