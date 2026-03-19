@@ -1237,8 +1237,58 @@
                   "examples": {}
                 },
                 {
-                  "questions": {},
-                  "examples": {}
+                  "questions": {
+                    "1": {
+                      "used": 0,
+                      "lastDate": null
+                    },
+                    "2": {
+                      "used": 0,
+                      "lastDate": null
+                    },
+                    "3": {
+                      "used": 0,
+                      "lastDate": null
+                    },
+                    "4": {
+                      "used": 0,
+                      "lastDate": null
+                    },
+                    "5": {
+                      "used": 0,
+                      "lastDate": null
+                    },
+                    "6": {
+                      "used": 0,
+                      "lastDate": null
+                    },
+                    "7": {
+                      "used": 0,
+                      "lastDate": null
+                    },
+                    "8": {
+                      "used": 0,
+                      "lastDate": null
+                    },
+                    "9": {
+                      "used": 0,
+                      "lastDate": null
+                    },
+                    "10": {
+                      "used": 0,
+                      "lastDate": null
+                    },
+                    "11": {
+                      "used": 0,
+                      "lastDate": null
+                    },
+                    "12": {
+                      "used": 0,
+                      "lastDate": null
+                    }
+                  },
+                  "examples": {},
+                  "total": 12
                 },
                 {
                   "questions": {},
