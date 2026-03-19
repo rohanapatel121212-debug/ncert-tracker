@@ -40,7 +40,19 @@
                     },
                     "5": {
                       "used": 1,
-                      "lastDate": "2026-03-19"
+                      "lastDate": "2026-03-19",
+                      "wrong": {
+                        "count": 1,
+                        "lastDate": "2026-03-19",
+                        "nextReview": "2026-03-26",
+                        "difficulty": "easy",
+                        "history": [
+                          {
+                            "date": "2026-03-19",
+                            "difficulty": "easy"
+                          }
+                        ]
+                      }
                     }
                   },
                   "examples": {},
@@ -56,7 +68,19 @@
                   "examples": {
                     "2": {
                       "used": 1,
-                      "lastDate": "2026-03-19"
+                      "lastDate": "2026-03-19",
+                      "wrong": {
+                        "count": 1,
+                        "lastDate": "2026-03-19",
+                        "nextReview": "2026-03-26",
+                        "difficulty": "easy",
+                        "history": [
+                          {
+                            "date": "2026-03-19",
+                            "difficulty": "easy"
+                          }
+                        ]
+                      }
                     },
                     "3": {
                       "used": 0,
@@ -3085,7 +3109,11 @@
           "chName": "Comparing Quantities",
           "pn": 3,
           "type": "q",
-          "num": 5
+          "num": 5,
+          "wrong": {
+            "difficulty": "easy",
+            "date": "2026-03-19"
+          }
         },
         {
           "stuId": "migrated_1773733208764",
@@ -3101,7 +3129,11 @@
           "chName": "Comparing Quantities",
           "pn": 4,
           "type": "ex",
-          "num": 2
+          "num": 2,
+          "wrong": {
+            "difficulty": "easy",
+            "date": "2026-03-19"
+          }
         },
         {
           "stuId": "migrated_1773733208764",
