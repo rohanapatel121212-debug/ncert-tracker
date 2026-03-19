@@ -287,17 +287,16 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);max-width:48
 .due-badge{font-size:.38rem;padding:1px 3px;border-radius:2px;background:var(--amber);color:#000;font-weight:700;line-height:1.2}
 
 /* Wrong mark popup — clean thick 4-col row */
-.diff-popup{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:250;display:none;align-items:flex-end;justify-content:center}
-.diff-popup.open{display:flex}
-.diff-sheet{position:fixed;bottom:0;left:0;right:0;max-width:480px;margin:0 auto;background:var(--s1);border-top:1px solid var(--border2);padding:10px 10px calc(10px + env(safe-area-inset-bottom));transform:translateY(100%);transition:transform .25s cubic-bezier(.32,.72,0,1)}
-.diff-popup.open .diff-sheet{transform:translateY(0)}
+.diff-popup{position:fixed;bottom:0;left:0;right:0;z-index:250;transform:translateY(100%);transition:transform .3s cubic-bezier(.32,.72,0,1)}
+.diff-popup.open{transform:translateY(0)}
+.diff-sheet{background:var(--s1);border-top:2px solid var(--border2);padding:10px 10px calc(14px + env(safe-area-inset-bottom))}
 .diff-handle{display:none}
 .diff-title{display:none}
 .diff-sub{display:none}
 .diff-btns{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin:0}
-.diff-btn{padding:16px 4px;border-radius:13px;border:none;font-size:.8rem;font-weight:800;cursor:pointer;font-family:var(--sans);transition:all .15s;text-align:center;display:flex;flex-direction:column;align-items:center;gap:4px;line-height:1}
+.diff-btn{padding:16px 4px;border-radius:13px;border:none;font-size:.8rem;font-weight:800;cursor:pointer;font-family:var(--sans);text-align:center;display:flex;flex-direction:column;align-items:center;gap:4px;line-height:1}
 .diff-btn span{font-size:.55rem;font-weight:600;opacity:.75}
-.diff-btn:active{transform:scale(.93)}
+.diff-btn:active{opacity:.7}
 .diff-ok{background:rgba(90,96,112,.18);color:var(--text);border:1px solid var(--border2)}
 .diff-easy{background:rgba(34,197,94,.13);color:var(--green);border:1px solid rgba(34,197,94,.3)}
 .diff-medium{background:rgba(245,158,11,.13);color:var(--amber);border:1px solid rgba(245,158,11,.3)}
@@ -691,7 +690,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);max-width:48
 </div>
 
 <!-- DIFFICULTY / WRONG MARK POPUP -->
-<div class="diff-popup" id="diffPopup" onclick="if(event.target===this)closeDiffPopup()">
+<div class="diff-popup" id="diffPopup">
   <div class="diff-sheet">
     <div class="diff-handle"></div>
     <div class="diff-title" id="diffPopupTitle">Wrong Mark Karo</div>
