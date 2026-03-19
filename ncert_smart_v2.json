@@ -231,55 +231,11 @@
                     },
                     "4": {
                       "used": 1,
-                      "lastDate": "2026-03-19",
-                      "wrong": {
-                        "count": 3,
-                        "lastDate": "2026-03-19",
-                        "nextReview": "2026-04-18",
-                        "difficulty": "easy",
-                        "history": [
-                          {
-                            "date": "2026-03-19",
-                            "difficulty": "medium"
-                          },
-                          {
-                            "date": "2026-03-19",
-                            "difficulty": "medium"
-                          },
-                          {
-                            "date": "2026-03-19",
-                            "difficulty": "easy"
-                          }
-                        ]
-                      }
+                      "lastDate": "2026-03-19"
                     },
                     "5": {
                       "used": 1,
-                      "lastDate": "2026-03-19",
-                      "wrong": {
-                        "count": 4,
-                        "lastDate": "2026-03-19",
-                        "nextReview": "2026-04-18",
-                        "difficulty": "easy",
-                        "history": [
-                          {
-                            "date": "2026-03-19",
-                            "difficulty": "medium"
-                          },
-                          {
-                            "date": "2026-03-19",
-                            "difficulty": "medium"
-                          },
-                          {
-                            "date": "2026-03-19",
-                            "difficulty": "easy"
-                          },
-                          {
-                            "date": "2026-03-19",
-                            "difficulty": "easy"
-                          }
-                        ]
-                      }
+                      "lastDate": "2026-03-19"
                     },
                     "6": {
                       "used": 0,
