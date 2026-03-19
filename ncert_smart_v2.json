@@ -24,16 +24,12 @@
                   "questions": {
                     "1": {
                       "used": 1,
-                      "lastDate": "2026-03-19"
-                    },
-                    "2": {
-                      "used": 1,
                       "lastDate": "2026-03-19",
                       "wrong": {
                         "count": 1,
                         "lastDate": "2026-03-19",
-                        "nextReview": "2026-03-20",
-                        "difficulty": "hard",
+                        "nextReview": "2026-03-26",
+                        "difficulty": "easy",
                         "history": [
                           {
                             "date": "2026-03-19",
@@ -41,6 +37,10 @@
                           }
                         ]
                       }
+                    },
+                    "2": {
+                      "used": 1,
+                      "lastDate": "2026-03-19"
                     },
                     "3": {
                       "used": 1,
@@ -3085,7 +3085,11 @@
           "chName": "Comparing Quantities",
           "pn": 3,
           "type": "q",
-          "num": 1
+          "num": 1,
+          "wrong": {
+            "difficulty": "easy",
+            "date": "2026-03-19"
+          }
         },
         {
           "stuId": "migrated_1773733208764",
@@ -3093,11 +3097,7 @@
           "chName": "Comparing Quantities",
           "pn": 3,
           "type": "q",
-          "num": 2,
-          "wrong": {
-            "difficulty": "hard",
-            "date": "2026-03-19"
-          }
+          "num": 2
         },
         {
           "stuId": "migrated_1773733208764",
