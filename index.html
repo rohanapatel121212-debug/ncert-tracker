@@ -602,12 +602,8 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);max-width:48
 <!-- ══════ HISTORY ══════ -->
 <div class="page" id="page-history">
 <div class="pi">
-  <!-- REVIEW SECTION: Last test wrong questions -->
-  <div class="sl" style="margin-top:4px;">📋 Last Test Review</div>
-  <div id="lastTestReview"></div>
-
   <!-- DOWNLOAD SECTION -->
-  <div class="sl" style="margin-top:10px;">📥 Download</div>
+  <div class="sl" style="margin-top:4px;">📥 Download</div>
   <div id="histDownloadSection" style="display:none;">
     <div style="background:var(--s2);border:1px solid var(--border);border-radius:12px;padding:13px;margin-bottom:10px;">
       <div style="font-size:.72rem;color:var(--t2);margin-bottom:10px;font-family:var(--mono);">Generated paper abhi active hai — Paper tab mein download karo</div>
@@ -2356,7 +2352,6 @@ function _applyWrongToChapter(stuId, item, difficulty) {
 }
 
 function renderHistoryPage() {
-  // --- Download section ---
   const dlSection = document.getElementById('histDownloadSection');
   const dlEmpty   = document.getElementById('histDownloadEmpty');
   if (currentPaper) {
@@ -2366,69 +2361,6 @@ function renderHistoryPage() {
     dlSection.style.display = 'none';
     dlEmpty.style.display   = 'block';
   }
-
-  // --- Last Test Review: wrong questions from history snapshots ---
-  const reviewEl = document.getElementById('lastTestReview');
-  if (!reviewEl) return;
-
-  // Gather wrong questions FROM history snapshots (not from chapter data)
-  const allWrong = [];
-  (data.history || []).forEach((h, hi) => {
-    if (!h.snapshot) return;
-    h.snapshot.forEach((item, si) => {
-      if (!item.wrong) return;
-      allWrong.push({
-        hi, si,
-        stuId: h.stuId,
-        stuName: h.studentName,
-        cls: item.cls,
-        chName: item.chName,
-        pn: item.pn,
-        type: item.type,
-        num: item.num,
-        loc: item.loc || ((item.type === 'q' ? 'Q' : 'Ex') + item.num),
-        difficulty: item.wrong.difficulty,
-        date: item.wrong.date,
-        paperDate: h.date
-      });
-    });
-  });
-
-  if (!allWrong.length) {
-    reviewEl.innerHTML = `<div class="empty"><div class="empty-icon">🎯</div><div class="empty-text">Koi wrong question mark nahi hua abhi tak.<br><span style="font-size:.65rem;">History tab mein paper open karke mark karo.</span></div></div>`;
-    return;
-  }
-
-  // Sort: hard first, then medium, then easy
-  const diffOrder = { hard: 0, medium: 1, easy: 2 };
-  allWrong.sort((a, b) => (diffOrder[a.difficulty] ?? 3) - (diffOrder[b.difficulty] ?? 3));
-
-  const diffColor = { easy: 'var(--green)', medium: 'var(--amber)', hard: 'var(--red)' };
-  const diffBg    = { easy: 'var(--gdim)',  medium: 'var(--adim)',  hard: 'var(--rdim)' };
-
-  reviewEl.innerHTML = `
-    <div style="background:var(--s1);border:1px solid var(--border);border-radius:13px;overflow:hidden;margin-bottom:10px;">
-      <div style="padding:10px 13px;background:var(--s2);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;">
-        <div style="font-size:.75rem;font-weight:700;">Wrong Questions <span style="font-size:.62rem;background:var(--rdim);color:var(--red);padding:1px 7px;border-radius:4px;border:1px solid rgba(239,68,68,.2);">${allWrong.length} total</span></div>
-        <div style="font-size:.62rem;color:var(--t2);">Hard: <b style="color:var(--red);">${allWrong.filter(w=>w.difficulty==='hard').length}</b></div>
-      </div>
-      ${allWrong.slice(0, 40).map(w => {
-        const dc = diffColor[w.difficulty] || 'var(--t2)';
-        const db = diffBg[w.difficulty]   || 'var(--s3)';
-        return `<div style="padding:9px 13px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px;">
-          <div style="width:7px;height:7px;border-radius:50%;background:${dc};flex-shrink:0;"></div>
-          <div style="flex:1;min-width:0;">
-            <div style="font-size:.8rem;font-weight:700;font-family:var(--mono);">${esc(w.loc)} <span style="font-size:.65rem;color:var(--t2);font-family:var(--sans);">${esc(w.chName)} · P${w.pn}</span></div>
-            <div style="font-size:.6rem;color:var(--t2);margin-top:2px;">${esc(w.stuName)} · Paper: ${fmtD(w.paperDate)||'—'}</div>
-          </div>
-          <div style="display:flex;flex-direction:column;align-items:flex-end;gap:3px;">
-            <span style="font-size:.58rem;padding:1px 7px;border-radius:4px;font-weight:700;background:${db};color:${dc};border:1px solid ${dc}22;">${w.difficulty||'—'}</span>
-          </div>
-          <button onclick="removeWrongFromHistory(${w.hi},${w.si})" style="flex-shrink:0;background:var(--rdim);border:1px solid rgba(239,68,68,.2);color:var(--red);border-radius:7px;padding:4px 8px;font-size:.68rem;font-weight:700;cursor:pointer;" title="Hatao">🗑</button>
-        </div>`;
-      }).join('')}
-      ${allWrong.length > 40 ? `<div style="padding:10px;text-align:center;font-size:.65rem;color:var(--t2);">+${allWrong.length-40} aur wrong questions hain</div>` : ''}
-    </div>`;
 }
 
 function removeWrongFromHistory(hi, si) {
