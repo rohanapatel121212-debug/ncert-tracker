@@ -2282,8 +2282,14 @@ function renderHistory() {
         return imgHtml + qRows;
       }).join('');
 
-      qRowsHtml += `<div style="padding:9px 13px;display:flex;gap:7px;background:var(--s2);border-top:1px solid var(--border);">
-        <div style="font-size:.62rem;color:var(--t2);flex:1;">Tap karke wrong mark karo · Cycle: OK → Easy → Medium → Hard → OK</div>
+      qRowsHtml += `<div style="padding:10px 13px;background:var(--s2);border-top:1px solid var(--border);">
+        <div style="font-size:.65rem;color:var(--t2);margin-bottom:8px;">Question tap karo aur difficulty set karo:</div>
+        <div style="display:flex;gap:7px;">
+          <span style="flex:1;text-align:center;padding:7px 4px;border-radius:8px;font-size:.7rem;font-weight:700;background:var(--s3);color:var(--t2);border:1px solid var(--border);">✓ OK</span>
+          <span style="flex:1;text-align:center;padding:7px 4px;border-radius:8px;font-size:.7rem;font-weight:700;background:rgba(34,197,94,.12);color:var(--green);border:1px solid rgba(34,197,94,.25);">😊 Easy</span>
+          <span style="flex:1;text-align:center;padding:7px 4px;border-radius:8px;font-size:.7rem;font-weight:700;background:rgba(245,158,11,.12);color:var(--amber);border:1px solid rgba(245,158,11,.25);">😐 Medium</span>
+          <span style="flex:1;text-align:center;padding:7px 4px;border-radius:8px;font-size:.7rem;font-weight:700;background:rgba(239,68,68,.12);color:var(--red);border:1px solid rgba(239,68,68,.25);">😰 Hard</span>
+        </div>
       </div>`;
     }
 
