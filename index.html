@@ -286,20 +286,22 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);max-width:48
 .wrong-badge{font-size:.38rem;padding:1px 3px;border-radius:2px;background:var(--red);color:#fff;font-weight:700;line-height:1.2}
 .due-badge{font-size:.38rem;padding:1px 3px;border-radius:2px;background:var(--amber);color:#000;font-weight:700;line-height:1.2}
 
-/* Wrong mark popup in chip */
-.diff-popup{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:250;display:none;align-items:flex-end;justify-content:center}
+/* Wrong mark popup — clean thick 4-col row */
+.diff-popup{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:250;display:none;align-items:flex-end;justify-content:center}
 .diff-popup.open{display:flex}
-.diff-sheet{width:100%;max-width:480px;background:var(--s1);border-radius:18px 18px 0 0;padding:14px 16px 34px;border-top:1px solid var(--border2)}
-.diff-handle{width:30px;height:3px;background:var(--border2);border-radius:2px;margin:0 auto 12px}
-.diff-title{font-size:.88rem;font-weight:800;margin-bottom:4px}
-.diff-sub{font-size:.7rem;color:var(--t2);margin-bottom:14px}
-.diff-btns{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:10px}
-.diff-btn{padding:12px 8px;border-radius:11px;border:none;font-size:.78rem;font-weight:700;cursor:pointer;font-family:var(--sans);transition:all .15s;text-align:center}
+.diff-sheet{width:100%;max-width:480px;background:var(--s1);border-top:1px solid var(--border2);padding:10px 10px calc(10px + env(safe-area-inset-bottom))}
+.diff-handle{display:none}
+.diff-title{display:none}
+.diff-sub{display:none}
+.diff-btns{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin:0}
+.diff-btn{padding:16px 4px;border-radius:13px;border:none;font-size:.8rem;font-weight:800;cursor:pointer;font-family:var(--sans);transition:all .15s;text-align:center;display:flex;flex-direction:column;align-items:center;gap:4px;line-height:1}
+.diff-btn span{font-size:.55rem;font-weight:600;opacity:.75}
 .diff-btn:active{transform:scale(.93)}
-.diff-easy{background:rgba(34,197,94,.12);color:var(--green);border:1px solid rgba(34,197,94,.25)}
-.diff-medium{background:rgba(245,158,11,.12);color:var(--amber);border:1px solid rgba(245,158,11,.25)}
-.diff-hard{background:rgba(239,68,68,.12);color:var(--red);border:1px solid rgba(239,68,68,.25)}
-.diff-next{font-size:.62rem;color:var(--t2);text-align:center;margin-top:6px}
+.diff-ok{background:rgba(90,96,112,.18);color:var(--text);border:1px solid var(--border2)}
+.diff-easy{background:rgba(34,197,94,.13);color:var(--green);border:1px solid rgba(34,197,94,.3)}
+.diff-medium{background:rgba(245,158,11,.13);color:var(--amber);border:1px solid rgba(245,158,11,.3)}
+.diff-hard{background:rgba(239,68,68,.13);color:var(--red);border:1px solid rgba(239,68,68,.3)}
+.diff-next{display:none}
 
 /* Paper review section */
 .review-banner{background:rgba(245,158,11,.07);border:1px solid rgba(245,158,11,.2);border-radius:11px;padding:11px 13px;margin-bottom:10px;display:none}
@@ -694,11 +696,11 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);max-width:48
     <div class="diff-title" id="diffPopupTitle">Wrong Mark Karo</div>
     <div class="diff-sub" id="diffPopupSub">Kitna mushkil tha?</div>
     <div class="diff-btns">
-      <button class="diff-btn diff-easy"  onclick="markWrong('easy')">😊 Easy<br><span style="font-size:.58rem;opacity:.7">7 din baad</span></button>
-      <button class="diff-btn diff-medium" onclick="markWrong('medium')">😐 Medium<br><span style="font-size:.58rem;opacity:.7">3 din baad</span></button>
-      <button class="diff-btn diff-hard"  onclick="markWrong('hard')">😰 Hard<br><span style="font-size:.58rem;opacity:.7">1 din baad</span></button>
+      <button class="diff-btn diff-ok"      onclick="closeDiffPopup()">OK<span>Default</span></button>
+      <button class="diff-btn diff-easy"    onclick="markWrong('easy')">😊 Easy<span>7 din baad</span></button>
+      <button class="diff-btn diff-medium"  onclick="markWrong('medium')">😐 Medium<span>3 din baad</span></button>
+      <button class="diff-btn diff-hard"    onclick="markWrong('hard')">😰 Hard<span>1 din baad</span></button>
     </div>
-    <button class="big-btn btn-o" style="margin:0;font-size:.78rem;" onclick="closeDiffPopup()">Cancel</button>
     <div class="diff-next" id="diffPopupNext"></div>
   </div>
 </div>
