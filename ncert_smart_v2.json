@@ -823,7 +823,19 @@
                   "questions": {
                     "1": {
                       "used": 1,
-                      "lastDate": "2026-03-19"
+                      "lastDate": "2026-03-19",
+                      "wrong": {
+                        "count": 1,
+                        "lastDate": "2026-03-19",
+                        "nextReview": "2026-03-26",
+                        "difficulty": "easy",
+                        "history": [
+                          {
+                            "date": "2026-03-19",
+                            "difficulty": "easy"
+                          }
+                        ]
+                      }
                     },
                     "2": {
                       "used": 0,
@@ -3185,7 +3197,11 @@
           "chName": "Factorisation",
           "pn": 4,
           "type": "q",
-          "num": 1
+          "num": 1,
+          "wrong": {
+            "difficulty": "easy",
+            "date": "2026-03-19"
+          }
         }
       ]
     }
