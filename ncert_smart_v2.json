@@ -1957,8 +1957,26 @@
               "prefix": "ch11",
               "pages": [
                 {
-                  "questions": {},
-                  "examples": {}
+                  "questions": {
+                    "1": {
+                      "used": 0,
+                      "lastDate": null
+                    },
+                    "2": {
+                      "used": 0,
+                      "lastDate": null
+                    },
+                    "3": {
+                      "used": 0,
+                      "lastDate": null
+                    },
+                    "4": {
+                      "used": 0,
+                      "lastDate": null
+                    }
+                  },
+                  "examples": {},
+                  "total": 4
                 },
                 {
                   "questions": {},
