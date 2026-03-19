@@ -658,7 +658,19 @@
                   "examples": {
                     "2": {
                       "used": 1,
-                      "lastDate": "2026-03-19"
+                      "lastDate": "2026-03-19",
+                      "wrong": {
+                        "count": 1,
+                        "lastDate": "2026-03-19",
+                        "nextReview": "2026-03-26",
+                        "difficulty": "easy",
+                        "history": [
+                          {
+                            "date": "2026-03-19",
+                            "difficulty": "easy"
+                          }
+                        ]
+                      }
                     }
                   },
                   "exTotal": 1
@@ -3225,7 +3237,11 @@
           "chName": "Direct and Inverse Proportions",
           "pn": 5,
           "type": "ex",
-          "num": 2
+          "num": 2,
+          "wrong": {
+            "difficulty": "easy",
+            "date": "2026-03-19"
+          }
         },
         {
           "stuId": "migrated_1773733208764",
