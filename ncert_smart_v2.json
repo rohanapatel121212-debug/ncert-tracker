@@ -247,7 +247,19 @@
                     },
                     "8": {
                       "used": 1,
-                      "lastDate": "2026-03-19"
+                      "lastDate": "2026-03-19",
+                      "wrong": {
+                        "count": 1,
+                        "lastDate": "2026-03-19",
+                        "nextReview": "2026-03-26",
+                        "difficulty": "easy",
+                        "history": [
+                          {
+                            "date": "2026-03-19",
+                            "difficulty": "easy"
+                          }
+                        ]
+                      }
                     },
                     "9": {
                       "used": 0,
@@ -3113,7 +3125,11 @@
           "chName": "Mensuration",
           "pn": 4,
           "type": "q",
-          "num": 8
+          "num": 8,
+          "wrong": {
+            "difficulty": "easy",
+            "date": "2026-03-19"
+          }
         },
         {
           "stuId": "migrated_1773733208764",
