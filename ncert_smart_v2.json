@@ -3044,5 +3044,222 @@
     }
   ],
   "history": [],
-  "queue": []
+  "queue": [
+    {
+      "id": 1773948136069,
+      "date": "2026-03-19",
+      "datetime": "20/3/2026, 12:52:16 am",
+      "stuId": "migrated_1773733208764",
+      "stuName": "Student",
+      "totalQ": 15,
+      "label": "Student · 15Q · 2026-03-19",
+      "blocks": [
+        {
+          "cls": "Class 8",
+          "chName": "Comparing Quantities",
+          "folder": "books/class8/Ch7-Comparing Quantities",
+          "prefix": "ch7",
+          "count": 3,
+          "start": 1,
+          "end": 3,
+          "items": [
+            {
+              "cls": "Class 8",
+              "chName": "Comparing Quantities",
+              "pn": 3,
+              "type": "q",
+              "num": 1,
+              "loc": "Q1",
+              "used": 0,
+              "key": "q1_p3"
+            },
+            {
+              "cls": "Class 8",
+              "chName": "Comparing Quantities",
+              "pn": 3,
+              "type": "q",
+              "num": 2,
+              "loc": "Q2",
+              "used": 0,
+              "key": "q2_p3"
+            },
+            {
+              "cls": "Class 8",
+              "chName": "Comparing Quantities",
+              "pn": 3,
+              "type": "q",
+              "num": 3,
+              "loc": "Q3",
+              "used": 0,
+              "key": "q3_p3"
+            }
+          ]
+        },
+        {
+          "cls": "Class 8",
+          "chName": "Mensuration",
+          "folder": "books/class8/ch9-Mensuration",
+          "prefix": "mensuration",
+          "count": 3,
+          "start": 4,
+          "end": 6,
+          "items": [
+            {
+              "cls": "Class 8",
+              "chName": "Mensuration",
+              "pn": 2,
+              "type": "ex",
+              "num": 1,
+              "loc": "Example 1",
+              "used": 0,
+              "key": "ex1_p2"
+            },
+            {
+              "cls": "Class 8",
+              "chName": "Mensuration",
+              "pn": 3,
+              "type": "q",
+              "num": 1,
+              "loc": "Q1",
+              "used": 0,
+              "key": "q1_p3"
+            },
+            {
+              "cls": "Class 8",
+              "chName": "Mensuration",
+              "pn": 3,
+              "type": "ex",
+              "num": 2,
+              "loc": "Example 2",
+              "used": 0,
+              "key": "ex2_p3"
+            }
+          ]
+        },
+        {
+          "cls": "Class 8",
+          "chName": "Exponents and Powers",
+          "folder": "books/class8/ch10-Exponents and Power",
+          "prefix": "exp",
+          "count": 3,
+          "start": 7,
+          "end": 9,
+          "items": [
+            {
+              "cls": "Class 8",
+              "chName": "Exponents and Powers",
+              "pn": 4,
+              "type": "ex",
+              "num": 1,
+              "loc": "Example 1",
+              "used": 0,
+              "key": "ex1_p4"
+            },
+            {
+              "cls": "Class 8",
+              "chName": "Exponents and Powers",
+              "pn": 4,
+              "type": "ex",
+              "num": 2,
+              "loc": "Example 2",
+              "used": 0,
+              "key": "ex2_p4"
+            },
+            {
+              "cls": "Class 8",
+              "chName": "Exponents and Powers",
+              "pn": 4,
+              "type": "ex",
+              "num": 3,
+              "loc": "Example 3",
+              "used": 0,
+              "key": "ex3_p4"
+            }
+          ]
+        },
+        {
+          "cls": "Class 8",
+          "chName": "Direct and Inverse Proportions",
+          "folder": "books/class8/ch11-Direct and inverse propertions",
+          "prefix": "ch11",
+          "count": 3,
+          "start": 10,
+          "end": 12,
+          "items": [
+            {
+              "cls": "Class 8",
+              "chName": "Direct and Inverse Proportions",
+              "pn": 4,
+              "type": "ex",
+              "num": 1,
+              "loc": "Example 1",
+              "used": 0,
+              "key": "ex1_p4"
+            },
+            {
+              "cls": "Class 8",
+              "chName": "Direct and Inverse Proportions",
+              "pn": 5,
+              "type": "ex",
+              "num": 2,
+              "loc": "Example 2",
+              "used": 0,
+              "key": "ex2_p5"
+            },
+            {
+              "cls": "Class 8",
+              "chName": "Direct and Inverse Proportions",
+              "pn": 6,
+              "type": "ex",
+              "num": 3,
+              "loc": "Example 3",
+              "used": 0,
+              "key": "ex3_p6"
+            }
+          ]
+        },
+        {
+          "cls": "Class 8",
+          "chName": "Factorisation",
+          "folder": "books/class8/Ch12-Factorisation",
+          "prefix": "fact",
+          "count": 3,
+          "start": 13,
+          "end": 15,
+          "items": [
+            {
+              "cls": "Class 8",
+              "chName": "Factorisation",
+              "pn": 3,
+              "type": "ex",
+              "num": 1,
+              "loc": "Example 1",
+              "used": 0,
+              "key": "ex1_p3"
+            },
+            {
+              "cls": "Class 8",
+              "chName": "Factorisation",
+              "pn": 3,
+              "type": "ex",
+              "num": 2,
+              "loc": "Example 2",
+              "used": 0,
+              "key": "ex2_p3"
+            },
+            {
+              "cls": "Class 8",
+              "chName": "Factorisation",
+              "pn": 4,
+              "type": "q",
+              "num": 1,
+              "loc": "Q1",
+              "used": 0,
+              "key": "q1_p4"
+            }
+          ]
+        }
+      ]
+    }
+  ]
 }
