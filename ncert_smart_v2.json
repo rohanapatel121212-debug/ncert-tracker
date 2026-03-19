@@ -207,7 +207,19 @@
                   "examples": {
                     "1": {
                       "used": 1,
-                      "lastDate": "2026-03-19"
+                      "lastDate": "2026-03-19",
+                      "wrong": {
+                        "count": 1,
+                        "lastDate": "2026-03-19",
+                        "nextReview": "2026-03-22",
+                        "difficulty": "medium",
+                        "history": [
+                          {
+                            "date": "2026-03-19",
+                            "difficulty": "easy"
+                          }
+                        ]
+                      }
                     }
                   },
                   "exTotal": 1
@@ -3137,7 +3149,11 @@
           "chName": "Mensuration",
           "pn": 2,
           "type": "ex",
-          "num": 1
+          "num": 1,
+          "wrong": {
+            "difficulty": "medium",
+            "date": "2026-03-19"
+          }
         },
         {
           "stuId": "migrated_1773733208764",
