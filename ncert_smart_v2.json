@@ -227,7 +227,19 @@
                     },
                     "3": {
                       "used": 1,
-                      "lastDate": "2026-03-19"
+                      "lastDate": "2026-03-19",
+                      "wrong": {
+                        "count": 1,
+                        "lastDate": "2026-03-19",
+                        "nextReview": "2026-03-22",
+                        "difficulty": "medium",
+                        "history": [
+                          {
+                            "date": "2026-03-19",
+                            "difficulty": "medium"
+                          }
+                        ]
+                      }
                     },
                     "4": {
                       "used": 1,
