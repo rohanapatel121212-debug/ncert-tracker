@@ -506,34 +506,37 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);max-width:48
     <div class="paper-config">
       <div class="pc-row">
         <span class="pc-label">Total Questions</span>
-        <input class="num-inp" id="paperQ" type="number" value="22" min="1" max="100" oninput="updateChDist()">
+        <input class="num-inp" id="paperQ" type="number" value="" placeholder="?" min="1" max="100" oninput="updateChDist()">
       </div>
       <div class="pc-row">
         <span class="pc-label">Priority Mode</span>
-        <select class="num-inp" id="paperMode" style="width:auto;font-size:.72rem;">
-          <option value="fresh">Fresh First</option>
-          <option value="weak">Weak Chapters First</option>
-          <option value="balanced">Balanced</option>
+        <select class="num-inp" id="paperMode" style="width:auto;font-size:.72rem;" onchange="onModeChange()">
+          <option value="fresh">🟢 Fresh First</option>
+          <option value="weak">🔴 Weak Chapters First</option>
+          <option value="balanced">⚖ Balanced</option>
+          <option value="only_wrong">✗ Only Wrong Questions</option>
+          <option value="only_due">⚡ Only Due Today</option>
+          <option value="important">⭐ Important (2+ baar galat)</option>
+          <option value="custom">🎛 Custom (Manual)</option>
         </select>
       </div>
     </div>
 
     <!-- Chapter Distribution Editor -->
+    <div id="chDistSection">
     <div class="sl">
       Chapter Distribution
       <span id="dist-total-badge" style="font-size:.6rem;padding:2px 8px;border-radius:4px;background:var(--gdim);color:var(--green);font-weight:700;letter-spacing:0;text-transform:none;margin-left:4px;">0/0</span>
       <button class="icon-btn" onclick="resetChDist()" style="margin-left:auto;height:22px;font-size:.58rem;">↺ Auto</button>
     </div>
     <div id="ch-dist-editor" style="margin-bottom:10px;"></div>
+    </div>
+    <div id="modeHintSection" style="display:none;margin-bottom:10px;background:var(--s2);border:1px solid var(--border);border-radius:10px;padding:11px 13px;font-size:.72rem;color:var(--t2);line-height:1.7;"></div>
 
     <!-- Output -->
     <div id="paperOutput" style="display:none;">
       <div class="sl">Generated Paper</div>
       <div id="paperContent"></div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:7px;">
-        <button class="big-btn btn-c" style="margin:0;font-size:.75rem;" onclick="downloadPaperImages()">🖼 Alag Alag</button>
-        <button class="big-btn btn-c" style="margin:0;font-size:.75rem;background:var(--cyan);color:#000;" onclick="downloadPaperImagesZip()">🗜 ZIP File</button>
-      </div>
       <button class="big-btn btn-g" onclick="markPaperDone()">✓ Mark All Done + Save History</button>
       <button class="big-btn btn-o" onclick="generatePaper()">↺ Regenerate</button>
     </div>
@@ -544,7 +547,27 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);max-width:48
 <!-- ══════ HISTORY ══════ -->
 <div class="page" id="page-history">
 <div class="pi">
-  <div class="sl" style="margin-top:4px;">Test History</div>
+  <!-- REVIEW SECTION: Last test wrong questions -->
+  <div class="sl" style="margin-top:4px;">📋 Last Test Review</div>
+  <div id="lastTestReview"></div>
+
+  <!-- DOWNLOAD SECTION -->
+  <div class="sl" style="margin-top:10px;">📥 Download</div>
+  <div id="histDownloadSection" style="display:none;">
+    <div style="background:var(--s2);border:1px solid var(--border);border-radius:12px;padding:13px;margin-bottom:10px;">
+      <div style="font-size:.72rem;color:var(--t2);margin-bottom:10px;font-family:var(--mono);">Last generated paper ke images download karo</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:7px;">
+        <button class="big-btn btn-c" style="margin:0;font-size:.75rem;" onclick="downloadPaperImages()">🖼 Alag Alag</button>
+        <button class="big-btn btn-c" style="margin:0;font-size:.75rem;background:var(--cyan);color:#000;" onclick="downloadPaperImagesZip()">🗜 ZIP File</button>
+      </div>
+    </div>
+  </div>
+  <div id="histDownloadEmpty" style="background:var(--s1);border:1px solid var(--border);border-radius:12px;padding:13px;margin-bottom:10px;text-align:center;font-size:.72rem;color:var(--t2);">
+    Pehle Paper tab se test generate karo
+  </div>
+
+  <!-- TEST HISTORY -->
+  <div class="sl" style="margin-top:10px;">🕐 Test History</div>
   <div id="histList"></div>
 </div>
 </div>
@@ -579,7 +602,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);max-width:48
 <div class="bnav">
   <div class="ni active" id="ni-home"     onclick="showPage('home')"><div class="ni-icon">📚</div><div class="ni-lbl">Home</div></div>
   <div class="ni"        id="ni-paper"    onclick="showPage('paper');renderPaperStuSelector();renderReviewBanner()"><div class="ni-icon">⚡</div><div class="ni-lbl">Paper</div><div class="ni-badge" id="nb-paper"></div></div>
-  <div class="ni"        id="ni-history"  onclick="showPage('history');renderHistory()"><div class="ni-icon">🕐</div><div class="ni-lbl">History</div></div>
+  <div class="ni"        id="ni-history"  onclick="showPage('history');renderHistory();renderHistoryPage()"><div class="ni-icon">🕐</div><div class="ni-lbl">History</div></div>
   <div class="ni"        id="ni-settings" onclick="showPage('settings')"><div class="ni-icon">⚙️</div><div class="ni-lbl">Settings</div></div>
 </div>
 
@@ -1197,7 +1220,7 @@ function calcAutoChDist(stu, Q) {
 
 function stepChDist(key, delta) {
   const stu = getStu(paperStuId);
-  const Q = parseInt(document.getElementById('paperQ')?.value) || 22;
+  const Q = parseInt(document.getElementById('paperQ')?.value) || 0;
   const autoQs = calcAutoChDist(stu, Q);
   const current = chDist[key] !== undefined ? chDist[key] : (autoQs[key] || 0);
   const newVal = Math.max(0, current + delta);
@@ -1211,7 +1234,8 @@ function setChDist(key, val) {
 }
 
 function updateDistBadge() {
-  const Q = parseInt(document.getElementById('paperQ')?.value) || 22;
+  const rawQ = document.getElementById('paperQ')?.value;
+  const Q = parseInt(rawQ) || 0;
   const stu = getStu(paperStuId);
   if (!stu) return;
   const autoQs = calcAutoChDist(stu, Q);
@@ -1240,22 +1264,89 @@ function resetChDist() {
   showToast('Auto distribution reset', 'a');
 }
 
+function onModeChange() {
+  const mode = document.getElementById('paperMode').value;
+  const chDistSection  = document.getElementById('chDistSection');
+  const modeHintSection = document.getElementById('modeHintSection');
+  const qRow = document.getElementById('paperQ').closest('.pc-row');
+
+  const specialModes = ['only_wrong', 'only_due', 'important'];
+  if (specialModes.includes(mode)) {
+    chDistSection.style.display = 'none';
+    modeHintSection.style.display = 'block';
+    const hints = {
+      only_wrong: '✗ <b style="color:var(--red)">Only Wrong:</b> Sirf wo questions jo kabhi galat hue — sabhi chapters se. Total Q se limit hoga.',
+      only_due: '⚡ <b style="color:var(--amber)">Only Due Today:</b> Sirf wo questions jinka aaj review due hai (forgetting curve). Total Q ignore hoga — jo due hain sab aayenge.',
+      important: '⭐ <b style="color:var(--cyan)">Important:</b> Jo questions 2+ baar galat hue ya "hard" mark hain. Sabse kamzor questions pehle aayenge.',
+    };
+    modeHintSection.innerHTML = hints[mode] || '';
+  } else if (mode === 'custom') {
+    chDistSection.style.display = 'block';
+    modeHintSection.style.display = 'block';
+    modeHintSection.innerHTML = '🎛 <b style="color:var(--cyan)">Custom:</b> Neeche chapter distribution editor se manually Q count set karo har chapter ke liye.';
+  } else {
+    chDistSection.style.display = 'block';
+    modeHintSection.style.display = 'none';
+  }
+}
+
 function generatePaper() {
   if (!paperStuId) { showToast('Student select karo', 'e'); return; }
   const stu = getStu(paperStuId);
   if (!stu) return;
-  const Q = parseInt(document.getElementById('paperQ').value) || 22;
   const mode = document.getElementById('paperMode').value;
+  const rawQ = document.getElementById('paperQ').value;
 
-  // Get per-chapter counts — use manual chDist if set, else auto
+  // Special modes: only_wrong, only_due, important — don't need Q for all
+  const specialModes = ['only_wrong', 'only_due', 'important'];
+  let Q = 0;
+  if (mode !== 'only_due') {
+    if (!rawQ || rawQ.trim() === '') { showToast('⚠ Total Questions likho!', 'e'); document.getElementById('paperQ').focus(); return; }
+    Q = parseInt(rawQ) || 0;
+    if (Q < 1) { showToast('⚠ Kam se kam 1 question chahiye!', 'e'); return; }
+  }
+
+  // ── SPECIAL MODE: Only Wrong ──
+  if (mode === 'only_wrong') {
+    const pool = buildWrongPool(stu, false);
+    if (!pool.length) { showToast('Koi wrong questions nahi hain!', 'e'); return; }
+    pool.sort((a, b) => b.wrongCount - a.wrongCount);
+    const picked = pool.slice(0, Q);
+    currentPaper = buildPaperFromFlat(picked, stu);
+    renderPaperOutput();
+    document.getElementById('nb-paper').classList.add('show');
+    return;
+  }
+
+  // ── SPECIAL MODE: Only Due Today ──
+  if (mode === 'only_due') {
+    const pool = buildWrongPool(stu, true); // true = only due
+    if (!pool.length) { showToast('Aaj koi due questions nahi! 🎉', 's'); return; }
+    currentPaper = buildPaperFromFlat(pool, stu);
+    renderPaperOutput();
+    document.getElementById('nb-paper').classList.add('show');
+    return;
+  }
+
+  // ── SPECIAL MODE: Important (2+ wrong or hard) ──
+  if (mode === 'important') {
+    const pool = buildWrongPool(stu, false).filter(i => i.wrongCount >= 2 || i.difficulty === 'hard');
+    if (!pool.length) { showToast('Koi important (2+ baar galat) question nahi!', 'e'); return; }
+    pool.sort((a, b) => b.wrongCount - a.wrongCount);
+    const picked = pool.slice(0, Q);
+    currentPaper = buildPaperFromFlat(picked, stu);
+    renderPaperOutput();
+    document.getElementById('nb-paper').classList.add('show');
+    return;
+  }
+
+  // ── NORMAL MODES: fresh, weak, balanced, custom ──
   const autoQs = calcAutoChDist(stu, Q);
-
-  // SCORE function
   const score = (item) => {
     const daysSince = item.lastDate ? Math.floor((Date.now() - new Date(item.lastDate).getTime()) / 86400000) : 9999;
-    if (mode === 'fresh')    return item.used * 1000 - daysSince;
-    if (mode === 'weak')     return item.used * 500  - daysSince;
-    return item.used * 800 - daysSince;
+    if (mode === 'fresh')  return item.used * 1000 - daysSince;
+    if (mode === 'weak')   return item.used * 500  - daysSince;
+    return item.used * 800 - daysSince; // balanced / custom
   };
 
   const groups = {};
@@ -1267,8 +1358,6 @@ function generatePaper() {
       const key = getChKey(cls, chName);
       const wantCount = chDist[key] !== undefined ? chDist[key] : (autoQs[key] || 0);
       if (!wantCount) return;
-
-      // Build pool for this chapter
       const pool = [];
       (ch.pages || []).forEach((pg, pi) => {
         const pn = pi + 1;
@@ -1283,23 +1372,17 @@ function generatePaper() {
           pool.push({ cls, chName, ch, pn, type:'ex', num, used: e.used||0, lastDate: e.lastDate||null, loc:`Example ${num}`, key:`ex${num}_p${pn}` });
         });
       });
-
       if (!pool.length) return;
       anyQ = true;
-
-      // Sort by priority
       const sorted = [...pool].sort((a,b) => score(a) - score(b));
-      // Pick top wantCount (cycle if fewer available)
       const picked = [];
       for (let i = 0; i < wantCount; i++) picked.push(sorted[i % sorted.length]);
-
       groups[key] = { cls, chName, ch, items: picked };
     });
   });
 
   if (!anyQ) { showToast('Koi questions nahi hain — chapter mein Q/Ex add karo', 'e'); return; }
 
-  // Build blocks with Q ranges
   let cursor = 1;
   const blocks = Object.values(groups).map(g => {
     const count = g.items.length;
@@ -1312,6 +1395,56 @@ function generatePaper() {
   currentPaper = { stuId: paperStuId, stuName: stu.name, date: todayStr(), totalQ, blocks };
   renderPaperOutput();
   document.getElementById('nb-paper').classList.add('show');
+}
+
+// Build flat wrong question pool for a student
+function buildWrongPool(stu, onlyDue) {
+  const today = todayStr();
+  const pool = [];
+  Object.keys(stu.classes || {}).forEach(cls => {
+    Object.keys(stu.classes[cls].chapters || {}).forEach(chName => {
+      const ch = stu.classes[cls].chapters[chName];
+      (ch.pages || []).forEach((pg, pi) => {
+        const pn = pi + 1;
+        [...Object.entries(pg.questions || {}), ...Object.entries(pg.examples || {})].forEach(([n, q]) => {
+          if (!q.wrong || !q.wrong.count) return;
+          if (onlyDue && (!q.wrong.nextReview || q.wrong.nextReview > today)) return;
+          const isQ = !!pg.questions[n];
+          pool.push({
+            cls, chName, ch, pn,
+            type: isQ ? 'q' : 'ex',
+            num: parseInt(n),
+            used: q.used || 0,
+            lastDate: q.lastDate || null,
+            loc: isQ ? `Q${n}` : `Example ${n}`,
+            key: `${isQ?'q':'ex'}${n}_p${pn}`,
+            wrongCount: q.wrong.count,
+            difficulty: q.wrong.difficulty
+          });
+        });
+      });
+    });
+  });
+  return pool;
+}
+
+// Build currentPaper structure from flat item list (for special modes)
+function buildPaperFromFlat(items, stu) {
+  // Group by chapter
+  const chMap = {};
+  items.forEach(item => {
+    const key = getChKey(item.cls, item.chName);
+    if (!chMap[key]) chMap[key] = { cls: item.cls, chName: item.chName, ch: item.ch, items: [] };
+    chMap[key].items.push(item);
+  });
+  let cursor = 1;
+  const blocks = Object.values(chMap).map(g => {
+    const count = g.items.length;
+    const start = cursor, end = cursor + count - 1;
+    cursor = end + 1;
+    return { ...g, start, end, count };
+  });
+  return { stuId: stu.id, stuName: stu.name, date: todayStr(), totalQ: items.length, blocks };
 }
 
 function renderPaperOutput() {
@@ -1412,10 +1545,6 @@ function renderPaperOutput() {
       <div class="gp-sec-body open" id="gsec-${bi}">
         ${thumbHtml}
         ${qHtml}
-        <div class="paper-dl-bar" style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
-          <button class="paper-dl-btn" onclick="downloadChapterImages(${bi})">🖼 Alag Alag</button>
-          <button class="paper-dl-btn" style="background:rgba(6,182,212,.15);border-color:rgba(6,182,212,.3);" onclick="downloadChapterImagesZip(${bi})">🗜 ZIP</button>
-        </div>
       </div>`;
     wrap.appendChild(sec);
   });
@@ -1953,8 +2082,103 @@ function renderHistory() {
   }).join('');
 }
 
-// ══════════════════════════════════════════════════════════
-// MODAL
+function renderHistoryPage() {
+  // --- Download section ---
+  const dlSection = document.getElementById('histDownloadSection');
+  const dlEmpty   = document.getElementById('histDownloadEmpty');
+  if (currentPaper) {
+    dlSection.style.display = 'block';
+    dlEmpty.style.display   = 'none';
+  } else {
+    dlSection.style.display = 'none';
+    dlEmpty.style.display   = 'block';
+  }
+
+  // --- Last Test Review: wrong questions ---
+  const reviewEl = document.getElementById('lastTestReview');
+  if (!reviewEl) return;
+
+  // Gather ALL wrong questions from all students
+  const allWrong = [];
+  (data.students || []).forEach(stu => {
+    Object.keys(stu.classes || {}).forEach(cls => {
+      Object.keys(stu.classes[cls].chapters || {}).forEach(chName => {
+        const ch = stu.classes[cls].chapters[chName];
+        (ch.pages || []).forEach((pg, pi) => {
+          const pn = pi + 1;
+          [...Object.entries(pg.questions || {})].forEach(([n, q]) => {
+            if (q.wrong && q.wrong.count > 0) {
+              allWrong.push({ stuId: stu.id, stuName: stu.name, cls, chName, pn, type:'q', num: parseInt(n), loc: `Q${n}`, count: q.wrong.count, lastDate: q.wrong.lastDate, difficulty: q.wrong.difficulty, nextReview: q.wrong.nextReview });
+            }
+          });
+          [...Object.entries(pg.examples || {})].forEach(([n, e]) => {
+            if (e.wrong && e.wrong.count > 0) {
+              allWrong.push({ stuId: stu.id, stuName: stu.name, cls, chName, pn, type:'ex', num: parseInt(n), loc: `Ex${n}`, count: e.wrong.count, lastDate: e.wrong.lastDate, difficulty: e.wrong.difficulty, nextReview: e.wrong.nextReview });
+            }
+          });
+        });
+      });
+    });
+  });
+
+  if (!allWrong.length) {
+    reviewEl.innerHTML = `<div class="empty"><div class="empty-icon">🎯</div><div class="empty-text">Koi wrong question mark nahi hua abhi tak</div></div>`;
+    return;
+  }
+
+  // Sort: due first, then by count desc
+  const today = todayStr();
+  allWrong.sort((a, b) => {
+    const aDue = a.nextReview <= today ? 0 : 1;
+    const bDue = b.nextReview <= today ? 0 : 1;
+    if (aDue !== bDue) return aDue - bDue;
+    return b.count - a.count;
+  });
+
+  const diffColor = { easy: 'var(--green)', medium: 'var(--amber)', hard: 'var(--red)' };
+  const diffBg    = { easy: 'var(--gdim)',  medium: 'var(--adim)',  hard: 'var(--rdim)' };
+
+  reviewEl.innerHTML = `
+    <div style="background:var(--s1);border:1px solid var(--border);border-radius:13px;overflow:hidden;margin-bottom:10px;">
+      <div style="padding:10px 13px;background:var(--s2);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;">
+        <div style="font-size:.75rem;font-weight:700;">Wrong Questions <span style="font-size:.62rem;background:var(--rdim);color:var(--red);padding:1px 7px;border-radius:4px;border:1px solid rgba(239,68,68,.2);">${allWrong.length} total</span></div>
+        <div style="font-size:.62rem;color:var(--t2);">Due aaj: <b style="color:var(--amber);">${allWrong.filter(w => w.nextReview <= today).length}</b></div>
+      </div>
+      ${allWrong.slice(0, 30).map((w, wi) => {
+        const isDue = w.nextReview && w.nextReview <= today;
+        const dc = diffColor[w.difficulty] || 'var(--t2)';
+        const db = diffBg[w.difficulty]   || 'var(--s3)';
+        return `<div style="padding:9px 13px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px;${isDue ? 'background:rgba(245,158,11,.04);' : ''}">
+          <div style="width:7px;height:7px;border-radius:50%;background:${isDue ? 'var(--amber)' : 'var(--red)'};flex-shrink:0;"></div>
+          <div style="flex:1;min-width:0;">
+            <div style="font-size:.8rem;font-weight:700;font-family:var(--mono);">${esc(w.loc)} <span style="font-size:.65rem;color:var(--t2);font-family:var(--sans);">${esc(w.chName)} · P${w.pn}</span></div>
+            <div style="font-size:.6rem;color:var(--t2);margin-top:2px;">${esc(w.stuName)} · ${w.count} baar wrong · Last: ${fmtD(w.lastDate)||'—'}</div>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:flex-end;gap:3px;">
+            <span style="font-size:.58rem;padding:1px 7px;border-radius:4px;font-weight:700;background:${db};color:${dc};border:1px solid ${dc}22;">${w.difficulty||'—'}</span>
+            ${isDue ? `<span style="font-size:.55rem;color:var(--amber);font-weight:700;">⚡ DUE</span>` : `<span style="font-size:.55rem;color:var(--t2);">Review: ${fmtD(w.nextReview)||'—'}</span>`}
+          </div>
+          <button onclick="removeWrongQuestion('${w.stuId}','${esc(w.cls)}','${esc(w.chName)}',${w.pn},'${w.type}',${w.num})" style="flex-shrink:0;background:var(--rdim);border:1px solid rgba(239,68,68,.2);color:var(--red);border-radius:7px;padding:4px 8px;font-size:.68rem;font-weight:700;cursor:pointer;" title="Wrong list se hatao">🗑</button>
+        </div>`;
+      }).join('')}
+      ${allWrong.length > 30 ? `<div style="padding:10px;text-align:center;font-size:.65rem;color:var(--t2);">+${allWrong.length-30} aur wrong questions hain</div>` : ''}
+    </div>`;
+}
+
+function removeWrongQuestion(stuId, cls, chName, pn, type, num) {
+  const stu = getStu(stuId);
+  if (!stu) return;
+  const pg = stu.classes?.[cls]?.chapters?.[chName]?.pages?.[pn - 1];
+  if (!pg) return;
+  const store = type === 'q' ? pg.questions : pg.examples;
+  const key = String(num);
+  if (store[key]) {
+    delete store[key].wrong;
+  }
+  saveToGithub();
+  showToast('✓ Wrong list se hata diya!', 's');
+  renderHistoryPage();
+}
 // ══════════════════════════════════════════════════════════
 function openModal(mode, target) {
   modalMode = mode;
