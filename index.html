@@ -583,8 +583,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);max-width:48
         <button class="big-btn btn-c" style="margin:0;font-size:.75rem;" onclick="downloadPaperImages()">🖼 Alag Alag</button>
         <button class="big-btn btn-c" style="margin:0;font-size:.75rem;background:var(--cyan);color:#000;" onclick="downloadPaperImagesZip()">🗜 ZIP File</button>
       </div>
-      <button class="big-btn" style="background:rgba(6,182,212,.15);border:1px solid rgba(6,182,212,.3);color:var(--cyan);" onclick="saveToQueue()">📋 Queue mein Save (baad ke liye)</button>
-      <button class="big-btn btn-g" onclick="markPaperDone()">✓ Mark Done + History</button>
+      <button class="big-btn btn-g" onclick="saveToQueue()">📋 Queue mein Save</button>
       <button class="big-btn btn-o" onclick="generatePaper()">↺ Regenerate</button>
     </div>
 
@@ -595,7 +594,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);max-width:48
 <div class="page" id="page-queue">
 <div class="pi">
   <div class="sl" style="margin-top:4px;">📋 Paper Queue <span id="queueCount" style="font-size:.6rem;padding:1px 7px;border-radius:4px;background:var(--cdim);color:var(--cyan);font-weight:700;letter-spacing:0;text-transform:none;margin-left:4px;"></span></div>
-  <div style="font-size:.68rem;color:var(--t2);margin-bottom:10px;line-height:1.7;">Papers yahan save hote hain. Jab test dena ho tab open karo → download karo → Mark Done dabao — tab used aur history mein add hoga.</div>
+  <div style="font-size:.68rem;color:var(--t2);margin-bottom:10px;line-height:1.7;">Papers yahan save hote hain. Jab test dena ho → <b style="color:var(--cyan);">Download ZIP</b> dabao — download hote hi questions used mark ho jaayenge aur history mein save ho jaayega.</div>
   <div id="queueList"></div>
 </div>
 </div>
@@ -2100,6 +2099,7 @@ async function downloadPaperImages() {
   }
   hideOverlay();
   showToast(`✓ ${done} images downloaded!`, 's');
+  await markPaperDone();
 }
 
 // ══════════════════════════════════════════════════════════
@@ -2201,6 +2201,7 @@ async function downloadPaperImagesZip() {
   a.click();
   hideOverlay();
   showToast(`✅ ZIP downloaded! (${done} images)`, 's');
+  await markPaperDone();
 }
 
 // ══════════════════════════════════════════════════════════
@@ -2534,7 +2535,68 @@ function loadQueuedPaper(qi) {
   renderPaperOutput();
   document.getElementById('paperOutput').style.display = 'block';
   document.getElementById('nb-paper').classList.add('show');
-  showToast('Paper load ho gaya! Download karo phir Mark Done dabao.', 's');
+  showToast('Paper load ho gaya! Download button dabao — auto save ho jaayega.', 's');
+}
+
+// Download directly from queue — auto marks used + saves history
+async function downloadQueuedPaper(qi) {
+  const entry = data.queue?.[qi];
+  if (!entry) return;
+  const stu = getStu(entry.stuId);
+  if (!stu) { showToast('Student nahi mila!', 'e'); return; }
+
+  // Rebuild currentPaper from queue entry
+  let cursor = 1;
+  const blocks = entry.blocks.map(blk => {
+    const ch = stu.classes?.[blk.cls]?.chapters?.[blk.chName];
+    if (!ch) return null;
+    const items = blk.items.map(item => ({ ...item, ch }));
+    const count = items.length;
+    const start = cursor, end = cursor + count - 1;
+    cursor = end + 1;
+    return { cls: blk.cls, chName: blk.chName, ch, count, start, end, items };
+  }).filter(Boolean);
+
+  if (!blocks.length) { showToast('Paper rebuild nahi hua!', 'e'); return; }
+
+  currentPaper = {
+    stuId: entry.stuId, stuName: entry.stuName,
+    date: entry.date, totalQ: blocks.reduce((s,b) => s+b.count, 0),
+    blocks, fromQueueIdx: qi
+  };
+
+  // Download ZIP directly
+  await loadJSZip();
+  const allPages = [];
+  currentPaper.blocks.forEach(blk => {
+    getBlockPages(blk).forEach(p => allPages.push({ ...p, chName: blk.chName }));
+  });
+  const valid = allPages.filter(p => p.url);
+  if (!valid.length) { showToast('Koi image URL nahi bana', 'a'); currentPaper = null; return; }
+
+  const zip = new JSZip();
+  const stuName = (stu.name || 'student').replace(/\s+/g, '_');
+  showOverlay('ZIP ban raha hai...', 0);
+  let done = 0;
+  for (const item of valid) {
+    updateOverlay(item.name, Math.round(done / valid.length * 90));
+    try {
+      const res = await fetch(item.url);
+      if (res.ok) zip.file(item.name, await res.blob());
+    } catch(e) {}
+    done++;
+  }
+  updateOverlay('ZIP compress ho raha hai...', 95);
+  const zipBlob = await zip.generateAsync({ type:'blob', compression:'DEFLATE', compressionOptions:{ level:6 } });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(zipBlob);
+  a.download = `${stuName}_${entry.date}_${entry.totalQ}Q.zip`;
+  a.click();
+  hideOverlay();
+  showToast('✅ Downloaded! History mein save ho raha hai...', 's');
+
+  // Auto mark done — removes from queue + saves history + marks used
+  await markPaperDone();
 }
 
 function deleteFromQueue(qi) {
@@ -2579,11 +2641,12 @@ function renderQueuePage() {
           <div class="q-card-meta">${entry.datetime || entry.date}</div>
           <div class="q-card-meta" style="margin-top:3px;white-space:normal;line-height:1.6;">${esc(chSummary)}</div>
         </div>
-        <div style="font-size:.7rem;color:var(--cyan);font-weight:700;flex-shrink:0;padding-top:2px;">Open →</div>
+        <div style="font-size:.7rem;color:var(--cyan);font-weight:700;flex-shrink:0;padding-top:2px;">${entry.totalQ}Q</div>
       </div>
       <div class="q-card-actions">
         <button class="btn btn-ghost" style="font-size:.72rem;padding:8px;" onclick="deleteFromQueue(${qi})">🗑 Delete</button>
-        <button class="btn btn-green" style="font-size:.72rem;flex:1;" onclick="loadQueuedPaper(${qi})">▶ Open + Download</button>
+        <button class="btn" style="font-size:.72rem;flex:1;background:rgba(59,130,246,.15);border:1px solid rgba(59,130,246,.3);color:var(--blue);" onclick="loadQueuedPaper(${qi})">👁 Preview</button>
+        <button class="btn btn-green" style="font-size:.72rem;flex:1;" onclick="downloadQueuedPaper(${qi})">⬇ Download</button>
       </div>
     </div>`;
   }).join('');
