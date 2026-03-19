@@ -1996,7 +1996,7 @@ async function downloadChapterImagesZip(bi) {
   const valid = pages.filter(p => p.url);
   if (!valid.length) { showToast('Koi image URL nahi bana', 'a'); return; }
 
-  if (typeof JSZip === 'undefined') { showToast('JSZip load nahi hua, retry karo', 'e'); return; }
+  await loadJSZip();
 
   const zip = new JSZip();
   const chShort = blk.chName.replace(/\s+/g,'_').toLowerCase().slice(0,12);
@@ -2028,7 +2028,7 @@ async function downloadChapterImagesZip(bi) {
 // ZIP — full paper (all chapters)
 async function downloadPaperImagesZip() {
   if (!currentPaper) return;
-  if (typeof JSZip === 'undefined') { showToast('JSZip load nahi hua, retry karo', 'e'); return; }
+  await loadJSZip();
 
   const allPages = [];
   currentPaper.blocks.forEach(blk => {
