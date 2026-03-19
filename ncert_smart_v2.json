@@ -1005,747 +1005,773 @@
       }
     },
     {
-  "id": "stu_jnv_c6",
-  "name": "JNV",
-  "emoji": "🏆",
-  "class": "Class 6",
-  "classes": {
-    "Class 6": {
-      "chapters": {
-        "Number and Numeric System": {
-          "folder": "books/JNV/Class 6/Number and Numeric System",
-          "prefix": "ch1",
-          "pages": [
-            {
-              "questions": {},
-              "examples": {}
+      "id": "stu_jnv_c6",
+      "name": "JNV",
+      "emoji": "🏆",
+      "class": "Class 6",
+      "classes": {
+        "Class 6": {
+          "chapters": {
+            "Number and Numeric System": {
+              "folder": "books/JNV/Class 6/Number and Numeric System",
+              "prefix": "ch1",
+              "pages": [
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {
+                    "1": {
+                      "used": 0,
+                      "lastDate": null
+                    },
+                    "2": {
+                      "used": 0,
+                      "lastDate": null
+                    },
+                    "3": {
+                      "used": 0,
+                      "lastDate": null
+                    },
+                    "4": {
+                      "used": 0,
+                      "lastDate": null
+                    },
+                    "5": {
+                      "used": 0,
+                      "lastDate": null
+                    },
+                    "6": {
+                      "used": 0,
+                      "lastDate": null
+                    }
+                  },
+                  "examples": {},
+                  "total": 6
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                }
+              ]
             },
-            {
-              "questions": {},
-              "examples": {}
+            "Four Fundamental Operations on Whole Numbers": {
+              "folder": "books/JNV/Class 6/Four Fundamental Operations on Whole Numbers",
+              "prefix": "ch2",
+              "pages": [
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                }
+              ]
             },
-            {
-              "questions": {},
-              "examples": {}
+            "Fractional Number and Fundamental Operations": {
+              "folder": "books/JNV/Class 6/Fractional Number and Fundamental Operations",
+              "prefix": "ch3",
+              "pages": [
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                }
+              ]
             },
-            {
-              "questions": {},
-              "examples": {}
+            "Factors and Multiples including their Properties": {
+              "folder": "books/JNV/Class 6/Factors and Multiples including their Properties",
+              "prefix": "ch4",
+              "pages": [
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                }
+              ]
             },
-            {
-              "questions": {},
-              "examples": {}
+            "LCM and HCF of Numbers": {
+              "folder": "books/JNV/Class 6/LCM and HCF of Numbers",
+              "prefix": "ch5",
+              "pages": [
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                }
+              ]
             },
-            {
-              "questions": {},
-              "examples": {}
+            "Decimal and Fundamental Operations on them": {
+              "folder": "books/JNV/Class 6/Decimal and Fundamental Operations on them",
+              "prefix": "ch6",
+              "pages": [
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                }
+              ]
             },
-            {
-              "questions": {},
-              "examples": {}
+            "Square-Square Root and Cube-Cube Root": {
+              "folder": "books/JNV/Class 6/Square-Square Root and Cube-Cube Root",
+              "prefix": "ch7",
+              "pages": [
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                }
+              ]
+            },
+            "Measurement": {
+              "folder": "books/JNV/Class 6/Measurement",
+              "prefix": "ch8",
+              "pages": [
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                }
+              ]
+            },
+            "Approximation of Expressions": {
+              "folder": "books/JNV/Class 6/Approximation of Expressions",
+              "prefix": "ch9",
+              "pages": [
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                }
+              ]
+            },
+            "Simplification of Numerical Expressions": {
+              "folder": "books/JNV/Class 6/Simplification of Numerical Expressions",
+              "prefix": "ch10",
+              "pages": [
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                }
+              ]
+            },
+            "Average": {
+              "folder": "books/JNV/Class 6/Average",
+              "prefix": "ch11",
+              "pages": [
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                }
+              ]
+            },
+            "Percentage and its Applications": {
+              "folder": "books/JNV/Class 6/Percentage and its Applications",
+              "prefix": "ch12",
+              "pages": [
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                }
+              ]
+            },
+            "Profit, Loss and Discount": {
+              "folder": "books/JNV/Class 6/Profit, Loss and Discount",
+              "prefix": "ch13",
+              "pages": [
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                }
+              ]
+            },
+            "Simple Interest": {
+              "folder": "books/JNV/Class 6/Simple Interest",
+              "prefix": "ch14",
+              "pages": [
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                }
+              ]
+            },
+            "Ratio and Proportion": {
+              "folder": "books/JNV/Class 6/Ratio and Proportion",
+              "prefix": "ch15",
+              "pages": [
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                }
+              ]
+            },
+            "Speed, Distance and Time": {
+              "folder": "books/JNV/Class 6/Speed, Distance and Time",
+              "prefix": "ch16",
+              "pages": [
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                }
+              ]
+            },
+            "Area, Perimeter and Volume": {
+              "folder": "books/JNV/Class 6/Area, Perimeter and Volume",
+              "prefix": "ch17",
+              "pages": [
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                }
+              ]
+            },
+            "Pattern": {
+              "folder": "books/JNV/Class 6/Pattern",
+              "prefix": "ch18",
+              "pages": [
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                }
+              ]
+            },
+            "Data Interpretation": {
+              "folder": "books/JNV/Class 6/Data Interpretation",
+              "prefix": "ch19",
+              "pages": [
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                },
+                {
+                  "questions": {},
+                  "examples": {}
+                }
+              ]
             }
-          ]
-        },
-        "Four Fundamental Operations on Whole Numbers": {
-          "folder": "books/JNV/Class 6/Four Fundamental Operations on Whole Numbers",
-          "prefix": "ch2",
-          "pages": [
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            }
-          ]
-        },
-        "Fractional Number and Fundamental Operations": {
-          "folder": "books/JNV/Class 6/Fractional Number and Fundamental Operations",
-          "prefix": "ch3",
-          "pages": [
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            }
-          ]
-        },
-        "Factors and Multiples including their Properties": {
-          "folder": "books/JNV/Class 6/Factors and Multiples including their Properties",
-          "prefix": "ch4",
-          "pages": [
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            }
-          ]
-        },
-        "LCM and HCF of Numbers": {
-          "folder": "books/JNV/Class 6/LCM and HCF of Numbers",
-          "prefix": "ch5",
-          "pages": [
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            }
-          ]
-        },
-        "Decimal and Fundamental Operations on them": {
-          "folder": "books/JNV/Class 6/Decimal and Fundamental Operations on them",
-          "prefix": "ch6",
-          "pages": [
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            }
-          ]
-        },
-        "Square-Square Root and Cube-Cube Root": {
-          "folder": "books/JNV/Class 6/Square-Square Root and Cube-Cube Root",
-          "prefix": "ch7",
-          "pages": [
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            }
-          ]
-        },
-        "Measurement": {
-          "folder": "books/JNV/Class 6/Measurement",
-          "prefix": "ch8",
-          "pages": [
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            }
-          ]
-        },
-        "Approximation of Expressions": {
-          "folder": "books/JNV/Class 6/Approximation of Expressions",
-          "prefix": "ch9",
-          "pages": [
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            }
-          ]
-        },
-        "Simplification of Numerical Expressions": {
-          "folder": "books/JNV/Class 6/Simplification of Numerical Expressions",
-          "prefix": "ch10",
-          "pages": [
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            }
-          ]
-        },
-        "Average": {
-          "folder": "books/JNV/Class 6/Average",
-          "prefix": "ch11",
-          "pages": [
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            }
-          ]
-        },
-        "Percentage and its Applications": {
-          "folder": "books/JNV/Class 6/Percentage and its Applications",
-          "prefix": "ch12",
-          "pages": [
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            }
-          ]
-        },
-        "Profit, Loss and Discount": {
-          "folder": "books/JNV/Class 6/Profit, Loss and Discount",
-          "prefix": "ch13",
-          "pages": [
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            }
-          ]
-        },
-        "Simple Interest": {
-          "folder": "books/JNV/Class 6/Simple Interest",
-          "prefix": "ch14",
-          "pages": [
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            }
-          ]
-        },
-        "Ratio and Proportion": {
-          "folder": "books/JNV/Class 6/Ratio and Proportion",
-          "prefix": "ch15",
-          "pages": [
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            }
-          ]
-        },
-        "Speed, Distance and Time": {
-          "folder": "books/JNV/Class 6/Speed, Distance and Time",
-          "prefix": "ch16",
-          "pages": [
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            }
-          ]
-        },
-        "Area, Perimeter and Volume": {
-          "folder": "books/JNV/Class 6/Area, Perimeter and Volume",
-          "prefix": "ch17",
-          "pages": [
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            }
-          ]
-        },
-        "Pattern": {
-          "folder": "books/JNV/Class 6/Pattern",
-          "prefix": "ch18",
-          "pages": [
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            }
-          ]
-        },
-        "Data Interpretation": {
-          "folder": "books/JNV/Class 6/Data Interpretation",
-          "prefix": "ch19",
-          "pages": [
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            },
-            {
-              "questions": {},
-              "examples": {}
-            }
-          ]
+          }
         }
       }
     }
-  }
-}
   ],
   "history": [
     {
