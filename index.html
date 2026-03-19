@@ -286,10 +286,10 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);max-width:48
 .wrong-badge{font-size:.38rem;padding:1px 3px;border-radius:2px;background:var(--red);color:#fff;font-weight:700;line-height:1.2}
 .due-badge{font-size:.38rem;padding:1px 3px;border-radius:2px;background:var(--amber);color:#000;font-weight:700;line-height:1.2}
 
-/* Wrong mark popup — clean thick 4-col row */
-.diff-popup{position:fixed;bottom:0;left:0;right:0;z-index:250;transform:translateY(100%);transition:transform .3s cubic-bezier(.32,.72,0,1)}
-.diff-popup.open{transform:translateY(0)}
-.diff-sheet{background:var(--s1);border-top:2px solid var(--border2);padding:10px 10px calc(14px + env(safe-area-inset-bottom))}
+/* Wrong mark popup — clean thick 4-col bar */
+.diff-popup{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:250;display:none;align-items:flex-end;justify-content:center}
+.diff-popup.open{display:flex}
+.diff-sheet{width:100%;max-width:480px;background:var(--s1);border-top:2px solid var(--border2);padding:10px 10px calc(16px + env(safe-area-inset-bottom))}
 .diff-handle{display:none}
 .diff-title{display:none}
 .diff-sub{display:none}
@@ -690,7 +690,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);max-width:48
 </div>
 
 <!-- DIFFICULTY / WRONG MARK POPUP -->
-<div class="diff-popup" id="diffPopup">
+<div class="diff-popup" id="diffPopup" onclick="if(event.target===this)closeDiffPopup()">
   <div class="diff-sheet">
     <div class="diff-handle"></div>
     <div class="diff-title" id="diffPopupTitle">Wrong Mark Karo</div>
@@ -2274,7 +2274,7 @@ function renderHistory() {
           const w = item.wrong;
           const pillCls = w ? `wp-${w.difficulty}` : 'wp-none';
           const pillTxt = w ? `✗ ${w.difficulty}` : '✓ OK';
-          return `<div class="hist-q-row${w ? ' wrong-row' : ''}" onclick="cycleWrong(${hi},${item.si})">
+          return `<div class="hist-q-row${w ? ' wrong-row' : ''}" data-si="${item.si}" onclick="cycleWrong(${hi},${item.si})">
             <span class="hist-q-loc">${esc(item.loc||((item.type==='q'?'Q':'Ex')+item.num))}</span>
             <span class="hist-q-ch">${esc(item.chName)} · P${item.pn}</span>
             <span class="wrong-pill ${pillCls}">${pillTxt}</span>
@@ -2331,26 +2331,24 @@ function cycleWrong(hi, si) {
   const next = cycle[nextIdx];
 
   if (next === null) {
-    // Remove wrong from snapshot
     delete item.wrong;
-    // Also remove from chapter q.wrong
     _applyWrongToChapter(h.stuId, item, null);
   } else {
     item.wrong = { difficulty: next, date: item.wrong?.date || todayStr() };
-    // Apply to chapter q.wrong for forgetting curve
     _applyWrongToChapter(h.stuId, item, next);
   }
 
+  // Sirf is ek row ka pill update karo — no re-render, no scroll jump
+  const targetRow = document.querySelector(`#hbody-${hi} [data-si="${si}"]`);
+  if (targetRow) {
+    const pill = targetRow.querySelector('.wrong-pill');
+    pill.className = `wrong-pill ${next ? 'wp-' + next : 'wp-none'}`;
+    pill.textContent = next ? `✗ ${next}` : '✓ OK';
+    targetRow.className = `hist-q-row${next ? ' wrong-row' : ''}`;
+    targetRow.setAttribute('onclick', `cycleWrong(${hi},${si})`);
+  }
+
   saveToGithub();
-  renderHistory();
-  renderHistoryPage();
-  // Keep card open
-  setTimeout(() => {
-    const body = document.getElementById(`hbody-${hi}`);
-    const chev = document.getElementById(`hchev-${hi}`);
-    if (body) { body.classList.add('open'); }
-    if (chev) { chev.classList.add('open'); }
-  }, 0);
 }
 
 // Sync wrong status to chapter data (for forgetting curve / review banner)
