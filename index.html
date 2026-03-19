@@ -326,11 +326,8 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);max-width:48
 .cdr-stepper{display:flex;align-items:center;gap:5px;flex-shrink:0}
 .cdr-btn{width:26px;height:26px;border-radius:7px;border:1px solid var(--border2);background:var(--s3);color:var(--text);font-size:.9rem;cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:700;transition:all .1s}
 .cdr-btn:active{transform:scale(.85);background:var(--s4)}
-.cdr-num{font-family:var(--mono);font-size:.85rem;font-weight:700;min-width:22px;text-align:center;color:var(--text)}
 .cdr-num-inp{width:36px;background:var(--s3);border:1px solid var(--border2);border-radius:6px;padding:3px 5px;color:var(--text);font-family:var(--mono);font-size:.82rem;font-weight:700;text-align:center;outline:none}
 .cdr-num-inp:focus{border-color:var(--cyan)}
-.dist-warn{font-size:.65rem;padding:6px 10px;border-radius:7px;background:var(--rdim);color:var(--red);border:1px solid rgba(239,68,68,.2);margin-bottom:8px;display:none}
-.dist-warn.show{display:block}
 
 /* Page thumbnail strip */
 .thumb-strip{display:flex;gap:6px;overflow-x:auto;padding:8px 14px;border-top:1px solid var(--border);scrollbar-width:none;background:rgba(0,0,0,.15)}
@@ -344,6 +341,16 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);max-width:48
 .paper-dl-btn{width:100%;padding:11px;border-radius:9px;border:1px solid rgba(6,182,212,.25);background:rgba(6,182,212,.08);color:var(--cyan);font-family:var(--sans);font-size:.82rem;font-weight:700;cursor:pointer;transition:all .15s}
 .paper-dl-btn:active{transform:scale(.97)}
 
+/* ══════════════ QUEUE PAGE ══════════════ */
+.q-card{background:var(--s1);border:1px solid var(--border);border-radius:12px;margin-bottom:8px;overflow:hidden;animation:fadeUp .2s ease both}
+.q-card-hdr{padding:11px 13px;display:flex;align-items:flex-start;gap:10px;cursor:pointer}
+.q-card-hdr:active{background:var(--s2)}
+.q-card-icon{font-size:1.1rem;flex-shrink:0;margin-top:1px}
+.q-card-info{flex:1;min-width:0}
+.q-card-label{font-size:.84rem;font-weight:800;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.q-card-meta{font-size:.62rem;color:var(--t2);font-family:var(--mono)}
+.q-card-actions{display:flex;gap:6px;padding:0 13px 12px}
+
 /* ══════════════ HISTORY PAGE ══════════════ */
 .hist-card{background:var(--s1);border:1px solid var(--border);border-radius:11px;margin-bottom:7px;overflow:hidden}
 .hist-card-hdr{padding:11px 13px;cursor:pointer;display:flex;align-items:flex-start;gap:8px}
@@ -352,6 +359,21 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);max-width:48
 .hist-date{font-size:.65rem;font-family:var(--mono);color:var(--amber);margin-bottom:4px;font-weight:600}
 .hist-chapter{font-size:.82rem;font-weight:700;margin-bottom:3px}
 .hist-pages{font-size:.66rem;color:var(--t2);font-family:var(--mono);line-height:1.8}
+.hist-chev{color:var(--t2);font-size:.65rem;transition:transform .2s;margin-top:3px;flex-shrink:0}
+.hist-chev.open{transform:rotate(180deg)}
+.hist-card-body{display:none;border-top:1px solid var(--border)}
+.hist-card-body.open{display:block}
+.hist-q-row{padding:8px 13px;display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--border);cursor:pointer;transition:background .1s}
+.hist-q-row:last-child{border-bottom:none}
+.hist-q-row:active{background:var(--s2)}
+.hist-q-row.wrong-row{background:rgba(239,68,68,.04)}
+.hist-q-loc{font-family:var(--mono);font-size:.75rem;font-weight:700;flex:1}
+.hist-q-ch{font-size:.6rem;color:var(--t2);flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.wrong-pill{font-size:.58rem;padding:2px 7px;border-radius:4px;font-weight:700;cursor:pointer}
+.wp-none{background:var(--s3);color:var(--t3);border:1px solid var(--border)}
+.wp-easy{background:rgba(34,197,94,.12);color:var(--green);border:1px solid rgba(34,197,94,.25)}
+.wp-medium{background:rgba(245,158,11,.12);color:var(--amber);border:1px solid rgba(245,158,11,.25)}
+.wp-hard{background:rgba(239,68,68,.12);color:var(--red);border:1px solid rgba(239,68,68,.25)}
 
 /* ══════════════ SETTINGS PAGE ══════════════ */
 .set-card{background:var(--s1);border:1px solid var(--border);border-radius:11px;padding:12px;margin-bottom:7px}
@@ -400,32 +422,6 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);max-width:48
 .toast.e{border-color:rgba(239,68,68,.35);color:var(--red)}
 .toast.a{border-color:rgba(245,158,11,.35);color:var(--amber)}
 .toast.c{border-color:rgba(6,182,212,.35);color:var(--cyan)}
-
-/* ══════════════ QUEUE PAGE ══════════════ */
-.q-card{background:var(--s1);border:1px solid var(--border);border-radius:12px;margin-bottom:8px;overflow:hidden;animation:fadeUp .2s ease both}
-.q-card-hdr{padding:11px 13px;display:flex;align-items:flex-start;gap:10px;cursor:pointer}
-.q-card-hdr:active{background:var(--s2)}
-.q-card-icon{font-size:1.1rem;flex-shrink:0;margin-top:1px}
-.q-card-info{flex:1;min-width:0}
-.q-card-label{font-size:.84rem;font-weight:800;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.q-card-meta{font-size:.62rem;color:var(--t2);font-family:var(--mono)}
-.q-card-actions{display:flex;gap:6px;padding:0 13px 12px}
-
-.hist-chev{color:var(--t2);font-size:.65rem;transition:transform .2s;margin-top:3px;flex-shrink:0}
-.hist-chev.open{transform:rotate(180deg)}
-.hist-card-body{display:none;border-top:1px solid var(--border)}
-.hist-card-body.open{display:block}
-.hist-q-row{padding:8px 13px;display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--border);cursor:pointer;transition:background .1s}
-.hist-q-row:last-child{border-bottom:none}
-.hist-q-row:active{background:var(--s2)}
-.hist-q-row.wrong-row{background:rgba(239,68,68,.04)}
-.hist-q-loc{font-family:var(--mono);font-size:.75rem;font-weight:700;flex:1}
-.hist-q-ch{font-size:.6rem;color:var(--t2);flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.wrong-pill{font-size:.58rem;padding:2px 7px;border-radius:4px;font-weight:700;cursor:pointer}
-.wp-none{background:var(--s3);color:var(--t3);border:1px solid var(--border)}
-.wp-easy{background:rgba(34,197,94,.12);color:var(--green);border:1px solid rgba(34,197,94,.25)}
-.wp-medium{background:rgba(245,158,11,.12);color:var(--amber);border:1px solid rgba(245,158,11,.25)}
-.wp-hard{background:rgba(239,68,68,.12);color:var(--red);border:1px solid rgba(239,68,68,.25)}
 </style>
 </head>
 <body>
@@ -1166,7 +1162,6 @@ async function downloadAndMark() {
   }
 
   if (!data.history) data.history = [];
-      if (!data.queue) data.queue = [];
   data.history.unshift(hist);
   selQ = {};
   renderQPanel(activePage);
@@ -1206,15 +1201,20 @@ function renderChDistEditor() {
   if (!el) return;
   const stu = getStu(paperStuId);
   if (!stu) { el.innerHTML = ''; return; }
+  const mode = document.getElementById('paperMode')?.value;
+  const isCustom = mode === 'custom';
 
-  const Q = parseInt(document.getElementById('paperQ')?.value) || 22;
+  const rawQ = document.getElementById('paperQ')?.value;
+  const Q = parseInt(rawQ) || 0;
   const autoQs = calcAutoChDist(stu, Q);
 
   el.innerHTML = '';
   let totalAssigned = 0;
+  let chNum = 0;
 
   Object.keys(stu.classes || {}).forEach(cls => {
     Object.keys(stu.classes[cls].chapters || {}).forEach(chName => {
+      chNum++;
       const ch = stu.classes[cls].chapters[chName];
       const key = getChKey(cls, chName);
       const { total: avail, used } = getChStats(ch);
@@ -1226,11 +1226,11 @@ function renderChDistEditor() {
 
       const row = document.createElement('div');
       row.className = `ch-dist-row${isOver ? ' over-avail' : ''}`;
-      row.id = `cdr-${key.replace(/[^a-z0-9]/gi,'_')}`;
 
       const dotColor = fresh === 0 ? 'var(--red)' : fresh < 3 ? 'var(--amber)' : 'var(--green)';
 
       row.innerHTML = `
+        <div style="font-family:var(--mono);font-size:.7rem;font-weight:700;color:var(--cyan);min-width:28px;flex-shrink:0;">Ch${chNum}</div>
         <div class="cdr-dot" style="background:${dotColor}"></div>
         <div class="cdr-info">
           <div class="cdr-name">${esc(chName)}</div>
@@ -1277,7 +1277,7 @@ function calcAutoChDist(stu, Q) {
 
 function stepChDist(key, delta) {
   const stu = getStu(paperStuId);
-  const Q = parseInt(document.getElementById('paperQ')?.value) || 22;
+  const Q = parseInt(document.getElementById('paperQ')?.value) || 0;
   const autoQs = calcAutoChDist(stu, Q);
   const current = chDist[key] !== undefined ? chDist[key] : (autoQs[key] || 0);
   const newVal = Math.max(0, current + delta);
@@ -1291,7 +1291,8 @@ function setChDist(key, val) {
 }
 
 function updateDistBadge() {
-  const Q = parseInt(document.getElementById('paperQ')?.value) || 22;
+  const rawQ = document.getElementById('paperQ')?.value;
+  const Q = parseInt(rawQ) || 0;
   const stu = getStu(paperStuId);
   if (!stu) return;
   const autoQs = calcAutoChDist(stu, Q);
@@ -1318,6 +1319,36 @@ function resetChDist() {
   chDist = {};
   renderChDistEditor();
   showToast('Auto distribution reset', 'a');
+}
+
+function onModeChange() {
+  const mode = document.getElementById('paperMode').value;
+  const chDistSection   = document.getElementById('chDistSection');
+  const modeHintSection = document.getElementById('modeHintSection');
+
+  const specialModes = ['only_wrong', 'only_due', 'important'];
+  if (specialModes.includes(mode)) {
+    chDistSection.style.display = 'none';
+    modeHintSection.style.display = 'block';
+    const hints = {
+      only_wrong: '✗ <b style="color:var(--red)">Only Wrong:</b> Sirf wo questions jo history mein kabhi galat hue — sabhi chapters se. Total Q se limit hoga.',
+      only_due:   '🔴 <b style="color:var(--red)">Only Hard:</b> Sirf "Hard" mark kiye hue questions — jo sabse zyada mushkil the. Total Q se limit hoga.',
+      important:  '⭐ <b style="color:var(--cyan)">Important:</b> Medium + Hard mark kiye questions. Worst first order mein aayenge.',
+    };
+    modeHintSection.innerHTML = hints[mode] || '';
+  } else if (mode === 'all_equal') {
+    chDistSection.style.display = 'none';
+    modeHintSection.style.display = 'block';
+    modeHintSection.innerHTML = '📊 <b style="color:var(--green)">All Chapters Equal:</b> Total Q ko sabhi chapters mein barabar baant diya jaayega. Har chapter se same count.';
+  } else if (mode === 'custom') {
+    chDistSection.style.display = 'block';
+    modeHintSection.style.display = 'block';
+    modeHintSection.innerHTML = '🎛 <b style="color:var(--cyan)">Custom:</b> Neeche Ch 1, Ch 2... se chapters identify karo aur manually Q count set karo.';
+    renderChDistEditor(); // re-render with numbers visible
+  } else {
+    chDistSection.style.display = 'block';
+    modeHintSection.style.display = 'none';
+  }
 }
 
 function generatePaper() {
@@ -1473,6 +1504,54 @@ function generatePaper() {
 }
 
 // Build flat wrong question pool for a student — reads from history snapshots
+function buildWrongPool(stu, onlyHard) {
+  const seen = new Set();
+  const pool = [];
+  (data.history || []).forEach(h => {
+    if (h.stuId !== stu.id) return;
+    (h.snapshot || []).forEach(item => {
+      if (!item.wrong) return;
+      if (onlyHard && item.wrong.difficulty !== 'hard') return;
+      const key = `${item.type}${item.num}_p${item.pn}_${item.chName}`;
+      if (seen.has(key)) return; // deduplicate
+      seen.add(key);
+      const ch = stu.classes?.[item.cls]?.chapters?.[item.chName];
+      if (!ch) return;
+      const pg = ch.pages?.[item.pn - 1];
+      const qData = pg ? (item.type === 'q' ? pg.questions?.[String(item.num)] : pg.examples?.[String(item.num)]) : null;
+      pool.push({
+        cls: item.cls, chName: item.chName, ch, pn: item.pn,
+        type: item.type, num: item.num,
+        used: qData?.used || 0, lastDate: qData?.lastDate || null,
+        loc: item.loc || ((item.type === 'q' ? 'Q' : 'Ex') + item.num),
+        key,
+        wrongCount: 1,
+        difficulty: item.wrong.difficulty
+      });
+    });
+  });
+  return pool;
+}
+
+// Build currentPaper structure from flat item list (for special modes)
+function buildPaperFromFlat(items, stu) {
+  // Group by chapter
+  const chMap = {};
+  items.forEach(item => {
+    const key = getChKey(item.cls, item.chName);
+    if (!chMap[key]) chMap[key] = { cls: item.cls, chName: item.chName, ch: item.ch, items: [] };
+    chMap[key].items.push(item);
+  });
+  let cursor = 1;
+  const blocks = Object.values(chMap).map(g => {
+    const count = g.items.length;
+    const start = cursor, end = cursor + count - 1;
+    cursor = end + 1;
+    return { ...g, start, end, count };
+  });
+  return { stuId: stu.id, stuName: stu.name, date: todayStr(), totalQ: items.length, blocks };
+}
+
 function renderPaperOutput() {
   if (!currentPaper) return;
   const p = currentPaper;
@@ -1549,7 +1628,6 @@ function renderPaperOutput() {
           <div class="q-act-popup" id="qpop-${bi}-${qi}" style="display:none;">
             <button class="q-act-opt remove-opt" onclick="removeQuestion(${bi},${qi})">✕ Remove</button>
             <button class="q-act-opt replace-opt" onclick="replaceQuestion(${bi},${qi})">↺ Replace</button>
-            <button class="q-act-opt" style="background:rgba(239,68,68,.1);color:var(--red);border:1px solid rgba(239,68,68,.2);" onclick="openWrongFromPaper(${bi},${qi})">✗ Wrong Mark</button>
           </div>
         </div>
       </div>`;
@@ -1571,10 +1649,6 @@ function renderPaperOutput() {
       <div class="gp-sec-body open" id="gsec-${bi}">
         ${thumbHtml}
         ${qHtml}
-        <div class="paper-dl-bar" style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
-          <button class="paper-dl-btn" onclick="downloadChapterImages(${bi})">🖼 Alag Alag</button>
-          <button class="paper-dl-btn" style="background:rgba(6,182,212,.15);border-color:rgba(6,182,212,.3);" onclick="downloadChapterImagesZip(${bi})">🗜 ZIP</button>
-        </div>
       </div>`;
     wrap.appendChild(sec);
   });
@@ -1838,13 +1912,29 @@ async function markPaperDone() {
   const stu = getStu(currentPaper.stuId);
   if (!stu) return;
   const today = todayStr();
+  const fromQueueIdx = currentPaper.fromQueueIdx;
+
+  // Save exact question snapshot BEFORE marking — needed for undo
+  const snapshot = [];
+  currentPaper.blocks.forEach(blk => {
+    blk.items.forEach(item => {
+      snapshot.push({
+        stuId: currentPaper.stuId,
+        cls: item.cls || blk.cls,
+        chName: item.chName || blk.chName,
+        pn: item.pn,
+        type: item.type,
+        num: item.num
+      });
+    });
+  });
 
   currentPaper.blocks.forEach(blk => {
     blk.items.forEach(item => {
       const ch = blk.ch;
       const pg = ch.pages[item.pn - 1];
       if (!pg) return;
-      const key = String(item.num); // ← FIX: string key, integer se match nahi hota tha
+      const key = String(item.num);
       if (item.type === 'q') {
         if (!pg.questions[key]) pg.questions[key] = { used:0, lastDate:null };
         pg.questions[key].used++;
@@ -1859,17 +1949,66 @@ async function markPaperDone() {
 
   const hist = {
     date: today, datetime: new Date().toLocaleString('en-IN'),
-    studentName: stu.name, totalQ: currentPaper.totalQ, type: 'auto-paper',
-    chapters: currentPaper.blocks.map(b => ({ chapter: b.chName, cls: b.cls, count: b.count }))
+    studentName: stu.name, stuId: currentPaper.stuId,
+    totalQ: currentPaper.totalQ, type: 'auto-paper',
+    chapters: currentPaper.blocks.map(b => ({ chapter: b.chName, cls: b.cls, count: b.count })),
+    snapshot  // ← full question list for undo
   };
   if (!data.history) data.history = [];
   data.history.unshift(hist);
   renderHome();
   document.getElementById('nb-paper').classList.remove('show');
   showToast('✓ Paper marked done! Saved to history', 's');
+
+  // Remove from queue if loaded from queue
+  if (fromQueueIdx !== undefined && data.queue) {
+    data.queue.splice(fromQueueIdx, 1);
+    updateQueueBadge();
+  }
+
   saveToGithub();
   currentPaper = null;
   document.getElementById('paperOutput').style.display = 'none';
+}
+
+function confirmUndo() {
+  const last = data.history?.[0];
+  if (!last) return;
+  const qCount = last.snapshot?.length || 0;
+  if (confirm(`↩ Undo karein?\n\n"${last.studentName}" ka ${last.date} wala paper (${qCount} questions) wapas fresh ho jaayega.\nHistory se bhi hata diya jaayega.\n\nKya aap sure hain?`)) {
+    undoLastPaper();
+  }
+}
+function undoLastPaper() {
+  if (!data.history || !data.history.length) return;
+  const last = data.history[0];
+  if (!last.snapshot || !last.snapshot.length) {
+    showToast('Is entry mein undo data nahi hai', 'e'); return;
+  }
+
+  let undone = 0;
+  last.snapshot.forEach(item => {
+    const stu = getStu(item.stuId);
+    if (!stu) return;
+    const pg = stu.classes?.[item.cls]?.chapters?.[item.chName]?.pages?.[item.pn - 1];
+    if (!pg) return;
+    const store = item.type === 'q' ? pg.questions : pg.examples;
+    const key = String(item.num);
+    if (store[key] && store[key].used > 0) {
+      store[key].used--;
+      // Agar used 0 ho gaya to lastDate bhi clear karo
+      if (store[key].used === 0) store[key].lastDate = null;
+      undone++;
+    }
+  });
+
+  // History se bhi hatao
+  data.history.shift();
+  renderHome();
+  renderHistoryPage();
+  renderHistory();
+  saveToGithub();
+  showToast(`↩ Undo ho gaya! ${undone} questions wapas fresh hue`, 's');
 }
 
 // Download all images for a chapter block
@@ -1991,12 +2130,9 @@ function getBlockPages(blk) {
 // ZIP — single chapter
 async function downloadChapterImagesZip(bi) {
   if (!currentPaper) return;
-  const blk = currentPaper.blocks[bi];
-  const pages = getBlockPages(blk);
-  const valid = pages.filter(p => p.url);
-  if (!valid.length) { showToast('Koi image URL nahi bana', 'a'); return; }
-
   await loadJSZip();
+  if (typeof JSZip === 'undefined') { showToast('JSZip load nahi hua, retry karo', 'e'); return; }
+  const blk = currentPaper.blocks[bi];
 
   const zip = new JSZip();
   const chShort = blk.chName.replace(/\s+/g,'_').toLowerCase().slice(0,12);
@@ -2099,279 +2235,52 @@ function renderHistory() {
   const el = document.getElementById('histList');
   const hist = data.history || [];
   if (!hist.length) { el.innerHTML = `<div class="empty"><div class="empty-icon">🕐</div><div class="empty-text">Koi history nahi</div></div>`; return; }
-  el.innerHTML = hist.slice(0, 50).map(h => {
+
+  el.innerHTML = hist.slice(0, 50).map((h, hi) => {
     const isAuto = h.type === 'auto-paper';
     const detail = isAuto
       ? (h.chapters || []).map(c => `${c.chapter} (${c.count}Q)`).join(' · ')
       : (h.pages || []).map(p => { const qs = p.qNums?.length ? 'Q' + p.qNums.join(',Q') : ''; const es = p.exNums?.length ? 'Ex' + p.exNums.join(',Ex') : ''; return `P${p.pageNum}: ${[qs,es].filter(Boolean).join(' ')}`; }).join(' | ');
-    return `<div class="hist-card">
-      <div class="hist-date">${h.datetime || h.date} ${isAuto ? '· <span style="color:var(--cyan)">Auto Paper</span>' : ''}</div>
-      <div class="hist-chapter">${isAuto ? `${h.studentName} · ${h.totalQ}Q` : `${h.chapter} — ${h.className}`}</div>
-      <div class="hist-pages">${detail}</div>
+    const canUndo = hi === 0 && h.snapshot && h.snapshot.length > 0;
+    const wrongCount = (h.snapshot || []).filter(s => s.wrong).length;
+    const hasSnap = isAuto && h.snapshot && h.snapshot.length > 0;
+
+    // Build question rows if snapshot exists
+    let qRowsHtml = '';
+    if (hasSnap) {
+      qRowsHtml = h.snapshot.map((item, si) => {
+        const w = item.wrong;
+        const pillCls = w ? `wp-${w.difficulty}` : 'wp-none';
+        const pillTxt = w ? `✗ ${w.difficulty}` : '✓ OK';
+        return `<div class="hist-q-row${w ? ' wrong-row' : ''}" onclick="cycleWrong(${hi},${si})">
+          <span class="hist-q-loc">${esc(item.loc||((item.type==='q'?'Q':'Ex')+item.num))}</span>
+          <span class="hist-q-ch">${esc(item.chName)} · P${item.pn}</span>
+          <span class="wrong-pill ${pillCls}">${pillTxt}</span>
+        </div>`;
+      }).join('');
+
+      qRowsHtml += `<div style="padding:9px 13px;display:flex;gap:7px;background:var(--s2);border-top:1px solid var(--border);">
+        <div style="font-size:.62rem;color:var(--t2);flex:1;">Tap karke wrong mark karo · Cycle: OK → Easy → Medium → Hard → OK</div>
+      </div>`;
+    }
+
+    return `<div class="hist-card" id="hcard-${hi}" style="${canUndo ? 'border-color:rgba(245,158,11,.3);' : ''}">
+      <div class="hist-card-hdr" onclick="toggleHistCard(${hi})">
+        <div class="hist-hdr-main">
+          <div class="hist-date">${h.datetime || h.date} ${isAuto ? '· <span style="color:var(--cyan)">Auto Paper</span>' : ''}${wrongCount > 0 ? ` · <span style="color:var(--red)">✗ ${wrongCount} wrong</span>` : ''}</div>
+          <div class="hist-chapter">${isAuto ? `${h.studentName} · ${h.totalQ}Q` : `${h.chapter} — ${h.className}`}</div>
+          <div class="hist-pages">${detail}</div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:5px;flex-shrink:0;">
+          ${canUndo ? `<button onclick="event.stopPropagation();confirmUndo()" style="background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.3);color:var(--amber);border-radius:8px;padding:4px 9px;font-size:.65rem;font-weight:700;cursor:pointer;white-space:nowrap;">↩ Undo</button>` : ''}
+          ${hasSnap ? `<span class="hist-chev" id="hchev-${hi}">▾</span>` : ''}
+        </div>
+      </div>
+      ${hasSnap ? `<div class="hist-card-body" id="hbody-${hi}">${qRowsHtml}</div>` : ''}
     </div>`;
   }).join('');
 }
 
-// ══════════════════════════════════════════════════════════
-// MODAL
-// ══════════════════════════════════════════════════════════
-function openModal(mode, target) {
-  modalMode = mode;
-  const body = document.getElementById('mBody');
-  body.innerHTML = '';
-
-  if (mode === 'addStudent') {
-    document.getElementById('mTitle').textContent = 'Student Add Karo';
-    document.getElementById('mHint').textContent = 'Student ka naam aur class bharo.';
-    const emoji = EMOJIS[Math.floor(Math.random() * EMOJIS.length)];
-    body.innerHTML = `
-      <input class="modal-inp" id="mi-sname" placeholder="Student naam *">
-      <div class="row2">
-        <input class="modal-inp" id="mi-sclass" placeholder="Class (e.g. 10-A)" style="margin-bottom:0;">
-        <input class="modal-inp" id="mi-semoji" value="${emoji}" placeholder="Emoji" style="margin-bottom:0;text-align:center;font-size:1.1rem;">
-      </div>`;
-    document.getElementById('mConfirmBtn').textContent = 'Add Student';
-
-  } else if (mode === 'addClass') {
-    window._modalStuId = target;
-    document.getElementById('mTitle').textContent = 'Class / Chapter Add Karo';
-    document.getElementById('mHint').textContent = 'Class, chapter name, GitHub folder path aur image prefix bharo.';
-    body.innerHTML = `
-      <div class="row2">
-        <input class="modal-inp" id="mi-cls" placeholder="Class (e.g. Class 10)">
-        <input class="modal-inp" id="mi-chname" placeholder="Chapter (e.g. Mensuration)">
-      </div>
-      <input class="modal-inp" id="mi-folder" placeholder="GitHub folder (e.g. books/class10/ch9)">
-      <input class="modal-inp" id="mi-prefix" placeholder="Image prefix (e.g. mensuration)">
-      <input class="modal-inp" id="mi-pages" type="number" placeholder="Total pages (e.g. 13)" min="1">`;
-    document.getElementById('mConfirmBtn').textContent = 'Add Chapter';
-
-  } else if (mode === 'addPage') {
-    document.getElementById('mTitle').textContent = 'Pages Add Karo';
-    document.getElementById('mHint').textContent = 'Kitne pages add karne hain?';
-    body.innerHTML = `<input class="modal-inp" id="mi-npages" type="number" placeholder="Pages count (e.g. 5)" min="1">`;
-    document.getElementById('mConfirmBtn').textContent = 'Add';
-  }
-
-  document.getElementById('modal').classList.add('open');
-  setTimeout(() => document.querySelector('.modal-inp')?.focus(), 100);
-}
-
-function closeModal() { document.getElementById('modal').classList.remove('open'); }
-
-function confirmModal() {
-  const g = id => (document.getElementById(id) || {}).value?.trim() || '';
-  const gn = id => parseInt((document.getElementById(id) || {}).value) || 0;
-
-  if (modalMode === 'addStudent') {
-    const name = g('mi-sname');
-    if (!name) { showToast('Naam daalo', 'e'); return; }
-    data.students.push({
-      id: Date.now().toString(),
-      name,
-      class: g('mi-sclass'),
-      emoji: g('mi-semoji') || '👦',
-      classes: {}
-    });
-    renderHome();
-
-  } else if (modalMode === 'addClass') {
-    const stuId = window._modalStuId;
-    const stu = getStu(stuId);
-    if (!stu) return;
-    const cls = g('mi-cls'), chName = g('mi-chname'), folder = g('mi-folder'), prefix = g('mi-prefix');
-    const pages = gn('mi-pages');
-    if (!cls || !chName) { showToast('Class aur chapter name bharo', 'e'); return; }
-    if (!stu.classes[cls]) stu.classes[cls] = { chapters: {} };
-    if (!stu.classes[cls].chapters[chName]) {
-      stu.classes[cls].chapters[chName] = { folder, prefix, pages: [] };
-    }
-    const ch = stu.classes[cls].chapters[chName];
-    while (ch.pages.length < pages) ch.pages.push({ questions: {}, examples: {} });
-    renderHome();
-    saveToGithub();
-
-  } else if (modalMode === 'addPage') {
-    const n = gn('mi-npages');
-    if (!n || n < 1) { showToast('Number bharo', 'e'); return; }
-    const ch = getChData();
-    for (let i = 0; i < n; i++) ch.pages.push({ questions: {}, examples: {} });
-    renderPageTabs();
-    showToast(`${n} pages add ho gaye!`, 's');
-  }
-
-  closeModal();
-}
-
-// ══════════════════════════════════════════════════════════
-// GITHUB SYNC
-// ══════════════════════════════════════════════════════════
-async function saveToGithub() {
-  const s = getS();
-  if (!s.token) return;
-  const content = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
-  let sha = '';
-  try {
-    const r = await fetch(`https://api.github.com/repos/${s.owner}/${s.repo}/contents/ncert_smart_v2.json`,
-      { headers: { Authorization: `token ${s.token}`, Accept: 'application/vnd.github.v3+json' } });
-    if (r.ok) sha = (await r.json()).sha;
-    await fetch(`https://api.github.com/repos/${s.owner}/${s.repo}/contents/ncert_smart_v2.json`, {
-      method: 'PUT',
-      headers: { Authorization: `token ${s.token}`, Accept: 'application/vnd.github.v3+json', 'Content-Type': 'application/json' },
-      body: JSON.stringify({ message: 'Update NCERT Smart v2', content, sha })
-    });
-  } catch(e) {}
-}
-
-async function loadFromGithub() {
-  const s = getS();
-  if (!s.token || !s.owner || !s.repo) {
-    showToast('Settings mein token/owner/repo daalo', 'e');
-    showPage('settings');
-    return;
-  }
-  showToast('Loading from GitHub...', 'a');
-  try {
-    // 1. Try new format first
-    const r = await fetch(`https://api.github.com/repos/${s.owner}/${s.repo}/contents/ncert_smart_v2.json`, {
-      headers: { Authorization: `token ${s.token}`, Accept: 'application/vnd.github.v3+json' },
-      cache: 'no-cache'
-    });
-    if (r.ok) {
-      const d = await r.json();
-      data = JSON.parse(decodeURIComponent(escape(atob(d.content))));
-      if (!data.history) data.history = [];
-      renderHome();
-      showToast('✓ Data loaded!', 's');
-      return;
-    }
-    // 2. Try OLD format (ncert_tracker.json) — auto migrate
-    const rOld = await fetch(`https://api.github.com/repos/${s.owner}/${s.repo}/contents/ncert_tracker.json`, {
-      headers: { Authorization: `token ${s.token}`, Accept: 'application/vnd.github.v3+json' },
-      cache: 'no-cache'
-    });
-    if (rOld.ok) {
-      const dOld = await rOld.json();
-      const old = JSON.parse(decodeURIComponent(escape(atob(dOld.content))));
-      data = migrateOldData(old);
-      renderHome();
-      await saveToGithub();
-      const clsCount = Object.keys(old.classes || {}).length;
-      let chCount = 0;
-      Object.values(old.classes || {}).forEach(c => chCount += Object.keys(c.chapters || {}).length);
-      showToast('Purana data import ho gaya! ' + chCount + ' chapters migrated', 's');
-      return;
-    }
-    // 3. Fresh start
-    data = { students: [], history: [] };
-    renderHome();
-    showToast('Fresh start! Student add karo.', 'a');
-  } catch(e) {
-    showToast('Network error: ' + e.message, 'e');
-    renderHome();
-  }
-}
-
-function migrateOldData(old) {
-  // Old: { classes: { "Class 10": { chapters: { "Ch": { folder, prefix, pages } } } }, history, studentName }
-  // New: { students: [{ id, name, emoji, class, classes }], history }
-  const defaultStudent = {
-    id: 'migrated_' + Date.now(),
-    name: old.studentName || 'Student',
-    emoji: '🎓',
-    class: Object.keys(old.classes || {})[0] || '',
-    classes: {}
-  };
-  Object.keys(old.classes || {}).forEach(cls => {
-    defaultStudent.classes[cls] = { chapters: {} };
-    Object.keys((old.classes[cls] || {}).chapters || {}).forEach(chName => {
-      const oldCh = old.classes[cls].chapters[chName];
-      defaultStudent.classes[cls].chapters[chName] = {
-        folder: oldCh.folder || '',
-        prefix: oldCh.prefix || '',
-        pages: (oldCh.pages || []).map(pg => ({
-          questions: pg.questions || {},
-          examples:  pg.examples  || {}
-        }))
-      };
-    });
-  });
-  return { students: [defaultStudent], history: old.history || [] };
-}
-
-// ══════════════════════════════════════════════════════════
-// OVERLAY + UTILS
-// ══════════════════════════════════════════════════════════
-function showOverlay(msg, pct) {
-  document.getElementById('dl-overlay').classList.add('open');
-  document.getElementById('dl-text').textContent = msg;
-  document.getElementById('dl-fill').style.width = pct + '%';
-}
-function updateOverlay(msg, pct) {
-  document.getElementById('dl-text').textContent = 'Downloading: ' + msg;
-  document.getElementById('dl-fill').style.width = pct + '%';
-}
-function hideOverlay() { document.getElementById('dl-overlay').classList.remove('open'); }
-
-function fmtD(d) { if (!d) return ''; const dt = new Date(d); return `${dt.getDate()}/${dt.getMonth()+1}`; }
-function todayStr() { return new Date().toISOString().split('T')[0]; }
-function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
-
-let _tt;
-function showToast(msg, type) {
-  const t = document.getElementById('toast');
-  t.textContent = msg; t.className = `toast ${type} show`;
-  clearTimeout(_tt); _tt = setTimeout(() => t.classList.remove('show'), 2600);
-}
-
-document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') { closeModal(); closeImgFs(); }
-  if (e.key === 'Enter' && document.getElementById('modal').classList.contains('open')) confirmModal();
-  if (e.key === 'Enter' && (document.activeElement?.id === 'qInp' || document.activeElement?.id === 'exInp')) confirmEdit();
-});
-
-// PWA
-let dp;
-window.addEventListener('beforeinstallprompt', e => {
-  e.preventDefault(); dp = e;
-  const btn = document.createElement('div');
-  btn.className = 'ni';
-  btn.innerHTML = '<div class="ni-icon">📲</div><div class="ni-lbl">Install</div>';
-  btn.onclick = async () => { if (!dp) return; dp.prompt(); const { outcome } = await dp.userChoice; if (outcome === 'accepted') btn.remove(); dp = null; };
-  document.getElementById('bnav').appendChild(btn);
-});
-if ('serviceWorker' in navigator) window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));
-
-function buildWrongPool(stu, onlyHard) {
-  const seen = new Set();
-  const pool = [];
-  (data.history || []).forEach(h => {
-    if (h.stuId !== stu.id) return;
-    (h.snapshot || []).forEach(item => {
-      if (!item.wrong) return;
-      if (onlyHard && item.wrong.difficulty !== 'hard') return;
-      const key = `${item.type}${item.num}_p${item.pn}_${item.chName}`;
-      if (seen.has(key)) return; // deduplicate
-      seen.add(key);
-      const ch = stu.classes?.[item.cls]?.chapters?.[item.chName];
-      if (!ch) return;
-      const pg = ch.pages?.[item.pn - 1];
-      const qData = pg ? (item.type === 'q' ? pg.questions?.[String(item.num)] : pg.examples?.[String(item.num)]) : null;
-      pool.push({
-        cls: item.cls, chName: item.chName, ch, pn: item.pn,
-        type: item.type, num: item.num,
-        used: qData?.used || 0, lastDate: qData?.lastDate || null,
-        loc: item.loc || ((item.type === 'q' ? 'Q' : 'Ex') + item.num),
-        key,
-        wrongCount: 1,
-        difficulty: item.wrong.difficulty
-      });
-    });
-  });
-  return pool;
-}
-
-// Build currentPaper structure from flat item list (for special modes)
 function toggleHistCard(hi) {
   const body = document.getElementById(`hbody-${hi}`);
   const chev = document.getElementById(`hchev-${hi}`);
@@ -2532,65 +2441,6 @@ function removeWrongFromHistory(hi, si) {
   renderHistoryPage();
   renderHistory();
 }
-
-function confirmUndo() {
-  const last = data.history?.[0];
-  if (!last) return;
-  const qCount = last.snapshot?.length || 0;
-  if (confirm(`↩ Undo karein?\n\n"${last.studentName}" ka ${last.date} wala paper (${qCount} questions) wapas fresh ho jaayega.\nHistory se bhi hata diya jaayega.\n\nKya aap sure hain?`)) {
-    undoLastPaper();
-  }
-}
-
-
-function onModeChange() {
-  const mode = document.getElementById('paperMode').value;
-  const chDistSection   = document.getElementById('chDistSection');
-  const modeHintSection = document.getElementById('modeHintSection');
-
-  const specialModes = ['only_wrong', 'only_due', 'important'];
-  if (specialModes.includes(mode)) {
-    chDistSection.style.display = 'none';
-    modeHintSection.style.display = 'block';
-    const hints = {
-      only_wrong: '✗ <b style="color:var(--red)">Only Wrong:</b> Sirf wo questions jo history mein kabhi galat hue — sabhi chapters se. Total Q se limit hoga.',
-      only_due:   '🔴 <b style="color:var(--red)">Only Hard:</b> Sirf "Hard" mark kiye hue questions — jo sabse zyada mushkil the. Total Q se limit hoga.',
-      important:  '⭐ <b style="color:var(--cyan)">Important:</b> Medium + Hard mark kiye questions. Worst first order mein aayenge.',
-    };
-    modeHintSection.innerHTML = hints[mode] || '';
-  } else if (mode === 'all_equal') {
-    chDistSection.style.display = 'none';
-    modeHintSection.style.display = 'block';
-    modeHintSection.innerHTML = '📊 <b style="color:var(--green)">All Chapters Equal:</b> Total Q ko sabhi chapters mein barabar baant diya jaayega. Har chapter se same count.';
-  } else if (mode === 'custom') {
-    chDistSection.style.display = 'block';
-    modeHintSection.style.display = 'block';
-    modeHintSection.innerHTML = '🎛 <b style="color:var(--cyan)">Custom:</b> Neeche Ch 1, Ch 2... se chapters identify karo aur manually Q count set karo.';
-    renderChDistEditor(); // re-render with numbers visible
-  } else {
-    chDistSection.style.display = 'block';
-    modeHintSection.style.display = 'none';
-  }
-}
-
-function buildPaperFromFlat(items, stu) {
-  // Group by chapter
-  const chMap = {};
-  items.forEach(item => {
-    const key = getChKey(item.cls, item.chName);
-    if (!chMap[key]) chMap[key] = { cls: item.cls, chName: item.chName, ch: item.ch, items: [] };
-    chMap[key].items.push(item);
-  });
-  let cursor = 1;
-  const blocks = Object.values(chMap).map(g => {
-    const count = g.items.length;
-    const start = cursor, end = cursor + count - 1;
-    cursor = end + 1;
-    return { ...g, start, end, count };
-  });
-  return { stuId: stu.id, stuName: stu.name, date: todayStr(), totalQ: items.length, blocks };
-}
-
 
 // ══════════════════════════════════════════════════════════
 // PAPER QUEUE
@@ -2827,7 +2677,146 @@ function confirmModal() {
   closeModal();
 }
 
+// ══════════════════════════════════════════════════════════
+// GITHUB SYNC
+// ══════════════════════════════════════════════════════════
+async function saveToGithub() {
+  const s = getS();
+  if (!s.token) return;
+  const content = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
+  let sha = '';
+  try {
+    const r = await fetch(`https://api.github.com/repos/${s.owner}/${s.repo}/contents/ncert_smart_v2.json`,
+      { headers: { Authorization: `token ${s.token}`, Accept: 'application/vnd.github.v3+json' } });
+    if (r.ok) sha = (await r.json()).sha;
+    await fetch(`https://api.github.com/repos/${s.owner}/${s.repo}/contents/ncert_smart_v2.json`, {
+      method: 'PUT',
+      headers: { Authorization: `token ${s.token}`, Accept: 'application/vnd.github.v3+json', 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message: 'Update NCERT Smart v2', content, sha })
+    });
+  } catch(e) {}
+}
 
+async function loadFromGithub() {
+  const s = getS();
+  if (!s.token || !s.owner || !s.repo) {
+    showToast('Settings mein token/owner/repo daalo', 'e');
+    showPage('settings');
+    return;
+  }
+  showToast('Loading from GitHub...', 'a');
+  try {
+    // 1. Try new format first
+    const r = await fetch(`https://api.github.com/repos/${s.owner}/${s.repo}/contents/ncert_smart_v2.json`, {
+      headers: { Authorization: `token ${s.token}`, Accept: 'application/vnd.github.v3+json' },
+      cache: 'no-cache'
+    });
+    if (r.ok) {
+      const d = await r.json();
+      data = JSON.parse(decodeURIComponent(escape(atob(d.content))));
+      if (!data.history) data.history = [];
+      if (!data.queue) data.queue = [];
+      renderHome();
+      updateQueueBadge();
+      showToast('✓ Data loaded!', 's');
+      return;
+    }
+    // 2. Try OLD format (ncert_tracker.json) — auto migrate
+    const rOld = await fetch(`https://api.github.com/repos/${s.owner}/${s.repo}/contents/ncert_tracker.json`, {
+      headers: { Authorization: `token ${s.token}`, Accept: 'application/vnd.github.v3+json' },
+      cache: 'no-cache'
+    });
+    if (rOld.ok) {
+      const dOld = await rOld.json();
+      const old = JSON.parse(decodeURIComponent(escape(atob(dOld.content))));
+      data = migrateOldData(old);
+      renderHome();
+      await saveToGithub();
+      const clsCount = Object.keys(old.classes || {}).length;
+      let chCount = 0;
+      Object.values(old.classes || {}).forEach(c => chCount += Object.keys(c.chapters || {}).length);
+      showToast('Purana data import ho gaya! ' + chCount + ' chapters migrated', 's');
+      return;
+    }
+    // 3. Fresh start
+    data = { students: [], history: [] };
+    renderHome();
+    showToast('Fresh start! Student add karo.', 'a');
+  } catch(e) {
+    showToast('Network error: ' + e.message, 'e');
+    renderHome();
+  }
+}
+
+function migrateOldData(old) {
+  // Old: { classes: { "Class 10": { chapters: { "Ch": { folder, prefix, pages } } } }, history, studentName }
+  // New: { students: [{ id, name, emoji, class, classes }], history }
+  const defaultStudent = {
+    id: 'migrated_' + Date.now(),
+    name: old.studentName || 'Student',
+    emoji: '🎓',
+    class: Object.keys(old.classes || {})[0] || '',
+    classes: {}
+  };
+  Object.keys(old.classes || {}).forEach(cls => {
+    defaultStudent.classes[cls] = { chapters: {} };
+    Object.keys((old.classes[cls] || {}).chapters || {}).forEach(chName => {
+      const oldCh = old.classes[cls].chapters[chName];
+      defaultStudent.classes[cls].chapters[chName] = {
+        folder: oldCh.folder || '',
+        prefix: oldCh.prefix || '',
+        pages: (oldCh.pages || []).map(pg => ({
+          questions: pg.questions || {},
+          examples:  pg.examples  || {}
+        }))
+      };
+    });
+  });
+  return { students: [defaultStudent], history: old.history || [] };
+}
+
+// ══════════════════════════════════════════════════════════
+// OVERLAY + UTILS
+// ══════════════════════════════════════════════════════════
+function showOverlay(msg, pct) {
+  document.getElementById('dl-overlay').classList.add('open');
+  document.getElementById('dl-text').textContent = msg;
+  document.getElementById('dl-fill').style.width = pct + '%';
+}
+function updateOverlay(msg, pct) {
+  document.getElementById('dl-text').textContent = 'Downloading: ' + msg;
+  document.getElementById('dl-fill').style.width = pct + '%';
+}
+function hideOverlay() { document.getElementById('dl-overlay').classList.remove('open'); }
+
+function fmtD(d) { if (!d) return ''; const dt = new Date(d); return `${dt.getDate()}/${dt.getMonth()+1}`; }
+function todayStr() { return new Date().toISOString().split('T')[0]; }
+function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+let _tt;
+function showToast(msg, type) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.className = `toast ${type} show`;
+  clearTimeout(_tt); _tt = setTimeout(() => t.classList.remove('show'), 2600);
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') { closeModal(); closeImgFs(); }
+  if (e.key === 'Enter' && document.getElementById('modal').classList.contains('open')) confirmModal();
+  if (e.key === 'Enter' && (document.activeElement?.id === 'qInp' || document.activeElement?.id === 'exInp')) confirmEdit();
+});
+
+// PWA
+let dp;
+window.addEventListener('beforeinstallprompt', e => {
+  e.preventDefault(); dp = e;
+  const btn = document.createElement('div');
+  btn.className = 'ni';
+  btn.innerHTML = '<div class="ni-icon">📲</div><div class="ni-lbl">Install</div>';
+  btn.onclick = async () => { if (!dp) return; dp.prompt(); const { outcome } = await dp.userChoice; if (outcome === 'accepted') btn.remove(); dp = null; };
+  document.getElementById('bnav').appendChild(btn);
+});
+if ('serviceWorker' in navigator) window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));
 </script>
 </body>
 </html>
