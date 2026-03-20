@@ -56,7 +56,19 @@
                   "examples": {
                     "2": {
                       "used": 1,
-                      "lastDate": "2026-03-20"
+                      "lastDate": "2026-03-20",
+                      "wrong": {
+                        "count": 1,
+                        "lastDate": "2026-03-20",
+                        "nextReview": "2026-03-23",
+                        "difficulty": "medium",
+                        "history": [
+                          {
+                            "date": "2026-03-20",
+                            "difficulty": "easy"
+                          }
+                        ]
+                      }
                     },
                     "3": {
                       "used": 1,
@@ -3085,7 +3097,11 @@
           "chName": "Comparing Quantities",
           "pn": 4,
           "type": "ex",
-          "num": 2
+          "num": 2,
+          "wrong": {
+            "difficulty": "medium",
+            "date": "2026-03-20"
+          }
         },
         {
           "stuId": "migrated_1773733208764",
