@@ -213,13 +213,17 @@
                       "lastDate": "2026-03-19",
                       "wrong": {
                         "count": 1,
-                        "lastDate": "2026-03-19",
-                        "nextReview": "2026-03-22",
-                        "difficulty": "medium",
+                        "lastDate": "2026-03-20",
+                        "nextReview": "2026-03-21",
+                        "difficulty": "hard",
                         "history": [
                           {
                             "date": "2026-03-19",
                             "difficulty": "easy"
+                          },
+                          {
+                            "date": "2026-03-20",
+                            "difficulty": "hard"
                           }
                         ]
                       }
@@ -4263,7 +4267,7 @@
           "type": "ex",
           "num": 2,
           "wrong": {
-            "difficulty": "medium",
+            "difficulty": "hard",
             "date": "2026-03-19"
           }
         },
