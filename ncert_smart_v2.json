@@ -60,8 +60,8 @@
                       "wrong": {
                         "count": 1,
                         "lastDate": "2026-03-20",
-                        "nextReview": "2026-03-23",
-                        "difficulty": "medium",
+                        "nextReview": "2026-03-27",
+                        "difficulty": "easy",
                         "history": [
                           {
                             "date": "2026-03-20",
@@ -3099,7 +3099,7 @@
           "type": "ex",
           "num": 2,
           "wrong": {
-            "difficulty": "medium",
+            "difficulty": "easy",
             "date": "2026-03-20"
           }
         },
