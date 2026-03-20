@@ -2304,12 +2304,80 @@ function renderHistory() {
         </div>
         <div style="display:flex;flex-direction:column;align-items:flex-end;gap:5px;flex-shrink:0;">
           ${canUndo ? `<button onclick="event.stopPropagation();confirmUndo()" style="background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.3);color:var(--amber);border-radius:8px;padding:4px 9px;font-size:.65rem;font-weight:700;cursor:pointer;white-space:nowrap;">↩ Undo</button>` : ''}
+          ${hasSnap ? `<div style="display:flex;gap:4px;"><button onclick="event.stopPropagation();redownloadHistory(${hi},'zip')" style="background:rgba(6,182,212,.1);border:1px solid rgba(6,182,212,.25);color:var(--cyan);border-radius:8px;padding:4px 9px;font-size:.65rem;font-weight:700;cursor:pointer;white-space:nowrap;">↓ ZIP</button><button onclick="event.stopPropagation();redownloadHistory(${hi},'img')" style="background:rgba(59,130,246,.1);border:1px solid rgba(59,130,246,.25);color:var(--blue);border-radius:8px;padding:4px 9px;font-size:.65rem;font-weight:700;cursor:pointer;white-space:nowrap;">↓ IMG</button></div>` : ''}
           ${hasSnap ? `<span class="hist-chev" id="hchev-${hi}">▾</span>` : ''}
         </div>
       </div>
       ${hasSnap ? `<div class="hist-card-body" id="hbody-${hi}">${qRowsHtml}</div>` : ''}
     </div>`;
   }).join('');
+}
+
+// ── RE-DOWNLOAD FROM HISTORY ─────────────────────────────
+async function redownloadHistory(hi, mode = 'zip') {
+  const h = data.history?.[hi];
+  if (!h || !h.snapshot?.length) { showToast('Snapshot nahi hai', 'e'); return; }
+
+  const stu = getStu(h.stuId);
+  if (!stu) { showToast('Student data nahi mila', 'e'); return; }
+
+  // Group snapshot by chName+pn to build unique page image URLs
+  const pageMap = {};
+  h.snapshot.forEach(item => {
+    const ch = stu.classes?.[item.cls]?.chapters?.[item.chName];
+    if (!ch) return;
+    const key = item.chName + '||' + item.pn;
+    if (!pageMap[key]) {
+      const url = buildImgUrl(ch, item.pn);
+      if (!url) return;
+      const prefix = ch.prefix || item.chName.replace(/\s+/g,'_').toLowerCase().slice(0,12);
+      pageMap[key] = { url, name: `${prefix}_p${item.pn}.png` };
+    }
+  });
+
+  const pages = Object.values(pageMap);
+  if (!pages.length) { showToast('Koi image URL nahi bana', 'e'); return; }
+
+  const stuName = (stu.name || 'student').replace(/\s+/g,'_');
+  const dateStr = (h.date || todayStr()).replace(/-/g,'');
+  showOverlay('Re-downloading...', 0);
+  let done = 0;
+
+  if (mode === 'zip') {
+    await loadJSZip();
+    if (typeof JSZip === 'undefined') { hideOverlay(); showToast('JSZip load nahi hua', 'e'); return; }
+    const zip = new JSZip();
+    for (const pg of pages) {
+      updateOverlay(pg.name, Math.round(done / pages.length * 90));
+      try { const res = await fetch(pg.url); if (res.ok) zip.file(pg.name, await res.blob()); } catch(e) {}
+      done++;
+    }
+    updateOverlay('ZIP ban raha hai...', 95);
+    const zipBlob = await zip.generateAsync({ type:'blob', compression:'DEFLATE', compressionOptions:{ level:6 } });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(zipBlob);
+    a.download = `${stuName}_paper_${dateStr}.zip`;
+    a.click();
+    hideOverlay();
+    showToast(`✅ ZIP downloaded! (${done} images)`, 's');
+  } else {
+    for (const pg of pages) {
+      updateOverlay(pg.name, Math.round(done / pages.length * 100));
+      try {
+        const res = await fetch(pg.url);
+        if (res.ok) {
+          const a = document.createElement('a');
+          a.href = URL.createObjectURL(await res.blob());
+          a.download = pg.name;
+          a.click();
+          await new Promise(r => setTimeout(r, 400));
+        }
+      } catch(e) {}
+      done++;
+    }
+    hideOverlay();
+    showToast(`✅ ${done} images downloaded!`, 's');
+  }
 }
 
 function toggleHistCard(hi) {
