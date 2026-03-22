@@ -3803,8 +3803,26 @@
                   "total": 6
                 },
                 {
-                  "questions": {},
-                  "examples": {}
+                  "questions": {
+                    "12": {
+                      "used": 0,
+                      "lastDate": null
+                    },
+                    "13": {
+                      "used": 0,
+                      "lastDate": null
+                    },
+                    "14": {
+                      "used": 0,
+                      "lastDate": null
+                    },
+                    "15": {
+                      "used": 0,
+                      "lastDate": null
+                    }
+                  },
+                  "examples": {},
+                  "total": 4
                 },
                 {
                   "questions": {},
