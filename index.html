@@ -2327,12 +2327,21 @@ async function redownloadHistory(hi, mode = 'zip') {
     const ch = stu.classes?.[item.cls]?.chapters?.[item.chName];
     if (!ch) return;
     const key = item.chName + '||' + item.pn;
+    const prefix = ch.prefix || item.chName.replace(/\s+/g,'_').toLowerCase().slice(0,12);
     if (!pageMap[key]) {
       const url = buildImgUrl(ch, item.pn);
       if (!url) return;
-      const prefix = ch.prefix || item.chName.replace(/\s+/g,'_').toLowerCase().slice(0,12);
-      pageMap[key] = { url, name: `${prefix}_p${item.pn}.png` };
+      pageMap[key] = { url, prefix, pn: item.pn, qNums: [], exNums: [] };
     }
+    if (item.type === 'q')  pageMap[key].qNums.push(parseInt(item.num));
+    if (item.type === 'ex') pageMap[key].exNums.push(parseInt(item.num));
+  });
+  // Build filenames with question numbers (same as getBlockPages)
+  Object.values(pageMap).forEach(pg => {
+    let nameParts = [`${pg.prefix}_p${pg.pn}`];
+    if (pg.qNums.length)  nameParts.push(pg.qNums.sort((a,b)=>a-b).map(q=>`q${q}`).join('_'));
+    if (pg.exNums.length) nameParts.push(pg.exNums.sort((a,b)=>a-b).map(e=>`ex${e}`).join('_'));
+    pg.name = nameParts.join('_') + '.png';
   });
 
   const pages = Object.values(pageMap);
