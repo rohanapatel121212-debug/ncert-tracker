@@ -23,8 +23,8 @@
                 {
                   "questions": {
                     "1": {
-                      "used": 1,
-                      "lastDate": "2026-03-19"
+                      "used": 2,
+                      "lastDate": "2026-03-25"
                     },
                     "2": {
                       "used": 1,
@@ -159,14 +159,14 @@
                       "lastDate": "2026-03-25"
                     },
                     "3": {
-                      "used": 0,
-                      "lastDate": null
+                      "used": 1,
+                      "lastDate": "2026-03-25"
                     }
                   },
                   "examples": {
                     "10": {
-                      "used": 0,
-                      "lastDate": null
+                      "used": 1,
+                      "lastDate": "2026-03-25"
                     }
                   },
                   "total": 3,
@@ -328,16 +328,16 @@
                       "lastDate": "2026-03-25"
                     },
                     "4": {
-                      "used": 0,
-                      "lastDate": null
+                      "used": 1,
+                      "lastDate": "2026-03-25"
                     },
                     "5": {
-                      "used": 0,
-                      "lastDate": null
+                      "used": 1,
+                      "lastDate": "2026-03-25"
                     },
                     "6": {
-                      "used": 0,
-                      "lastDate": null
+                      "used": 1,
+                      "lastDate": "2026-03-25"
                     },
                     "7": {
                       "used": 0,
@@ -596,16 +596,16 @@
                       "lastDate": "2026-03-25"
                     },
                     "2": {
-                      "used": 0,
-                      "lastDate": null
+                      "used": 1,
+                      "lastDate": "2026-03-25"
                     },
                     "3": {
-                      "used": 0,
-                      "lastDate": null
+                      "used": 1,
+                      "lastDate": "2026-03-25"
                     },
                     "4": {
-                      "used": 0,
-                      "lastDate": null
+                      "used": 1,
+                      "lastDate": "2026-03-25"
                     },
                     "5": {
                       "used": 0,
@@ -996,16 +996,16 @@
                 {
                   "questions": {
                     "4": {
-                      "used": 0,
-                      "lastDate": null
+                      "used": 1,
+                      "lastDate": "2026-03-25"
                     },
                     "5": {
-                      "used": 0,
-                      "lastDate": null
+                      "used": 1,
+                      "lastDate": "2026-03-25"
                     },
                     "6": {
-                      "used": 0,
-                      "lastDate": null
+                      "used": 1,
+                      "lastDate": "2026-03-25"
                     },
                     "7": {
                       "used": 0,
@@ -1183,8 +1183,8 @@
                   "questions": {},
                   "examples": {
                     "14": {
-                      "used": 0,
-                      "lastDate": null
+                      "used": 1,
+                      "lastDate": "2026-03-25"
                     }
                   },
                   "exTotal": 1
@@ -1193,12 +1193,12 @@
                   "questions": {},
                   "examples": {
                     "15": {
-                      "used": 0,
-                      "lastDate": null
+                      "used": 1,
+                      "lastDate": "2026-03-25"
                     },
                     "16": {
-                      "used": 0,
-                      "lastDate": null
+                      "used": 1,
+                      "lastDate": "2026-03-25"
                     }
                   },
                   "exTotal": 2
@@ -4138,6 +4138,163 @@
     }
   ],
   "history": [
+    {
+      "date": "2026-03-25",
+      "datetime": "25/3/2026, 2:16:39 pm",
+      "studentName": "Student",
+      "stuId": "migrated_1773733208764",
+      "totalQ": 15,
+      "type": "auto-paper",
+      "chapters": [
+        {
+          "chapter": "Comparing Quantities",
+          "cls": "Class 8",
+          "count": 3
+        },
+        {
+          "chapter": "Mensuration",
+          "cls": "Class 8",
+          "count": 3
+        },
+        {
+          "chapter": "Exponents and Powers",
+          "cls": "Class 8",
+          "count": 3
+        },
+        {
+          "chapter": "Direct and Inverse Proportions",
+          "cls": "Class 8",
+          "count": 3
+        },
+        {
+          "chapter": "Factorisation",
+          "cls": "Class 8",
+          "count": 3
+        }
+      ],
+      "snapshot": [
+        {
+          "stuId": "migrated_1773733208764",
+          "cls": "Class 8",
+          "chName": "Comparing Quantities",
+          "pn": 12,
+          "type": "q",
+          "num": 3
+        },
+        {
+          "stuId": "migrated_1773733208764",
+          "cls": "Class 8",
+          "chName": "Comparing Quantities",
+          "pn": 12,
+          "type": "ex",
+          "num": 10
+        },
+        {
+          "stuId": "migrated_1773733208764",
+          "cls": "Class 8",
+          "chName": "Comparing Quantities",
+          "pn": 3,
+          "type": "q",
+          "num": 1
+        },
+        {
+          "stuId": "migrated_1773733208764",
+          "cls": "Class 8",
+          "chName": "Mensuration",
+          "pn": 12,
+          "type": "q",
+          "num": 4
+        },
+        {
+          "stuId": "migrated_1773733208764",
+          "cls": "Class 8",
+          "chName": "Mensuration",
+          "pn": 12,
+          "type": "q",
+          "num": 5
+        },
+        {
+          "stuId": "migrated_1773733208764",
+          "cls": "Class 8",
+          "chName": "Mensuration",
+          "pn": 12,
+          "type": "q",
+          "num": 6
+        },
+        {
+          "stuId": "migrated_1773733208764",
+          "cls": "Class 8",
+          "chName": "Exponents and Powers",
+          "pn": 9,
+          "type": "q",
+          "num": 2
+        },
+        {
+          "stuId": "migrated_1773733208764",
+          "cls": "Class 8",
+          "chName": "Exponents and Powers",
+          "pn": 9,
+          "type": "q",
+          "num": 3
+        },
+        {
+          "stuId": "migrated_1773733208764",
+          "cls": "Class 8",
+          "chName": "Exponents and Powers",
+          "pn": 9,
+          "type": "q",
+          "num": 4
+        },
+        {
+          "stuId": "migrated_1773733208764",
+          "cls": "Class 8",
+          "chName": "Direct and Inverse Proportions",
+          "pn": 14,
+          "type": "q",
+          "num": 4
+        },
+        {
+          "stuId": "migrated_1773733208764",
+          "cls": "Class 8",
+          "chName": "Direct and Inverse Proportions",
+          "pn": 14,
+          "type": "q",
+          "num": 5
+        },
+        {
+          "stuId": "migrated_1773733208764",
+          "cls": "Class 8",
+          "chName": "Direct and Inverse Proportions",
+          "pn": 14,
+          "type": "q",
+          "num": 6
+        },
+        {
+          "stuId": "migrated_1773733208764",
+          "cls": "Class 8",
+          "chName": "Factorisation",
+          "pn": 9,
+          "type": "ex",
+          "num": 14
+        },
+        {
+          "stuId": "migrated_1773733208764",
+          "cls": "Class 8",
+          "chName": "Factorisation",
+          "pn": 10,
+          "type": "ex",
+          "num": 15
+        },
+        {
+          "stuId": "migrated_1773733208764",
+          "cls": "Class 8",
+          "chName": "Factorisation",
+          "pn": 10,
+          "type": "ex",
+          "num": 16
+        }
+      ]
+    },
     {
       "date": "2026-03-25",
       "datetime": "25/3/2026, 2:16:21 pm",
