@@ -14,7 +14,13 @@
               "pages": [
                 {
                   "questions": {},
-                  "examples": {}
+                  "examples": {
+                    "1": {
+                      "used": 1,
+                      "lastDate": "2026-03-26"
+                    }
+                  },
+                  "exTotal": 1
                 },
                 {
                   "questions": {},
@@ -4138,6 +4144,23 @@
     }
   ],
   "history": [
+    {
+      "date": "2026-03-26",
+      "datetime": "26/3/2026, 10:28:42 pm",
+      "studentName": "Student",
+      "className": "Class 8",
+      "chapter": "Comparing Quantities",
+      "pages": [
+        {
+          "pageNum": 1,
+          "qNums": [],
+          "exNums": [
+            1
+          ],
+          "fname": "ch7_p1_ex1.png"
+        }
+      ]
+    },
     {
       "date": "2026-03-25",
       "datetime": "25/3/2026, 2:16:39 pm",
