@@ -585,6 +585,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);max-width:48
         <button class="big-btn btn-c" style="margin:0;font-size:.75rem;" onclick="downloadPaperImages()">🖼 Alag Alag</button>
         <button class="big-btn btn-c" style="margin:0;font-size:.75rem;background:var(--cyan);color:#000;" onclick="downloadPaperImagesZip()">🗜 ZIP File</button>
       </div>
+      <button class="big-btn" style="background:var(--red);color:#fff;margin-bottom:7px;font-size:.75rem;" onclick="downloadPaperPDF()">📄 PDF (Claude ke liye)</button>
       <button class="big-btn btn-g" onclick="saveToQueue()">📋 Queue mein Save</button>
       <button class="big-btn btn-o" onclick="generatePaper()">↺ Regenerate</button>
     </div>
@@ -2959,6 +2960,160 @@ function showToast(msg, type) {
   const t = document.getElementById('toast');
   t.textContent = msg; t.className = `toast ${type} show`;
   clearTimeout(_tt); _tt = setTimeout(() => t.classList.remove('show'), 2600);
+}
+
+// ══════════════════════════════════════════════════════════
+// PDF DOWNLOAD — Claude ke liye (jsPDF)
+// ══════════════════════════════════════════════════════════
+
+// jsPDF lazy load
+let _jspdfLoaded = false;
+function loadJsPDF() {
+  return new Promise((res, rej) => {
+    if (typeof window.jspdf !== 'undefined') return res();
+    if (_jspdfLoaded) return res();
+    const s = document.createElement('script');
+    s.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js';
+    s.onload = () => { _jspdfLoaded = true; res(); };
+    s.onerror = rej;
+    document.head.appendChild(s);
+  });
+}
+
+// File name se Q/Ex numbers parse karo
+// e.g. "maths_p5_q1_q3_ex2.png" → { qNums:[1,3], exNums:[2] }
+function parseQNumsFromName(name) {
+  const qNums = [], exNums = [];
+  // ex pehle match karo (warna 'q' ex ke andar bhi match ho sakta hai)
+  const exMatches = name.match(/ex(\d+)/g) || [];
+  exMatches.forEach(m => exNums.push(parseInt(m.replace('ex',''))));
+  // ab baaki mein q match karo
+  const qMatches = name.match(/(?<![a-z])q(\d+)/g) || [];
+  qMatches.forEach(m => qNums.push(parseInt(m.replace('q',''))));
+  return { qNums: [...new Set(qNums)].sort((a,b)=>a-b),
+           exNums: [...new Set(exNums)].sort((a,b)=>a-b) };
+}
+
+// Header text banao: "Q1, Q3, Ex2"
+function buildHeaderText(qNums, exNums) {
+  const parts = [];
+  if (qNums.length)  parts.push(qNums.map(n => `Q${n}`).join(', '));
+  if (exNums.length) parts.push(exNums.map(n => `Ex${n}`).join(', '));
+  return parts.join(' | ');
+}
+
+async function downloadPaperPDF() {
+  if (!currentPaper) return;
+
+  // Collect all pages same as downloadPaperImages
+  const allPages = [];
+  currentPaper.blocks.forEach(blk => {
+    getBlockPages(blk).forEach(p => allPages.push({ ...p, chName: blk.chName }));
+  });
+  const valid = allPages.filter(p => p.url);
+  if (!valid.length) { showToast('Koi image URL nahi bana', 'a'); return; }
+
+  // jsPDF load karo
+  showOverlay('jsPDF load ho raha hai...', 0);
+  try { await loadJsPDF(); } catch(e) {
+    hideOverlay(); showToast('jsPDF load nahi hua, retry karo', 'e'); return;
+  }
+
+  const { jsPDF } = window.jspdf;
+  // A4 size: 210 x 297 mm
+  const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+  const pageW = 210, pageH = 297;
+  const margin = 8;      // mm — left/right margin
+  const headerH = 10;    // mm — header area height
+  const imgX = margin;
+  const imgY = margin + headerH;       // image starts below header
+  const imgW = pageW - margin * 2;
+  const imgH = pageH - imgY - margin;  // image height (remaining space)
+
+  const stu = getStu(currentPaper.stuId);
+  const stuName = stu?.name || 'Student';
+  const dateStr = new Date().toLocaleDateString('en-IN');
+
+  let done = 0;
+  let firstPage = true;
+
+  for (const item of valid) {
+    updateOverlay(item.name, Math.round(done / valid.length * 90));
+
+    // Image fetch karo aur base64 banao
+    let imgData = null;
+    try {
+      const res = await fetch(item.url);
+      if (res.ok) {
+        const blob = await res.blob();
+        imgData = await new Promise(resolve => {
+          const reader = new FileReader();
+          reader.onload = () => resolve(reader.result);
+          reader.readAsDataURL(blob);
+        });
+      }
+    } catch(e) {}
+
+    if (!imgData) { done++; continue; }
+
+    // Nayi page add karo (pehli page already exist karti hai)
+    if (!firstPage) pdf.addPage();
+    firstPage = false;
+
+    // ── Header background (dark strip) ──
+    pdf.setFillColor(17, 19, 24); // --s1 color
+    pdf.rect(0, 0, pageW, margin + headerH, 'F');
+
+    // ── Student name + date (left) ──
+    pdf.setFont('helvetica', 'normal');
+    pdf.setFontSize(7);
+    pdf.setTextColor(90, 96, 112); // --t2
+    pdf.text(`${stuName}  ·  ${dateStr}`, margin, margin + 3.5);
+
+    // ── Chapter name (center) ──
+    const chShort = (item.chName || '').slice(0, 28);
+    pdf.setFont('helvetica', 'bold');
+    pdf.setFontSize(7.5);
+    pdf.setTextColor(232, 234, 240); // --text
+    pdf.text(chShort, pageW / 2, margin + 3.5, { align: 'center' });
+
+    // ── Q numbers (right, highlighted) ──
+    const { qNums, exNums } = parseQNumsFromName(item.name);
+    const headerTxt = buildHeaderText(qNums, exNums);
+    if (headerTxt) {
+      // Green badge background
+      const txtW = pdf.getTextWidth(headerTxt) + 4;
+      pdf.setFillColor(34, 197, 94, 0.15); // green dim
+      pdf.setDrawColor(34, 197, 94);
+      pdf.setLineWidth(0.3);
+      pdf.roundedRect(pageW - margin - txtW, margin + 1, txtW, 5.5, 1.5, 1.5, 'FD');
+      pdf.setFont('helvetica', 'bold');
+      pdf.setFontSize(7.5);
+      pdf.setTextColor(34, 197, 94); // green
+      pdf.text(headerTxt, pageW - margin - txtW / 2, margin + 4.5, { align: 'center' });
+    }
+
+    // ── NCERT Page image ──
+    // Image type detect karo
+    const imgType = imgData.includes('data:image/png') ? 'PNG' : 'JPEG';
+    pdf.addImage(imgData, imgType, imgX, imgY, imgW, imgH, undefined, 'FAST');
+
+    // ── Page number (footer) ──
+    pdf.setFont('helvetica', 'normal');
+    pdf.setFontSize(6.5);
+    pdf.setTextColor(46, 51, 64); // --t3
+    pdf.text(`${done + 1} / ${valid.length}`, pageW / 2, pageH - 2.5, { align: 'center' });
+
+    done++;
+  }
+
+  updateOverlay('PDF save ho raha hai...', 97);
+  const safeName = stuName.replace(/\s+/g,'_');
+  const today = todayStr().replace(/-/g,'');
+  pdf.save(`${safeName}_paper_${today}.pdf`);
+  hideOverlay();
+  showToast(`✅ PDF downloaded! (${done} pages)`, 's');
+  await markPaperDone();
 }
 
 document.addEventListener('keydown', e => {
